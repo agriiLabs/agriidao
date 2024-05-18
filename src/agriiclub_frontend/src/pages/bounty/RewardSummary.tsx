@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/Context";
 
 
 const RewardSummary = () => {
-    const { bounty_commodityActor } = useAuth();
+    // const { bounty_commodityActor } = useAuth();
     const { id } = useParams();
     const [campaign, setCampaign] = useState([]);
 

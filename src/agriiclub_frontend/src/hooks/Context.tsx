@@ -1,25 +1,19 @@
-import { ActorSubclass, Identity, SignIdentity } from "@dfinity/agent";
+import { Actor, ActorSubclass, HttpAgent, Identity, SignIdentity } from "@dfinity/agent";
 import React, { FC, createContext, useContext, useEffect, useState } from "react";
 import { AuthClient, AuthClientCreateOptions, AuthClientLoginOptions } from "@dfinity/auth-client";
-import { createActor as settingsCreateActor, } from "../../../declarations/settings";
-import { createActor as bounty_commodityCreateActor, } from "../../../declarations/bounty_commodity";
-import { createActor as userCreateActor, } from "../../../declarations/user";
-import type { _SERVICE as _adminAppService } from "../../../declarations/user/user.did"; 
-import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
-import type { _SERVICE as _bounty_commodityService } from "../../../declarations/bounty_commodity/bounty_commodity.did";
-import type { _SERVICE as _userService } from "../../../declarations/user/user.did";
-import { canisterId as iiCanId } from "../../../declarations/internet_identity";
+import { _SERVICE } from "../../../declarations/user/user.did";
+import { userIDL } from "../exporter";
 
-const bounty_commodityCanisterId = "bd3sg-teaaa-aaaaa-qaaba-cai"
-const settingsCanisterId = "be2us-64aaa-aaaaa-qaabq-cai"
 const userCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
 const network = process.env.DFX_NETWORK || "local";
 
+
+const localhost = "http://localhost:4943";
+const host = "https://icp0.io";
+const iiCanId = "asrmz-lmaaa-aaaaa-qaaeq-cai";
 type ContextType = {
   identity: Identity | null;
-  settingsActor: ActorSubclass<_settingsService> | null; 
-  bounty_commodityActor: ActorSubclass<_bounty_commodityService> | null; 
-  userActor: ActorSubclass<_userService> | null;
+  userActor: ActorSubclass<_SERVICE> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -27,8 +21,6 @@ type ContextType = {
   
 const initialContext: ContextType = {
   identity: null,
-  settingsActor: null,
-  bounty_commodityActor: null,
   userActor: null,
   isAuthenticated: false,
   login: async () => {
@@ -54,20 +46,19 @@ const defaultOptions: DefaultOptions = {
     },
   },
   loginOptions: {
-    identityProvider: typeof window !== "undefined" && window.location.hostname === "localhost"
-      ? `http://${iiCanId}.localhost:4943` // Assuming iiCanId is defined
+    identityProvider: network === "local"
+      ? `http://${iiCanId}.localhost:4943` 
       : "https://identity.ic0.app/#authorize",
   },
 };
+
   
   
 export const Context = (options = defaultOptions) => {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [settingsActor, setSettingsActor] = useState<ActorSubclass<_settingsService> | null>(null);
-  const [bounty_commodityActor, setBounty_commodityActor] = useState<ActorSubclass<_bounty_commodityService> | null>(null);
-  const [userActor, setUserActor] = useState<ActorSubclass<_userService> | null>(null);
+  const [userActor, setUserActor] = useState<ActorSubclass<_SERVICE> | null>(null);
   const [user, setUser] = useState(null);
 
 
@@ -98,8 +89,6 @@ export const Context = (options = defaultOptions) => {
     await authClient?.logout();
     setIsAuthenticated(false);
     setIdentity(null);
-    setSettingsActor(null);
-    setBounty_commodityActor(null);
     setUserActor(null);
   };
     
@@ -109,16 +98,23 @@ export const Context = (options = defaultOptions) => {
     const _identity = client.getIdentity();
     setIdentity(_identity);
 
-    // Assume these createActor functions are available and implemented correctly
-    setSettingsActor(settingsCreateActor(settingsCanisterId, { agentOptions: { identity: _identity } }));
-    setBounty_commodityActor(bounty_commodityCreateActor(bounty_commodityCanisterId, { agentOptions: { identity: _identity } }));
-    setUserActor(userCreateActor(userCanisterId, { agentOptions: { identity: _identity } }));
+    const agent = new HttpAgent({
+      host: network === "ic" ? host : localhost,
+    });
+
+    if (network !== "ic") {
+      agent.fetchRootKey();
+    }
+
+    const _userActor: ActorSubclass<_SERVICE> = Actor.createActor(userIDL, {
+      agent,
+      canisterId: userCanisterId,
+    });
+   setUserActor(_userActor);
   };
 
   return {
     identity,
-    settingsActor,
-    bounty_commodityActor,
     userActor,
     isAuthenticated,
     login,
