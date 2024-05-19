@@ -131,4 +131,3 @@ export const AuthProvider: FC<LayoutProps> = ({ children }) => {
 };
 
 export const useAuth = () => useContext(ContextWrapper);
-
