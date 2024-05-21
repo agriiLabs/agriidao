@@ -11,11 +11,12 @@ import Login from "./pages/Login";
 import RewardSummary from "./pages/bounty/RewardSummary";
 import { useAuth } from "./hooks/Context";
 import { useState, useEffect } from "react";
-import { Result, User, UserRequest } from "../../declarations/user/user.did";
+import { User} from "../../declarations/user/user.did";
 import TotalSubmission from "./pages/bounty/TotalSubmission";
 import TotalPending from "./pages/bounty/TotalPending";
 import TotalRejected from "./pages/bounty/TotaRejected";
 import TotalAccepted from "./pages/bounty/TotalAccepted";
+import RewardCampaigns from "./pages/bounty/RewardCampaigns";
 
 export interface Response {
   err?: any;
@@ -32,15 +33,15 @@ const App = () => {
   useEffect(() => {
     if (identity && userActor) {
       (async () => {
-        const principalString = identity.getPrincipal().toString();
-        const _user = await userActor.getUserLatest(principalString);
+        const principal = identity.getPrincipal();
+        const _user = await userActor.getUserLatest(principal);
         console.log("user response", user);
           if (_user && "ok" in _user) {
             // Type guard to check if the 'ok' property exists
             setUser(_user.ok); // Set user state to the User object
           } else {
-            const user: UserRequest = {
-              principalId: identity.getPrincipal(),
+            const user: User = {
+              id: identity.getPrincipal(),
               firstName: [],
               lastName: [],
               email: [],
@@ -65,13 +66,15 @@ const App = () => {
 
               isDelete: false,
             };
+            console.log("user object", user)
             await userActor.addUser(user);
-            const _user = await userActor.getUserLatest(principalString);
+            console.log("user added")
+            const _user = await userActor.getUserLatest(principal);
             if (_user && "ok" in _user) {
               // Type guard to check if the 'ok' property exists
               setUser(_user.ok);
             } else {
-              console.error("Error adding user");
+              console.error("Error adding user", _user);
             }
           }
         
@@ -101,6 +104,7 @@ const App = () => {
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />
             <Route path="/total-accepted" element={<TotalAccepted />} />
+            <Route path="/reward-campaigns" element={<RewardCampaigns />} />
           </Route>
         </Route>
       </Routes>

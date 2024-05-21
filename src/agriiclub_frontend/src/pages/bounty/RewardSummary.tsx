@@ -102,8 +102,8 @@ const RewardSummary = () => {
                         className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3">View Leaderboard</a>
                     </div>
 
-                    <div className="content"><a href="{% url 'public_user:campaign_list' %}"
-                        className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3">View Campaigns</a>
+                    <div className="content"><Link to={'/reward-campaigns'} 
+                        className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3">View Campaigns</Link>
                     </div>
 
 

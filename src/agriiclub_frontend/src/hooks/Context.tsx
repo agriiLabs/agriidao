@@ -1,19 +1,22 @@
 import { Actor, ActorSubclass, HttpAgent, Identity, SignIdentity } from "@dfinity/agent";
 import React, { FC, createContext, useContext, useEffect, useState } from "react";
 import { AuthClient, AuthClientCreateOptions, AuthClientLoginOptions } from "@dfinity/auth-client";
-import { _SERVICE } from "../../../declarations/user/user.did";
+import { _SERVICE as _userService } from "../../../declarations/user/user.did";
+import { createActor as bounty_commodityCreateActor, } from "../../../declarations/bounty_commodity";
+import type { _SERVICE as _bounty_commodityService } from "../../../declarations/bounty_commodity/bounty_commodity.did";
 import { userIDL } from "../exporter";
 
+const bounty_commodityCanisterId = "bd3sg-teaaa-aaaaa-qaaba-cai"
 const userCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
 const network = process.env.DFX_NETWORK || "local";
-
-
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
-const iiCanId = "asrmz-lmaaa-aaaaa-qaaeq-cai";
+const iiCanId = "a4tbr-q4aaa-aaaaa-qaafq-cai";
+
 type ContextType = {
   identity: Identity | null;
-  userActor: ActorSubclass<_SERVICE> | null;
+  bounty_commodityActor: ActorSubclass<_bounty_commodityService> | null; 
+  userActor: ActorSubclass<_userService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -21,6 +24,7 @@ type ContextType = {
   
 const initialContext: ContextType = {
   identity: null,
+  bounty_commodityActor: null,
   userActor: null,
   isAuthenticated: false,
   login: async () => {
@@ -58,7 +62,8 @@ export const Context = (options = defaultOptions) => {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userActor, setUserActor] = useState<ActorSubclass<_SERVICE> | null>(null);
+  const [bounty_commodityActor, setBounty_commodityActor] = useState<ActorSubclass<_bounty_commodityService> | null>(null);
+  const [userActor, setUserActor] = useState<ActorSubclass<_userService> | null>(null);
   const [user, setUser] = useState(null);
 
 
@@ -106,15 +111,21 @@ export const Context = (options = defaultOptions) => {
       agent.fetchRootKey();
     }
 
-    const _userActor: ActorSubclass<_SERVICE> = Actor.createActor(userIDL, {
+    const _bounty_commodityBackend = bounty_commodityCreateActor(bounty_commodityCanisterId, { agentOptions: { identity: _identity } });
+    setBounty_commodityActor(_bounty_commodityBackend);
+
+    const _userActor: ActorSubclass<_userService> = Actor.createActor(userIDL, {
       agent,
       canisterId: userCanisterId,
     });
    setUserActor(_userActor);
+
+  
   };
 
   return {
     identity,
+    bounty_commodityActor,
     userActor,
     isAuthenticated,
     login,
