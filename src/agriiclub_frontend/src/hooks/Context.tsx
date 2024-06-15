@@ -2,29 +2,32 @@ import { Actor, ActorSubclass, HttpAgent, Identity, SignIdentity } from "@dfinit
 import React, { FC, createContext, useContext, useEffect, useState } from "react";
 import { AuthClient, AuthClientCreateOptions, AuthClientLoginOptions } from "@dfinity/auth-client";
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
-import { createActor as bounty_commodityCreateActor, } from "../../../declarations/bounty_commodity";
-import type { _SERVICE as _bounty_commodityService } from "../../../declarations/bounty_commodity/bounty_commodity.did";
+import { createActor as bountyCreateActor, } from "../../../declarations/bounty";
+import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import { userIDL } from "../exporter";
 
-const bounty_commodityCanisterId = "bd3sg-teaaa-aaaaa-qaaba-cai"
-const userCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
+const bountyCanisterId = "bw4dl-smaaa-aaaaa-qaacq-cai"
+const userCanisterId = "asrmz-lmaaa-aaaaa-qaaeq-cai"
+const iiCanId = "c5kvi-uuaaa-aaaaa-qaaia-cai";
 const network = process.env.DFX_NETWORK || "local";
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
-const iiCanId = "a4tbr-q4aaa-aaaaa-qaafq-cai";
 
 type ContextType = {
   identity: Identity | null;
-  bounty_commodityActor: ActorSubclass<_bounty_commodityService> | null; 
+  bountyActor: ActorSubclass<_bountyService> | null; 
   userActor: ActorSubclass<_userService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
+
+  temporaryVal: string | null;
+  setTempVal(args:string|null): void;
 };
   
 const initialContext: ContextType = {
   identity: null,
-  bounty_commodityActor: null,
+  bountyActor: null,
   userActor: null,
   isAuthenticated: false,
   login: async () => {
@@ -33,6 +36,8 @@ const initialContext: ContextType = {
   logout: async () => {
     throw new Error("logout function must be overridden");
   },
+  temporaryVal: null,
+  setTempVal: (): void => {}
 };
 
   
@@ -62,9 +67,11 @@ export const Context = (options = defaultOptions) => {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [bounty_commodityActor, setBounty_commodityActor] = useState<ActorSubclass<_bounty_commodityService> | null>(null);
+  const [bountyActor, setBountyActor] = useState<ActorSubclass<_bountyService> | null>(null);
   const [userActor, setUserActor] = useState<ActorSubclass<_userService> | null>(null);
   const [user, setUser] = useState(null);
+  const [temporaryVal, setTempVal] = useState<string | null>(null);
+
 
 
   useEffect(() => {
@@ -111,8 +118,8 @@ export const Context = (options = defaultOptions) => {
       agent.fetchRootKey();
     }
 
-    const _bounty_commodityBackend = bounty_commodityCreateActor(bounty_commodityCanisterId, { agentOptions: { identity: _identity } });
-    setBounty_commodityActor(_bounty_commodityBackend);
+    const _bountyBackend = bountyCreateActor(bountyCanisterId, { agentOptions: { identity: _identity } });
+    setBountyActor(_bountyBackend);
 
     const _userActor: ActorSubclass<_userService> = Actor.createActor(userIDL, {
       agent,
@@ -125,11 +132,13 @@ export const Context = (options = defaultOptions) => {
 
   return {
     identity,
-    bounty_commodityActor,
+    bountyActor,
     userActor,
     isAuthenticated,
     login,
     logout,
+    temporaryVal,
+    setTempVal,
   };
 };
 

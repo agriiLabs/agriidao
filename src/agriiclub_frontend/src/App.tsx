@@ -17,6 +17,9 @@ import TotalPending from "./pages/bounty/TotalPending";
 import TotalRejected from "./pages/bounty/TotaRejected";
 import TotalAccepted from "./pages/bounty/TotalAccepted";
 import RewardCampaigns from "./pages/bounty/RewardCampaigns";
+import CampaignDetail from "./pages/bounty/CampaignDetail";
+import AddUserSocial from "./pages/bounty/AddUserSocial";
+import CampaignSubmission from "./pages/bounty/CampaignSubmission";
 
 export interface Response {
   err?: any;
@@ -105,6 +108,9 @@ const App = () => {
             <Route path="/total-rejected" element={<TotalRejected />} />
             <Route path="/total-accepted" element={<TotalAccepted />} />
             <Route path="/reward-campaigns" element={<RewardCampaigns />} />
+            <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
+            <Route path="/add-social-media" element={<AddUserSocial />} />
+            <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
           </Route>
         </Route>
       </Routes>

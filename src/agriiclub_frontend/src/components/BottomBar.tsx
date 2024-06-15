@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/Context";
 const BottomBar = () => {
   return (
     <div id="footer-bar" className="footer-bar-1">
-      <NavLink to="/overview" id="home-nav-bottom">
+      {/* <NavLink to="/overview" id="home-nav-bottom">
         <i className="fa fa-home"></i>
         <span>Home</span>
       </NavLink>
@@ -20,10 +20,14 @@ const BottomBar = () => {
       <NavLink to="/" id="cgc-nav-bottom">
         <i className="fa fa-users"></i>
         <span>CoOp</span>
-      </NavLink>
+      </NavLink> */}
       <NavLink to="/reward-summary" id="bounty-nav-bottom">
         <i className="fa fa-award"></i>
         <span>Rewards</span>
+      </NavLink>
+      <NavLink to="/reward-summary" id="bounty-nav-bottom">
+        <i className="fa fa-award"></i>
+        <span>Referrals</span>
       </NavLink>
       <NavLink to="/" id="more-nav-bottom">
         <i className="fa fa-bars"></i>
