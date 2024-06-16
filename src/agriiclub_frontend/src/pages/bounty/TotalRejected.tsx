@@ -3,9 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
 import { CampaignUser } from "../../../../declarations/bounty/bounty.did";
 
-const TotalPending = () => {
+const TotalRejected = () => {
   const { bountyActor } = useAuth();
-  const [campaignPending, setCampaignPending] = useState<CampaignUser[]>([]);
+  const [campaignRejected, setCampaignRejected] = useState<CampaignUser[]>([]);
 
   type Status = { pending: null } | { rejected: null } | { accepted: null };
 
@@ -28,24 +28,24 @@ const TotalPending = () => {
     return date.toLocaleDateString();
   };
 
-  const getPendingCampaignSubs = async () => {
+  const getRejectedCampaignSubs = async () => {
     if (!bountyActor) {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersPending();
-    setCampaignPending(res);
+    const res = await bountyActor.getAllLatestCampaignUsersRejected();
+    setCampaignRejected(res);
   };
 
   useEffect(() => {
-    getPendingCampaignSubs();
+    getRejectedCampaignSubs();
   }, [bountyActor]);
 
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a href="#" className="header-title">
-          Pending Submissions
+          Rejected Submissions
         </a>
         <a href="#" data-back-button className="header-icon header-icon-1">
           <i className="fas fa-arrow-left"></i>
@@ -58,47 +58,46 @@ const TotalPending = () => {
       <div className="page-content header-clear-medium">
         <div className="card card-style">
           <div className="content mb-0">
-            {campaignPending && campaignPending.length > 0 ? (
-              campaignPending.map((campaignPending, index) => (
+            {campaignRejected && campaignRejected.length > 0 ? (
+              campaignRejected.map((campaignRejected, index) => (
                 <Link
-                  to={`/reward-campaign-detail/${campaignPending?.id}`}
+                  to={`/reward-campaign-detail/${campaignRejected?.id}`}
                   className="d-flex mb-3"
                   key={index}
                 >
                   <div className="align-self-center">
                     <img
                       className="rounded-xl me-3"
-                      // src={campaignPending.campaignPic} //TODO: Pull the correct image from campaign object
-                      // data-src={campaignPending.campaignPic}
-                      // width={campaignPending.campaignPic}
-                      // height={campaignPending.campaignPic}
-                      // alt={campaignPending.name}
+                      // src={campaignRejected.campaignPic} //TODO: Pull the correct image from campaign object
+                      // data-src={campaignRejected.campaignPic}
+                      // width={campaignRejected.campaignPic}
+                      // height={campaignRejected.campaignPic}
+                      // alt={campaignRejected.name}
                     />
                   </div>
                   <div className="align-self-center">
                     <p className="mb-n2 font-16">
-                      {campaignPending.campaignId}
+                      {campaignRejected.campaignId}
                     </p>
                     <p className="font-11 opacity-60">
-                      {campaignPending.campaignTaskId}
+                      {campaignRejected.campaignTaskId}
                     </p>
                   </div>
                   <div className="align-self-center ms-auto text-end">
                     <p className="mb-n2 font-16">
                       {/* TODO: set timestamp */}
-                      {/* {campaignPending.timeStamp} */}
+                      {/* {campaignRejected.timeStamp} */}
                       23.5.24
                     </p>
                     <p className="font-11 opacity-60">
-                      {getStatus(campaignPending.status)}
+                      {getStatus(campaignRejected.status)}
                     </p>
                   </div>
                 </Link>
               ))
             ) : (
-              <p>You do not have any tasks</p>
+              <p>You do not have rejected tasks</p>
             )}
-            ;
           </div>
         </div>
       </div>
@@ -106,4 +105,4 @@ const TotalPending = () => {
   );
 };
 
-export default TotalPending;
+export default TotalRejected;

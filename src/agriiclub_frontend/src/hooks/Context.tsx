@@ -112,6 +112,7 @@ export const Context = (options = defaultOptions) => {
 
     const agent = new HttpAgent({
       host: network === "ic" ? host : localhost,
+      identity: _identity
     });
 
     if (network !== "ic") {

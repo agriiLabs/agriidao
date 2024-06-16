@@ -23,7 +23,6 @@ const CampaignDetail = () => {
     const res: Response = await bountyActor.getCampaignLatest(id);
 
     if (res.ok) {
-      // formatting some fields of campaign, in this case the start & end dates
       setCampaign(res.ok);
     } else {
       console.log(res.err);

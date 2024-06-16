@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { User} from "../../declarations/user/user.did";
 import TotalSubmission from "./pages/bounty/TotalSubmission";
 import TotalPending from "./pages/bounty/TotalPending";
-import TotalRejected from "./pages/bounty/TotaRejected";
+import TotalRejected from "./pages/bounty/TotalRejected";
 import TotalAccepted from "./pages/bounty/TotalAccepted";
 import RewardCampaigns from "./pages/bounty/RewardCampaigns";
 import CampaignDetail from "./pages/bounty/CampaignDetail";
