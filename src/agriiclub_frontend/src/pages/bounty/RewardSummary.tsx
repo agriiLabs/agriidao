@@ -10,7 +10,6 @@ import CountAccepted from "./count/CountAccepted";
 
 const RewardSummary = () => {
   const { bountyActor } = useAuth();
-  const { id } = useParams();
   const [campaignSubs, setCampaignSubs] = useState<CampaignUser[]>([]);
   const [campaignPending, setCampaignPending] = useState<CampaignUser[]>([]);
   const [campaignRejected, setCampaignRejected] = useState<CampaignUser[]>([]);

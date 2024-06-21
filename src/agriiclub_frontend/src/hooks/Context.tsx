@@ -8,7 +8,7 @@ import { userIDL } from "../exporter";
 
 const bountyCanisterId = "bw4dl-smaaa-aaaaa-qaacq-cai"
 const userCanisterId = "asrmz-lmaaa-aaaaa-qaaeq-cai"
-const iiCanId = "c5kvi-uuaaa-aaaaa-qaaia-cai";
+const iiCanId = "ajuq4-ruaaa-aaaaa-qaaga-cai";
 const network = process.env.DFX_NETWORK || "local";
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";

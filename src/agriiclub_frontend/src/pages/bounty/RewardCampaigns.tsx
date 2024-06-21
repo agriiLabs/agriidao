@@ -54,15 +54,15 @@ const RewardCampaigns = () => {
                       className="rounded-xl me-3"
                       src={campaigns.campaignPic}
                       data-src={campaigns.campaignPic}
-                      width={campaigns.campaignPic}
-                      height={campaigns.campaignPic}
+                      width="40"
+                      height="40"
                       alt={campaigns.name}
                     />
                   </div>
                   <div className="align-self-center">
                     <p className="mb-n2 font-16">{campaigns.name}</p>
                     <p className="font-11 opacity-60">
-                      {campaigns.campaignType}
+                      {bountyName}
                     </p>
                   </div>
                   <div className="align-self-center ms-auto text-end">

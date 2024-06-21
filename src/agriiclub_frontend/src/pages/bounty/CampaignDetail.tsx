@@ -3,12 +3,14 @@ import { useAuth } from "../../hooks/Context";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../utils/Types";
 import { Campaign } from "../../../../declarations/bounty/bounty.did";
+import CampaignRewards from "./component/CampaignRewards";
 
 const CampaignDetail = () => {
   const navigate = useNavigate()
   const { bountyActor, setTempVal } = useAuth();
   const { id } = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [showRewardsModal, setShowRewardsModal] = useState(false);
 
   useEffect(() => {
     getCampaignDetail();
@@ -44,6 +46,10 @@ const CampaignDetail = () => {
       navigate('/add-social-media')
     }
   };
+
+  const handleTaskRewards = () => {
+    setShowRewardsModal(true);
+  }
   
   return (
     <>
@@ -91,9 +97,9 @@ const CampaignDetail = () => {
                 </p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div className="col-12" style={{ marginTop: "-25px" }}>
+              {/* <div className="col-12" style={{ marginTop: "-25px" }}>
                 <p className="font-15 text-end mt-1">{campaign?.notes}</p>
-              </div>
+              </div> */}
               <div className="accordion col-6">
                 <a
                   href="#"
@@ -104,13 +110,13 @@ const CampaignDetail = () => {
                 </a>
               </div>
               <div className="accordion col-6">
-                <a
-                  href="#"
+                <button
+                  onClick={handleTaskRewards}
                   data-menu="menu-rewards"
                   className="btn accordion-btn opacity-70"
                 >
                   Task Rewards
-                </a>
+                </button>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
 
@@ -128,6 +134,7 @@ const CampaignDetail = () => {
           </div>
         </div>
       </div>
+      {showRewardsModal && <CampaignRewards {...{showRewardsModal, setShowRewardsModal, campaign}}/>}
     </>
   );
 };

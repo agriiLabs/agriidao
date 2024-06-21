@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../utils/Types";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { Campaign, CampaignTask, CampaignUserRequest } from "../../../../declarations/bounty/bounty.did"
+import { useDispatch } from "react-redux";
+import { setCampaignUserRequest } from "../../redux/slices/app";
 
 
 type FormData = {
@@ -15,12 +17,12 @@ type FormData = {
 };
 
 const AddCampaignSub = () => {
-    const {bountyActor, identity} = useAuth();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {bountyActor} = useAuth();
     const { id } = useParams();
-    const [saving, setSaving] = useState(false);
     const [campaign, setCampaign] = useState<Campaign | null>(null)
     const [campaignTasks, setCampaignTasks] = useState<CampaignTask[] | null>(null)
-    const principal = identity?.getPrincipal();
 
     const schema = z.object({
         url: z
@@ -68,12 +70,10 @@ const AddCampaignSub = () => {
     };
 
     let campaignId = campaign?.id
-    let userId = identity?.getPrincipal();
 
     const handleSave = async (data: FormData) => {
-        setSaving(true);
 
-        try {
+       
             const selectedTask = campaignTasks?.find((task) => task.task === data.campaignTaskId)
             if (!selectedTask) {
                 toast.error("No category found", {
@@ -81,33 +81,16 @@ const AddCampaignSub = () => {
                   position: "top-center",
                   hideProgressBar: true,
                 });
-                setSaving(false)
                 return;
             }
 
-            let body: CampaignUserRequest = {
+            const body: CampaignUserRequest = {
                 campaignId: String(campaignId), 
                 campaignTaskId: data.campaignTaskId,
                 url: data.url
             };
-
-            await bountyActor?.addCampaignUser(body);
-            console.log("user saved")
-            toast.success("Social media task successfully saved.", {
-                autoClose: 5000,
-                position: "top-center",
-            });
-            setSaving(false);
-
-        } catch (error) {
-            console.error('Error saving user social media:', error);
-            toast.error("There was an error saving user social media.", {
-                autoClose: 5000,
-                position: "top-center",
-                hideProgressBar: true,
-            });
-            setSaving(false);
-        }
+            dispatch(setCampaignUserRequest(body))
+            navigate("/campaign-submission-preview")
     };
 
     return (

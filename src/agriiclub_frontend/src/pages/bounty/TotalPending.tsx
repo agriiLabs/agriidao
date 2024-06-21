@@ -2,31 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
 import { CampaignUser } from "../../../../declarations/bounty/bounty.did";
+import CampaignSub from "./CampaignSub";
+
 
 const TotalPending = () => {
   const { bountyActor } = useAuth();
-  const [campaignPending, setCampaignPending] = useState<CampaignUser[]>([]);
+  const [campaignSubs, setCampaignSubs] = useState<CampaignUser[]>([]);
 
-  type Status = { pending: null } | { rejected: null } | { accepted: null };
-
-  const getStatus = (status: Status): string => {
-    if ("pending" in status) {
-      return "Pending";
-    } else if ("rejected" in status) {
-      return "Rejected";
-    } else if ("accepted" in status) {
-      return "Accepted";
-    } else {
-      return "Unknown Status";
-    }
-  };
-
-  //formatting the date
-  const formatDate = (timestamp: bigint): string => {
-    const date = new Date(Number(timestamp));
-    const options = { month: "long", day: "numeric", year: "numeric" };
-    return date.toLocaleDateString();
-  };
+  
 
   const getPendingCampaignSubs = async () => {
     if (!bountyActor) {
@@ -34,7 +17,7 @@ const TotalPending = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersPending();
-    setCampaignPending(res);
+    setCampaignSubs(res);
   };
 
   useEffect(() => {
@@ -58,47 +41,13 @@ const TotalPending = () => {
       <div className="page-content header-clear-medium">
         <div className="card card-style">
           <div className="content mb-0">
-            {campaignPending && campaignPending.length > 0 ? (
-              campaignPending.map((campaignPending, index) => (
-                <Link
-                  to={`/reward-campaign-detail/${campaignPending?.id}`}
-                  className="d-flex mb-3"
-                  key={index}
-                >
-                  <div className="align-self-center">
-                    <img
-                      className="rounded-xl me-3"
-                      // src={campaignPending.campaignPic} //TODO: Pull the correct image from campaign object
-                      // data-src={campaignPending.campaignPic}
-                      // width={campaignPending.campaignPic}
-                      // height={campaignPending.campaignPic}
-                      // alt={campaignPending.name}
-                    />
-                  </div>
-                  <div className="align-self-center">
-                    <p className="mb-n2 font-16">
-                      {campaignPending.campaignId}
-                    </p>
-                    <p className="font-11 opacity-60">
-                      {campaignPending.campaignTaskId}
-                    </p>
-                  </div>
-                  <div className="align-self-center ms-auto text-end">
-                    <p className="mb-n2 font-16">
-                      {/* TODO: set timestamp */}
-                      {/* {campaignPending.timeStamp} */}
-                      23.5.24
-                    </p>
-                    <p className="font-11 opacity-60">
-                      {getStatus(campaignPending.status)}
-                    </p>
-                  </div>
-                </Link>
-              ))
+          {campaignSubs && campaignSubs.length > 0 ? (
+              campaignSubs.map((campaignSub, index) => (
+                <CampaignSub key={index} {...{ campaignSub }} />
+              ))            
             ) : (
-              <p>You do not have any tasks</p>
+              <p>You do not have any pending tasks</p>
             )}
-            ;
           </div>
         </div>
       </div>
