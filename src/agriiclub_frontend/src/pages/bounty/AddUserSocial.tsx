@@ -7,18 +7,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { Campaign, UserSocialMediaRequest } from "../../../../declarations/bounty/bounty.did"
+import { useDispatch } from "react-redux";
+import { setUserSocialMediaRequest } from "../../redux/slices/app";
 
 type FormData = {
     userName: string
 };
 
 const AddUserSocial = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const {bountyActor, identity, temporaryVal} = useAuth();
     const { id } = useParams();
-    const [saving, setSaving] = useState(false);
     const [camapign, setCampaign] = useState<Campaign | null>(null)
-    const principal = identity?.getPrincipal();
+    // const principal = identity?.getPrincipal();
 
     const schema = z.object({
         userName: z
@@ -32,8 +34,6 @@ const AddUserSocial = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-
     
     let userId = identity?.getPrincipal();
 
@@ -41,38 +41,22 @@ const AddUserSocial = () => {
         if (!temporaryVal){
             console.error("social media id not available")
             return
-        }
-        setSaving(true);
+        };
 
-        try {
-            if (!userId) {
-                throw new Error('User ID is undefined. Please make sure the user is logged in.');
-            }
+        if (!userId) {
+            throw new Error('User ID is undefined. Please make sure the user is logged in.');
+        };
 
-            let body: UserSocialMediaRequest = {
-                userId: userId,  
-                userName: data.userName,
-                socialMediaId: temporaryVal,  
-            };
+        let body: UserSocialMediaRequest = {
+            userId: userId,  
+            userName: data.userName,
+            socialMediaId: temporaryVal,  
+        };
+        dispatch(setUserSocialMediaRequest(body))
+        navigate("/add-social-media-preview")
+            
 
-            await bountyActor?.addUserSocialMedia(body);
-            navigate('/reward-summary')
-            console.log("Social media username successfully saved.", {
-                autoClose: 5000,
-                position: "top-center",
-                hiddenProgressBar: true,
-            });
-            setSaving(false);
-
-        } catch (error) {
-            console.error('Error saving user social media:', error);
-            toast.error("There was an error saving user social media.", {
-                autoClose: 5000,
-                position: "top-center",
-                hideProgressBar: true,
-            });
-            setSaving(false);
-        }
+         
     };
 
     return (
