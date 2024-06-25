@@ -6,9 +6,9 @@ import { createActor as bountyCreateActor, } from "../../../declarations/bounty"
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import { userIDL } from "../exporter";
 
-const bountyCanisterId = "bw4dl-smaaa-aaaaa-qaacq-cai"
-const userCanisterId = "asrmz-lmaaa-aaaaa-qaaeq-cai"
-const iiCanId = "ajuq4-ruaaa-aaaaa-qaaga-cai";
+const bountyCanisterId = "avqkn-guaaa-aaaaa-qaaea-cai"
+const userCanisterId = "ajuq4-ruaaa-aaaaa-qaaga-cai"
+const iiCanId = "be2us-64aaa-aaaaa-qaabq-cai";
 const network = process.env.DFX_NETWORK || "local";
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";

@@ -19,6 +19,7 @@ import TotalAccepted from "./pages/bounty/TotalAccepted";
 import RewardCampaigns from "./pages/bounty/RewardCampaigns";
 import CampaignDetail from "./pages/bounty/CampaignDetail";
 import AddUserSocial from "./pages/bounty/AddUserSocial";
+import AddUserSocialPreview from "./pages/bounty/AddUserSocialPreview";
 import CampaignSubmission from "./pages/bounty/CampaignSubmission";
 import More from "./pages/more/More";
 import CampaignSubmissionPreview from "./pages/bounty/CampaignSubmissionPreview";
@@ -113,6 +114,7 @@ const App = () => {
             <Route path="/reward-campaigns" element={<RewardCampaigns />} />
             <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
             <Route path="/add-social-media" element={<AddUserSocial />} />
+            <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
             <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
             <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
 
