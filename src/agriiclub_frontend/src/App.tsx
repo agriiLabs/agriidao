@@ -30,7 +30,10 @@ export interface Response {
 }
 
 const App = () => {
-  const { isAuthenticated, userActor, identity, logout } = useAuth();
+  const { isAuthenticated, userActor, bountyActor, identity, logout } = useAuth();
+  if (!bountyActor) {
+    return null; // or handle the null case accordingly
+  }
   const [authorized, setAuthorized] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -66,16 +69,18 @@ const App = () => {
                 agriiclub: {
                   timeStamp: [BigInt(Date.now())],
                 },
-                agriiprice: false, // change to same as agriiclub
-                agriiMarket: false,
+                agriiprice: {timeStamp: []}, // change to same as agriiclub
+                agriiMarket: {timeStamp: []},
               },
 
               isDelete: false,
             };
-            console.log("user object", user)
+            console.log("user object", user.id.toString())
             await userActor.addUser(user);
             console.log("user added")
             const _user = await userActor.getUserLatest(principal);
+            const bountyPoint = await bountyActor.getBountyPointByUserId(principal);
+            console.log("bounty point", bountyPoint)
             if (_user && "ok" in _user) {
               // Type guard to check if the 'ok' property exists
               setUser(_user.ok);

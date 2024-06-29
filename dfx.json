@@ -1,13 +1,6 @@
 {
   "canisters": {
-    "agriiclub_backend": {
-      "main": "src/agriiclub_backend/main.mo",
-      "type": "motoko"
-    },
     "agriiclub_frontend": {
-      "dependencies": [
-        "agriiclub_backend"
-      ],
       "source": [
         "src/agriiclub_frontend/dist"
       ],
