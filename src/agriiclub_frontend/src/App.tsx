@@ -75,12 +75,11 @@ const App = () => {
 
               isDelete: false,
             };
-            console.log("user object", user.id.toString())
+            
             await userActor.addUser(user);
             console.log("user added")
             const _user = await userActor.getUserLatest(principal);
-            const bountyPoint = await bountyActor.getBountyPointByUserId(principal);
-            console.log("bounty point", bountyPoint)
+            
             if (_user && "ok" in _user) {
               // Type guard to check if the 'ok' property exists
               setUser(_user.ok);
