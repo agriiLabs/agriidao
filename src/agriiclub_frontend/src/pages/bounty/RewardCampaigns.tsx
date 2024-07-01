@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const RewardCampaigns = () => {
   const { bountyActor } = useAuth();
   const { id } = useParams();
   const [campaigns, setCampaigns] = useState<any[] | null>(null);
+  const navigate = useNavigate();
 
   let bountyName = "Marketing Bounty";
 
@@ -25,15 +26,24 @@ const RewardCampaigns = () => {
     }
   };
 
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-summary/`);
+  };
+
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a href="#" className="header-title">
           Reward Campaigns
         </a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
+        </button>
         <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
         </a>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
 import { CampaignUser } from "../../../../declarations/bounty/bounty.did";
 import CampaignSub from "./CampaignSub";
@@ -7,6 +7,12 @@ import CampaignSub from "./CampaignSub";
 const TotalSubmission = () => {
   const { bountyActor } = useAuth();
   const [campaignSubs, setCampaignSubs] = useState<CampaignUser[]>([]);
+  const navigate = useNavigate();
+  
+
+  useEffect(() => {
+    getAllCampaignSubs();
+  }, [bountyActor]);
 
   const getAllCampaignSubs = async () => {
     if (!bountyActor) {
@@ -17,19 +23,26 @@ const TotalSubmission = () => {
     setCampaignSubs(res);
   };
 
-  useEffect(() => {
-    getAllCampaignSubs();
-  }, [bountyActor]);
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-summary/`);
+  };
+  
+  
 
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a href="#" className="header-title">
-          All Submissions
+          All Submissions 
         </a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
+        </button>
         <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
         </a>
