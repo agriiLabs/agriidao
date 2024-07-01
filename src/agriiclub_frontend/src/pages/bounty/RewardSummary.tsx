@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
-import { CampaignUser } from "../../../../declarations/bounty/bounty.did";
+import { BountyPoint, CampaignUser } from "../../../../declarations/bounty/bounty.did";
 
 import Count from "./count/Count";
 import CountPending from "./count/CountPending";
@@ -14,6 +14,7 @@ const RewardSummary = () => {
   const [campaignPending, setCampaignPending] = useState<CampaignUser[]>([]);
   const [campaignRejected, setCampaignRejected] = useState<CampaignUser[]>([]);
   const [campaignAccepted, setCampaignAccepted] = useState<CampaignUser[]>([]);
+  const [bountyPoint, setBountyPoint] = useState<BountyPoint | null>(null);
 
   useEffect(() => {
     if (bountyActor) {
@@ -21,6 +22,7 @@ const RewardSummary = () => {
       getPendingCampaignSubs();
       getRejectedCampaignSubs();
       getAcceptedCampaignSubs();
+      getBountyPoints();
     }
   }, [bountyActor]);
 
@@ -41,7 +43,6 @@ const RewardSummary = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersPending();
-    console.log("pending tasks", res)
     setCampaignPending(res);
   };
 
@@ -52,7 +53,6 @@ const RewardSummary = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersRejected();
-    console.log("rejected tasks", res)
     setCampaignRejected(res);
   };
 
@@ -63,9 +63,22 @@ const RewardSummary = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersAccepted();
-    console.log("rejected tasks", res)
     setCampaignAccepted(res);
   };
+
+  // get user bountyPoints
+  const getBountyPoints = async () => {
+    if (!bountyActor) {
+      console.error("caller or bountyActor is null");
+      return;
+    }
+    const res = await bountyActor.getBountyPointByUserId();
+    if ('ok' in res) {
+      setBountyPoint(res.ok);
+    } else {
+      console.error("Error retrieving bounty points");
+    }
+  }
 
   return (
     <>
@@ -134,10 +147,10 @@ const RewardSummary = () => {
             </p>
             <div className="row mb-0">
               <div className="col-6">
-                <p className="font-15">Total Payments</p>
+                <p className="font-15">Total Points</p>
               </div>
               <div className="col-6">
-                <p className="font-15 text-end mb-0"> 20 AGRII</p>
+                <p className="font-15 text-end mb-0"> {bountyPoint?.balance} </p>
                 <p className="font-12 opacity-50 text-end">10 USD</p>
               </div>
             </div>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../hooks/Context";
-import { CampaignUser } from "../../../declarations/bounty/bounty.did";
+import { BountyPoint, CampaignUser } from "../../../declarations/bounty/bounty.did";
 
 import Count from "../pages/bounty/count/Count";
 import CountPending from "../pages/bounty/count/CountPending";
 import CountRejected from "../pages/bounty/count/CountRejected";
 import CountAccepted from "../pages/bounty/count/CountAccepted";
+
 
 const Home = () => {
   const {logout} = useAuth()
@@ -17,6 +18,7 @@ const Home = () => {
   const [campaignPending, setCampaignPending] = useState<CampaignUser[]>([]);
   const [campaignRejected, setCampaignRejected] = useState<CampaignUser[]>([]);
   const [campaignAccepted, setCampaignAccepted] = useState<CampaignUser[]>([]);
+  const [bountyPoint, setBountyPoint] = useState<BountyPoint | null>(null);
 
   useEffect(() => {
     if (bountyActor) {
@@ -24,6 +26,7 @@ const Home = () => {
       getPendingCampaignSubs();
       getRejectedCampaignSubs();
       getAcceptedCampaignSubs();
+      getBountyPoints();
     }
   }, [bountyActor]);
 
@@ -69,6 +72,21 @@ const Home = () => {
     console.log("rejected tasks", res)
     setCampaignAccepted(res);
   };
+
+  // get user bountyPoints
+  const getBountyPoints = async () => {
+    if (!bountyActor) {
+      console.error("caller or bountyActor is null");
+      return;
+    }
+    const res = await bountyActor.getBountyPointByUserId();
+    if ('ok' in res) {
+      setBountyPoint(res.ok);
+    } else {
+      console.error("Error retrieving bounty points");
+    }
+  };
+
 
   return (
     <>
@@ -140,8 +158,7 @@ const Home = () => {
                 <p className="font-15">Total Payments</p>
               </div>
               <div className="col-6">
-                <p className="font-15 text-end mb-0"> 20 AGRII</p>
-                <p className="font-12 opacity-50 text-end">10 USD</p>
+                <p className="font-15 text-end mb-0"> {bountyPoint?.balance}</p>
               </div>
             </div>
           </div>
