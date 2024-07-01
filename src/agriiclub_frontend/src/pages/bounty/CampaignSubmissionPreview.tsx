@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useAuth } from "../../hooks/Context";
 import { setCampaignUserRequest } from "../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
 import { toastSuccess } from "../../utils/Utils";
+import { CampaignTask } from "../../../../declarations/bounty/bounty.did";
 
 const CampaignSubmissionPreview = () => {
   const {bountyActor} = useAuth();
@@ -12,6 +13,30 @@ const CampaignSubmissionPreview = () => {
   const navigate = useNavigate()
   const { campaignUserRequest } = useSelector((state: RootState) => state.app);
   const [saving, setSaving] = useState(false);
+  const [task, setTask] = useState<CampaignTask | null>(null);
+  
+  useEffect(() => {
+    if(campaignUserRequest){
+      getTask()
+    };
+  }, [campaignUserRequest]) 
+
+  const getTask = async () => {
+    if(!campaignUserRequest || !bountyActor){
+      console.error("campaign user request not found")
+      return;
+    }
+    try {
+      const res = await bountyActor.getLatestCampaignTaskById(campaignUserRequest.campaignTaskId);
+      if("ok" in res){
+        setTask(res.ok)
+      } else {
+        console.error(res.err)
+      }
+    } catch (error) {
+      console.error("Error fetching campaign task: ", error)
+    }
+  }
 
   const handleSave = async () => {
     if(!campaignUserRequest){
@@ -30,6 +55,7 @@ const CampaignSubmissionPreview = () => {
       console.error("Error saving campaign user request: ", error)
     }
   }; 
+
   return (
     <>
       <div className="header header-fixed header-logo-center">
@@ -58,7 +84,7 @@ const CampaignSubmissionPreview = () => {
               </div>
               <div className="col-9">
                 <p className="font-15 text-end">
-                  {campaignUserRequest?.campaignTaskId}
+                  {task?.task}
                 </p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>

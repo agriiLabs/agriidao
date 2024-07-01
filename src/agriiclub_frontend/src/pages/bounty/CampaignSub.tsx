@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   Campaign,
   CampaignUser,
+  CampaignTask,
 } from "../../../../declarations/bounty/bounty.did";
 import { useAuth } from "../../hooks/Context";
 import { formatNanoDate } from "../../utils/Utils";
@@ -28,6 +29,35 @@ const getStatus = (status: Status): string => {
 const CampaignSub: FC<Props> = ({ campaignSub }) => {
   const { bountyActor } = useAuth();
   const [campaign, setCampiagn] = useState<Campaign | null>(null);
+  const [task, setTask] = useState<CampaignTask | null>(null);
+
+  useEffect(() => {
+    if(campaignSub){
+      getTask()
+    };
+  }, [campaignSub]); 
+
+  useEffect(() => {
+    getCampaign();
+  }, [bountyActor]);
+
+  const getTask = async () => {
+    if(!campaignSub || !bountyActor){
+      console.error("campaign user request not found")
+      return;
+    }
+    try {
+      const res = await bountyActor.getLatestCampaignTaskById(campaignSub.campaignTaskId);
+      if("ok" in res){
+        setTask(res.ok)
+      } else {
+        console.error(res.err)
+      }
+    } catch (error) {
+      console.error("Error fetching campaign task: ", error)
+    }
+  };
+
   const getCampaign = async () => {
     if (!bountyActor) {
       console.error("caller or bountyActor is null");
@@ -45,9 +75,9 @@ const CampaignSub: FC<Props> = ({ campaignSub }) => {
     }
   };
 
-  useEffect(() => {
-    getCampaign();
-  }, [bountyActor]);
+  
+
+  
 
   return (
     <Link
@@ -57,7 +87,7 @@ const CampaignSub: FC<Props> = ({ campaignSub }) => {
       <div className="align-self-center">
         <img
           className="rounded-xl me-3"
-          src={campaign?.campaignPic} //TODO: Pull the correct image from campaign object
+          src={campaign?.campaignPic} 
           data-src={campaign?.campaignPic}
           width="40"
           height="40"
@@ -66,7 +96,7 @@ const CampaignSub: FC<Props> = ({ campaignSub }) => {
       </div>
       <div className="align-self-center">
         <p className="mb-n2 font-16">{campaign?.name}</p>
-        <p className="font-11 opacity-60">{campaignSub.campaignTaskId}</p>
+        <p className="font-11 opacity-60">{task?.task}</p>
       </div>
       <div className="align-self-center ms-auto text-end">
         <p className="mb-n2 font-16">
