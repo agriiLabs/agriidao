@@ -30,10 +30,8 @@ export interface Response {
 }
 
 const App = () => {
-  const { isAuthenticated, userActor, bountyActor, identity, logout } = useAuth();
-  if (!bountyActor) {
-    return null; // or handle the null case accordingly
-  }
+  const { isAuthenticated, userActor, identity, logout } = useAuth();
+  
   const [authorized, setAuthorized] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
 
