@@ -62,7 +62,7 @@ const AddUserSocial = () => {
     return (
         <>
             <div className="header header-fixed header-logo-center">
-                <a className="header-title">Register Account</a>
+                <a className="header-title">{  temporaryVal }</a>
                 <a href="#" data-back-button className="header-icon header-icon-1"><i
                         className="fas fa-arrow-left"></i></a>
                 <a href="#" data-toggle-theme className="header-icon header-icon-4"><i className="fas fa-lightbulb"></i></a>
@@ -75,9 +75,8 @@ const AddUserSocial = () => {
 
 
                             <div className="input-style input-style-2 input-required">
-                                <span className="color-highlight">What is your { camapign?.campaignType } username?</span>
-                                <em>(required)</em>
                                 <input
+                                    placeholder="What is your username?"
                                     type="text"
                                     id="userName"
                                     {...register("userName")}

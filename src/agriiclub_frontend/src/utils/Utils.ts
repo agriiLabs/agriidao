@@ -3,12 +3,12 @@ import { toast } from "react-toastify";
 export const formatDate = (timestamp: string | number): string => {
   const date = new Date(Number(timestamp));
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
+    
     day: "numeric",
     month: "long",
     year: "numeric",
   };
-  return date.toLocaleDateString("en-US", options);
+  return date.toLocaleDateString("en-UK", options);
 };
 
 export const formatNanoDate = (timestamp: string | number): string => {
@@ -16,13 +16,12 @@ export const formatNanoDate = (timestamp: string | number): string => {
   const date = new Date(milliseconds);
 
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
     day: "numeric",
     month: "long",
     year: "numeric",
   };
 
-  return date.toLocaleDateString("en-US", options);
+  return date.toLocaleDateString("en-UK", options);
 };
 
 export const toastSuccess = (message: string) => {

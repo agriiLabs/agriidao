@@ -1,15 +1,27 @@
 import React from "react";
 import { useAuth } from "../../hooks/Context";
+import { Link, useNavigate } from "react-router-dom";
 
 function More() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-summary/`);
+  };
+
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a className="header-title">More Options</a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
+        </button>
         <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
         </a>
@@ -19,18 +31,19 @@ function More() {
         <div className="card card-style">
           <div className="content my-0">
             <div className="list-group list-custom-small">
-              <a href="{% url 'public_user:myprofile' %}">
+            <Link to={`/profile/`}>
                 <i className="fa fa-user color-blue-dark"></i>
                 <span className="opacity-70">Profile</span>
                 <i className="fa fa-angle-right"></i>
-              </a>
+            </Link>
+              
             </div>
           </div>
         </div>
         <div className="card card-style">
           <div className="content my-0">
             <div className="list-group list-custom-small">
-              <a href="{% url 'public_user:referral_summary' %}">
+              <a href="#">
                 <i className="fa fa-star color-blue-dark"></i>
                 <span className="opacity-70">Royalty Plus</span>
                 <i className="fa fa-angle-right"></i>
@@ -41,22 +54,22 @@ function More() {
         <div className="card card-style">
           <div className="content my-0">
             <div className="list-group list-custom-small">
-              <a href="{% url 'public_user:walk_through' %}">
+              <a href="#">
                 <i className="fa fa-check color-blue-dark"></i>
                 <span className="opacity-70">Getting Started</span>
                 <i className="fa fa-angle-right"></i>
               </a>
-              <a href="{% url 'public_user:member_faqs' %}">
+              <a href="#">
                 <i className="fa fa-info color-blue-dark"></i>
                 <span className="opacity-70">FAQs</span>
                 <i className="fa fa-angle-right"></i>
               </a>
-              <a href="{% url 'public_user:member_terms' %}">
+              <a href="#">
                 <i className="fa fa-copyright color-blue-dark"></i>
                 <span className="opacity-70">Terms and Conditions</span>
                 <i className="fa fa-angle-right"></i>
               </a>
-              <a href="{% url 'public_user:support' %}">
+              <a href="#">
                 <i className="fa fa-comment color-blue-dark"></i>
                 <span className="opacity-70">Support</span>
                 <i className="fa fa-angle-right"></i>

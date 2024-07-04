@@ -143,7 +143,7 @@ const RewardSummary = () => {
         <div className="card card-style">
           <div className="content">
             <p className="font-700 text-uppercase color-highlight font-12 opacity-70 mb-3 mt-n2">
-              Payments Summary
+              Points Summary
             </p>
             <div className="row mb-0">
               <div className="col-6">
@@ -151,7 +151,7 @@ const RewardSummary = () => {
               </div>
               <div className="col-6">
                 <p className="font-15 text-end mb-0"> {bountyPoint?.balance} </p>
-                <p className="font-12 opacity-50 text-end">10 USD</p>
+                
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@ const RewardSummary = () => {
 
         <div className="content">
           <a
-            href="{% url 'public_user:leaderboard' %}"
+            href="#"
             className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
           >
             View Leaderboard

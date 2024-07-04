@@ -25,10 +25,14 @@ const BottomBar = () => {
         <i className="fa fa-award"></i>
         <span>Rewards</span>
       </NavLink>
-      <NavLink to="/reward-summary" id="bounty-nav-bottom">
+      <NavLink to="/" id="funds-nav-bottom">
+        <i className="fa fa-handshake"></i>
+        <span>Stokvels</span>
+      </NavLink>
+      {/* <NavLink to="/reward-summary" id="bounty-nav-bottom">
         <i className="fa fa-award"></i>
         <span>agriiPay</span>
-      </NavLink>
+      </NavLink> */}
       <NavLink to="/more" id="more-nav-bottom">
         <i className="fa fa-bars"></i>
         <span>More</span>

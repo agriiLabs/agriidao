@@ -142,6 +142,7 @@ export const Context = (options = defaultOptions) => {
         canisterId: userCanisterId,
       }
     );
+    console.log("user actor ", _userBackend)
     setUserActor(_userBackend);
 
     // set bounty actor
@@ -152,6 +153,7 @@ export const Context = (options = defaultOptions) => {
         canisterId: bountyCanisterId,
       }
     );
+    console.log("bounty actor ", _bountyBackend)
     setBountyActor(_bountyBackend);
   };
 

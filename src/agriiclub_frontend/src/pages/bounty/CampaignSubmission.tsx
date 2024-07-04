@@ -124,7 +124,6 @@ const AddCampaignSub = () => {
           <div className="content mb-0">
             <form onSubmit={handleSubmit(handleSave)}>
               <div className="input-style no-borders input-required">
-                <label htmlFor="url">What is the web link?</label>
                 <i className="fa fa-check disabled valid color-green-dark"></i>
                 <i className="fa fa-check disabled invalid color-red-dark"></i>
                 <em>(required)</em>
