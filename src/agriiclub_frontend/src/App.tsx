@@ -23,6 +23,12 @@ import AddUserSocialPreview from "./pages/bounty/AddUserSocialPreview";
 import CampaignSubmission from "./pages/bounty/CampaignSubmission";
 import More from "./pages/more/More";
 import CampaignSubmissionPreview from "./pages/bounty/CampaignSubmissionPreview";
+import UserProfile from "./pages/more/UserProfile";
+import GetStarted from "./pages/GetStarted";
+import UserProfileUpdate from "./pages/more/UserProfileUpdate";
+import { useDispatch } from "react-redux";
+import { setProfile, setUser } from "./redux/slices/app";
+import UserProfileCreate from "./pages/more/UserProfileCreate";
 
 export interface Response {
   err?: any;
@@ -30,32 +36,21 @@ export interface Response {
 }
 
 const App = () => {
+  const dispatch = useDispatch();
   const { isAuthenticated, userActor, identity, logout } = useAuth();
   
-  const [authorized, setAuthorized] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-
   type Result = { ok: User } | { err: string };
 
   useEffect(() => {
     if (identity && userActor) {
       (async () => {
-        const principal = identity.getPrincipal();
-        const _user = await userActor.getUserLatest(principal);
-        console.log("user response", user);
+        const _user = await userActor.getUserByCaller();
           if (_user && "ok" in _user) {
             // Type guard to check if the 'ok' property exists
-            setUser(_user.ok); // Set user state to the User object
+            dispatch(setUser(_user.ok)); // Set the user object to the redux global state            
           } else {
             const user: User = {
               id: identity.getPrincipal(),
-              firstName: [],
-              lastName: [],
-              email: [],
-              dob: [],
-              mobile: [],
-              profilePic: [],
-              country: [],
               referralCode: [],
               referredBy: [],
               userType: {
@@ -70,17 +65,15 @@ const App = () => {
                 agriiprice: {timeStamp: []}, // change to same as agriiclub
                 agriiMarket: {timeStamp: []},
               },
-
               isDelete: false,
             };
             
             await userActor.addUser(user);
-            console.log("user added")
-            const _user = await userActor.getUserLatest(principal);
+            const _user = await userActor.getUserByCaller();
             
             if (_user && "ok" in _user) {
               // Type guard to check if the 'ok' property exists
-              setUser(_user.ok);
+              dispatch(setUser(_user.ok));
             } else {
               console.error("Error adding user", _user);
             }
@@ -89,6 +82,17 @@ const App = () => {
       })();
     }
   }, [identity, userActor]);
+
+    useEffect(() => {
+    if (identity && userActor) {
+      (async () => {
+        const _profile = await userActor.getProfileByCaller();
+        if (_profile && "ok" in _profile) {
+          dispatch(setProfile(_profile.ok));
+        }
+      })();
+    }
+  });
   
   const ProtectedRoutes = () => {
     if (isAuthenticated) {
@@ -119,6 +123,10 @@ const App = () => {
             <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
             <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
             <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
+            <Route path="/profile-create" element={<UserProfileCreate />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/profile-update" element={<UserProfileUpdate />} />
+            <Route path="/get-started" element={<GetStarted />} />
 
           </Route>
         </Route>
