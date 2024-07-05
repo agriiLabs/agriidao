@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"; 
-import { CampaignUserRequest, UserSocialMediaRequest } from "../../../../declarations/bounty/bounty.did";
+import { CampaignUserRequest, UserSocialMediaRequest, BountyPoint } from "../../../../declarations/bounty/bounty.did";
 import { Profile, ProfileRequest, User } from "../../../../declarations/user/user.did";
 
 
@@ -8,7 +8,8 @@ export interface GlobalState {
  userSocialMediaRequest : UserSocialMediaRequest | null,
  user : User | null,
  profileRequest : ProfileRequest | null,
- profile : Profile | null 
+ profile : Profile | null,
+ bountyPoints : BountyPoint[] | null,
 }; 
  
 const initialState: GlobalState = { 
@@ -16,7 +17,8 @@ const initialState: GlobalState = {
   userSocialMediaRequest: null,
   user: null,
   profileRequest: null,
-  profile: null
+  profile: null,
+  bountyPoints: null,
 }; 
  
 export const appSlice = createSlice({ 
@@ -37,6 +39,9 @@ export const appSlice = createSlice({
       },
     setProfile: (state, action: PayloadAction<Profile | null>) => {
       state.profile = action.payload;
+      },
+      setBountyPoints: (state, action: PayloadAction<BountyPoint[] | null>) => {
+        state.bountyPoints = action.payload;
       }
   }, 
 }); 
@@ -46,7 +51,8 @@ export const {
   setUserSocialMediaRequest,
   setUser,
   setProfileRequest,
-  setProfile
+  setProfile, 
+  setBountyPoints,
 } = appSlice.actions; 
  
 export default appSlice.reducer;
