@@ -79,7 +79,6 @@ const defaultOptions: DefaultOptions = {
         : "https://identity.ic0.app/#authorize",
   },
 };
-console.log("ii canister id: ", iiCanId )
 export const Context = (options = defaultOptions) => {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(null);
