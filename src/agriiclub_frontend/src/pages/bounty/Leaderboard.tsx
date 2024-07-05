@@ -1,50 +1,103 @@
-import React from 'react'
+import imagePath from "../../assets/images/default-user-profile.png";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/Context";
+import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
 
 const Leaderboard = () => {
+  const { bountyActor } = useAuth();
+  const [bountyPoints, setBountyPoints] = useState<BountyPoint[]>([]);
+
+  const getAllLatestBountyPoints = async () => {
+    if (!bountyActor) {
+      console.error("caller or bountyActor is null");
+      return;
+    }
+    try {
+      const res = await bountyActor.getAllLatestBountyPointUsers();
+
+      const sortedRes = res.sort((a, b) => b.balance -a.balance);
+      setBountyPoints(sortedRes);
+    } catch (error) {
+      console.error("Error in getting all latest bounty points: ", error);
+    }
+    // const res = await bountyActor.getAllLatestBountyPointUsers();
+    // setBountyPoints(res);
+  };
+  
+  useEffect(() => {
+    if (bountyActor) {
+      getAllLatestBountyPoints();
+    }
+  }, [bountyActor]);
+
   return (
-   <>
-        <div className="header header-fixed header-logo-center">
-            <a href="#" className="header-title">Rewards Leaderboard</a>
-            <a href="#" data-back-button className="header-icon header-icon-1"><i className="fas fa-arrow-left"></i></a>
-            <a href="#" data-toggle-theme className="header-icon header-icon-4"><i className="fas fa-lightbulb"></i></a>
+    <>
+      <div className="header header-fixed header-logo-center">
+        <a href="#" className="header-title">
+          Rewards Leaderboard
+        </a>
+        <a href="#" data-back-button className="header-icon header-icon-1">
+          <i className="fas fa-arrow-left"></i>
+        </a>
+        <a href="#" data-toggle-theme className="header-icon header-icon-4">
+          <i className="fas fa-lightbulb"></i>
+        </a>
+      </div>
+
+      <div className="page-content header-clear-medium">
+        <div className="content mb-2">
+          <table
+            className="table table-borderless text-center rounded-sm shadow-l"
+            style={{ overflow: "hidden", backgroundColor: "#fff" }}
+          >
+            <thead>
+              <tr className="bg-blue-dark">
+                <th scope="col" className="color-white">
+                  Rank
+                </th>
+                <th scope="col" className="color-white">
+                  Member
+                </th>
+                <th scope="col" className="color-white">
+                  Points
+                </th>
+                {/* <th scope="col" className="color-white">Submissions</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {bountyPoints && bountyPoints.length > 0 ? (
+                bountyPoints.map((bountyPoint: BountyPoint, index: number) => (
+                  <tr key={index}>
+                    <th scope="row">#{index + 1}</th>
+                    <td align="left" width="65%">
+                      {/* {position.user.profile_pic ? (
+                                            <img className="rounded-xl mr-3" src={position.user.profile_pic} alt="Profile" width="25" height="25" />
+                                        ) : ( */}
+                      <img
+                        src={imagePath}
+                        width="25"
+                        className="rounded-circle mt- shadow-xl preload-img"
+                        alt="Default Profile"
+                        style={{ marginRight: '10px' }}
+                      />
+                      {/* )} */}
+                        {bountyPoint.userId.toString()}
+                    </td>
+                    <td>{bountyPoint.balance} </td>
+                    {/* <td>{position.total}</td> */}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3}>No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
+      </div>
+    </>
+  );
+};
 
-        <div className="page-content header-clear-medium">
-                <div className="content mb-2 ">
-                    <table className="table table-borderless text-center  rounded-sm shadow-l" style={{ overflow: 'hidden', backgroundColor: '#fff' }}>
-                        <thead>
-                            <tr className="bg-blue-dark">
-                                <th scope="col" className="color-white">Rank</th>
-                                <th scope="col" className="color-white">Member </th>
-                                <th scope="col" className="color-white">Points</th>
-                                {/* <th scope="col" className="color-white">Submissions</th> */}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* {% for position in leaderboard %} */}
-                            <tr>
-                                <th scope="row">#{{forloop.counter}}</th>
-                                <td align="left" width ="65%">{% if position.user.profile_pic %}
-                                    {% thumbnail position.user.profile_pic "25x25" crop="center" as im %}
-                                    <img className="rounded-xl mr-3" src="{{ im.url }}" data-src="{{im.ur}}" width="{{ im.width }}" height="{{ im.height }}">
-                                    {% endthumbnail %}
-                                    {% else %}
-                                    <img src="{% static 'app/images/default-user-profile.png' %}" width="25" className="rounded-circle mt- shadow-xl preload-img">
-                                    {% endif %} 
-                                    {{position.user.user}}
-                                </td>
-                                <td>{{position.total_vnt|floatformat:0|intcomma}} VNT</td>
-                                {/* <td>{{position.total}}</td> */}
-                            </tr>
-                            {% empty %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-        </div>
-   </>
-  )
-}
-
-export default Leaderboard
+export default Leaderboard;
