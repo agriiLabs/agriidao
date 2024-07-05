@@ -29,6 +29,7 @@ import UserProfileUpdate from "./pages/more/UserProfileUpdate";
 import { useDispatch } from "react-redux";
 import { setProfile, setUser } from "./redux/slices/app";
 import UserProfileCreate from "./pages/more/UserProfileCreate";
+import Leaderboard from "./pages/bounty/Leaderboard";
 
 export interface Response {
   err?: any;
@@ -127,6 +128,7 @@ const App = () => {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/profile-update" element={<UserProfileUpdate />} />
             <Route path="/get-started" element={<GetStarted />} />
+            <Route path="/rewards-leaderboard" element={<Leaderboard />} />
 
           </Route>
         </Route>

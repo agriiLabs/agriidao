@@ -165,12 +165,12 @@ const Home = () => {
         </div>
 
         <div className="content">
-          <a
-            href="{% url 'public_user:leaderboard' %}"
+        <Link
+            to={"/rewards-leaderboard"}
             className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
           >
             View Leaderboard
-          </a>
+          </Link>
         </div>
 
         <div className="content">
