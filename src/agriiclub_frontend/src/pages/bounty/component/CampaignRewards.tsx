@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react'; 
-import Button from 'react-bootstrap/Button'; 
 import Modal from 'react-bootstrap/Modal'; 
 import { Campaign, CampaignTask } from '../../../../../declarations/bounty/bounty.did';
 import { useAuth } from '../../../hooks/Context';
@@ -30,7 +29,6 @@ const CampaignRewards : FC<Props> = ({showRewardsModal, setShowRewardsModal, cam
       console.error("Error fetching tasks: ", error)
     }
   }
-  console.log("these are the tasks: ", tasks)
   const handleClose = () => setShowRewardsModal(false); 
  
   return ( 

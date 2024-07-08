@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../utils/Types";
-import { Campaign } from "../../../../declarations/bounty/bounty.did";
 import CampaignRewards from "./component/CampaignRewards";
+import CampaignRules from "./component/CampaignRules";
 
 const CampaignDetail = () => {
   const navigate = useNavigate()
   const { bountyActor, setTempVal } = useAuth();
   const { id } = useParams();
-  const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const location = useLocation();
+  const { campaign: initialCampaign } = location.state || { campaign: { rules: '' }};
+  const [campaign, setCampaign] = useState(initialCampaign);
   const [showRewardsModal, setShowRewardsModal] = useState(false);
+  const [showRulesModal, setShowRulesModal] = useState(false);
 
   useEffect(() => {
     getCampaignDetail();
@@ -27,7 +30,7 @@ const CampaignDetail = () => {
     if (res.ok) {
       setCampaign(res.ok);
     } else {
-      console.log(res.err);
+      console.error(res.err); //not sure if this is correct
     }
   };
 
@@ -39,7 +42,6 @@ const CampaignDetail = () => {
 
     const res = await bountyActor.socialMediaCheck(campaign.campaignType)
     setTempVal(campaign.campaignType) //temp store value
-    console.log("response", res)
     if (res) {
       navigate(`/campaign-submission/${id}`)
     } else {
@@ -47,17 +49,30 @@ const CampaignDetail = () => {
     }
   };
 
+  const handleTaskRules = () => {
+    setShowRulesModal(true);
+  }
+
   const handleTaskRewards = () => {
     setShowRewardsModal(true);
   }
+
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-campaigns/`);
+  };
   
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a className="header-title">Campaign Details</a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
+        </button>
         <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
         </a>
@@ -80,8 +95,9 @@ const CampaignDetail = () => {
               <div className="col-9 text-end">
                 <a
                   className="font-15 "
-                  href="http://{campaign?.url}"
+                  href= {campaign?.url}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {" "}
                   {campaign?.url}
@@ -97,12 +113,12 @@ const CampaignDetail = () => {
                 </p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
-              {/* <div className="col-12" style={{ marginTop: "-25px" }}>
-                <p className="font-15 text-end mt-1">{campaign?.notes}</p>
-              </div> */}
+              <div className="col-12" >
+                <p className="font-15" dangerouslySetInnerHTML={{ __html: campaign?.notes }}></p><br/>
+              </div>
               <div className="accordion col-6">
                 <a
-                  href="#"
+                  onClick={handleTaskRules}
                   data-menu="menu-rules"
                   className="btn accordion-btn opacity-70"
                 >
@@ -135,6 +151,7 @@ const CampaignDetail = () => {
         </div>
       </div>
       {showRewardsModal && <CampaignRewards {...{showRewardsModal, setShowRewardsModal, campaign}}/>}
+      {showRulesModal && <CampaignRules {...{showRulesModal, setShowRulesModal, campaign}}/>}
     </>
   );
 };

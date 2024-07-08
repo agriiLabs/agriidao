@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Campaign,
   CampaignUser,
@@ -74,10 +74,6 @@ const CampaignSub: FC<Props> = ({ campaignSub }) => {
         console.error("Error fetching campaign: ", error)
     }
   };
-
-  
-
-  
 
   return (
     <Link

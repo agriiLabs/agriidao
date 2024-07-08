@@ -15,6 +15,11 @@ const AddUserSocialPreview = () => {
   );
   const [saving, setSaving] = useState(false);
 
+   // go back
+   const handleBack = () => {
+    navigate(`/reward-summary/`);
+  };
+
   const handleSave = async () => {
     if (!userSocialMediaRequest) {
       console.error("user social media request not found");
@@ -37,31 +42,35 @@ const AddUserSocialPreview = () => {
     <>
       <div className="header header-fixed header-logo-center">
         <a className="header-title">Confirm social username</a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
+        </button>
+        {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
-        </a>
+        </a> */}
       </div>
 
       <div className="page-content header-clear-medium">
         <div className="card card-style">
           <div className="content mb-0">
             <div className="row mb-0">
-              <div className="col-3">
+              <div className="col-4">
                 <p className="font-15">Username</p>
               </div>
-              <div className="col-9">
+              <div className="col-8">
                 <p className="font-15 text-end">
                   {userSocialMediaRequest?.userName}
                 </p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div className="col-3">
-                <p className="font-15">Social Media Channel</p>
+              <div className="col-5">
+                <p className="font-15">Social Channel</p>
               </div>
-              <div className="col-9">
+              <div className="col-7">
                 <p className="font-15 text-end">
                   {userSocialMediaRequest?.socialMediaId}
                 </p>

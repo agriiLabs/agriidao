@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import{ useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
 import { BountyPoint, CampaignUser } from "../../../../declarations/bounty/bounty.did";
 
@@ -15,6 +15,7 @@ const RewardSummary = () => {
   const [campaignRejected, setCampaignRejected] = useState<CampaignUser[]>([]);
   const [campaignAccepted, setCampaignAccepted] = useState<CampaignUser[]>([]);
   const [bountyPoint, setBountyPoint] = useState<BountyPoint | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (bountyActor) {
@@ -80,14 +81,23 @@ const RewardSummary = () => {
     }
   }
 
+  // go back
+  const handleBack = () => {
+    navigate(`/home`);
+  };
+
   return (
     <>
       {/* header */}
       <div className="header header-fixed header-logo-center">
         <a className="header-title">Reward Summary</a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
+        </button>
         <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
         </a>
@@ -157,7 +167,7 @@ const RewardSummary = () => {
           </div>
         </div>
 
-        <div className="content">
+        <div >
           <Link
             to={"/rewards-leaderboard"}
             className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
@@ -166,7 +176,7 @@ const RewardSummary = () => {
           </Link>
         </div>
 
-        <div className="content">
+        <div >
           <Link
             to={"/reward-campaigns"}
             className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"

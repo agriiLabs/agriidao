@@ -60,7 +60,7 @@ const AddCampaignSub = () => {
     if (res.ok) {
       setCampaign(res.ok);
     } else {
-      console.log(res.err);
+      console.error(res.err);
     }
   };
 

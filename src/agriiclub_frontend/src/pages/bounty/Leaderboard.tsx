@@ -2,10 +2,12 @@ import imagePath from "../../assets/images/default-user-profile.png";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
+import { useNavigate } from "react-router-dom";
 
 const Leaderboard = () => {
   const { bountyActor } = useAuth();
   const [bountyPoints, setBountyPoints] = useState<BountyPoint[]>([]);
+  const navigate = useNavigate();
 
   const getAllLatestBountyPoints = async () => {
     if (!bountyActor) {
@@ -20,8 +22,6 @@ const Leaderboard = () => {
     } catch (error) {
       console.error("Error in getting all latest bounty points: ", error);
     }
-    // const res = await bountyActor.getAllLatestBountyPointUsers();
-    // setBountyPoints(res);
   };
   
   useEffect(() => {
@@ -30,22 +30,31 @@ const Leaderboard = () => {
     }
   }, [bountyActor]);
 
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-summary/`);
+  };
+
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a href="#" className="header-title">
           Rewards Leaderboard
         </a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
+        </button>
+        {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
-        </a>
+        </a> */}
       </div>
 
-      <div className="page-content header-clear-medium">
-        <div className="content mb-2">
+      <div className="header-clear-medium">
+        <div className="mb-2">
           <table
             className="table table-borderless text-center rounded-sm shadow-l"
             style={{ overflow: "hidden", backgroundColor: "#fff" }}

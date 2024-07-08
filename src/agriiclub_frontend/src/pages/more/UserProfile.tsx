@@ -1,6 +1,6 @@
 import imagePath from "../../assets/images/default-user-profile.png";
 import { formatDate } from "../../utils/Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
@@ -13,10 +13,14 @@ export interface Response {
 }
 
 const UserProfile = () => {
-  const dispatch = useDispatch();
-  const { userActor } = useAuth();
   const { user, profile } = useSelector((state: RootState) => state.app);
   const [profileExists, setProfileExists] = useState(false);
+  const navigate = useNavigate();
+
+  // go back
+  const handleBack = () => {
+    navigate(`/more`);
+  };
 
 
 
@@ -25,7 +29,6 @@ const UserProfile = () => {
       setProfileExists(true);
     }
   }, [profile]);
-  console.log("user profile: ", profile);
 
   return (
     <>
@@ -35,12 +38,16 @@ const UserProfile = () => {
             <a href="#" className="header-title">
               My Profile
             </a>
-            <a href="#" data-back-button className="header-icon header-icon-1">
+            <button
+              onClick={handleBack}
+              data-back-button
+              className="header-icon header-icon-1"
+            >
               <i className="fas fa-arrow-left"></i>
-            </a>
-            <a href="#" data-toggle-theme className="header-icon header-icon-4">
+            </button>
+            {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
               <i className="fas fa-lightbulb"></i>
-            </a>
+            </a> */}
           </div>
 
           <div className="page-content header-clear-medium">

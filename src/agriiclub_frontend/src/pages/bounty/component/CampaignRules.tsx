@@ -1,45 +1,38 @@
-import { useState } from 'react'; 
-import Button from 'react-bootstrap/Button'; 
+import { FC } from 'react'; 
 import Modal from 'react-bootstrap/Modal'; 
+import { Campaign } from '../../../../../declarations/bounty/bounty.did';
+
+type Props = {
+  showRulesModal : boolean, 
+  setShowRulesModal : (showRulesModal : boolean) => void,
+  campaign : Campaign | null
+}
  
-function CampaignRules() { 
-  const [show, setShow] = useState(false); 
- 
-  const handleClose = () => setShow(false); 
-  const handleShow = () => setShow(true); 
+const CampaignRules : FC<Props> = ({showRulesModal, setShowRulesModal, campaign}) => { 
+  const safeRules = campaign?.rules ? String(campaign.rules) : '';
+  const handleClose = () => setShowRulesModal(false); 
  
   return ( 
-    <> 
-      <Button variant="primary" onClick={handleShow}> 
-        Launch demo modal 
-      </Button> 
- 
       <Modal  
-        show={show}  
+        show={showRulesModal}  
         onHide={handleClose}  
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+        size='xl'
       > 
         <Modal.Dialog  
           style={{ width: '100%', maxWidth: 'none', margin: 0 }} 
         > 
           <Modal.Header closeButton> 
-            <Modal.Title>Modal heading</Modal.Title> 
+            <Modal.Title>Campaign Rules</Modal.Title> 
           </Modal.Header> 
           <Modal.Body> 
-            Woohoo, you are reading this text in a modal! 
+          <p className="font-15" dangerouslySetInnerHTML={{ __html: safeRules }}></p>
           </Modal.Body> 
-          <Modal.Footer> 
-            <Button variant="secondary" onClick={handleClose}> 
-              Close 
-            </Button> 
-            <Button variant="primary" onClick={handleClose}> 
-              Save Changes 
-            </Button> 
-          </Modal.Footer> 
+          
         </Modal.Dialog> 
       </Modal> 
-    </> 
   ); 
 } 
  
 export default CampaignRules;
+

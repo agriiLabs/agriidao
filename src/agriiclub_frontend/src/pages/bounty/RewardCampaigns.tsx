@@ -21,7 +21,7 @@ const RewardCampaigns = () => {
       );
       setCampaigns(res ?? null);
     } catch (error) {
-      console.log("Error fetching bounty campaigns:", error);
+      console.error("Error fetching bounty campaigns:", error);
       setCampaigns(null);
     }
   };
@@ -44,9 +44,9 @@ const RewardCampaigns = () => {
         >
           <i className="fas fa-arrow-left"></i>
         </button>
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
+        {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
-        </a>
+        </a> */}
       </div>
 
       <div className="page-content header-clear-medium">
@@ -79,7 +79,7 @@ const RewardCampaigns = () => {
                     <p className="mb-n2 font-16">
                       {campaigns.totalValue} AGRII
                     </p>
-                    <p className="font-11 opacity-60">fiat value</p>
+                    {/* <p className="font-11 opacity-60">fiat value</p> */}
                   </div>
                 </Link>
               ))

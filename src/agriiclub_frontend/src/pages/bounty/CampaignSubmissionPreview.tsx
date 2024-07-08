@@ -56,16 +56,25 @@ const CampaignSubmissionPreview = () => {
     }
   }; 
 
+  // go back
+  const handleBack = () => {
+    navigate(`/reward-campaigns`);
+  };
+
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a className="header-title">Confirm Campaign Entry</a>
-        <a href="#" data-back-button className="header-icon header-icon-1">
+        <button
+          onClick={handleBack}
+          data-back-button
+          className="header-icon header-icon-1"
+        >
           <i className="fas fa-arrow-left"></i>
-        </a>
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
+        </button>
+        {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
           <i className="fas fa-lightbulb"></i>
-        </a>
+        </a> */}
       </div>
 
       <div className="page-content header-clear-medium">
