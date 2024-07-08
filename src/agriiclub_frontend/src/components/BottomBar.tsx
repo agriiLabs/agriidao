@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import imagePath from "../assets/images/agriiclub-icon-black.svg";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../hooks/Context";
 
 const BottomBar = () => {
   return (
     <div id="footer-bar" className="footer-bar-1">
-      {/* <NavLink to="/overvie w" id="home-nav-bottom">
-        <i className="fa fa-home"></i>
+      <NavLink to="/home" id="home-nav-bottom">
+      <img
+        src={imagePath}
+        width="19"
+        alt="agriiClub icon"
+      />
         <span>Home</span>
       </NavLink>
-      <NavLink to="/" id="funds-nav-bottom">
+      {/* <NavLink to="/" id="funds-nav-bottom">
         <i className="fa fa-handshake"></i>
         <span>Stokvels</span>
       </NavLink>

@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import { setProfile, setUser } from "./redux/slices/app";
 import UserProfileCreate from "./pages/more/UserProfileCreate";
 import Leaderboard from "./pages/bounty/Leaderboard";
+import Stokvels from "./pages/stokvels/Stokvels";
 
 export interface Response {
   err?: any;
@@ -109,10 +110,14 @@ const App = () => {
         <Route path="/login" element={<Login />} />
 
         <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/stokvels" element={<Stokvels />} />
+          
+          
           <Route element={<ProtectedRoutes />}>
-            <Route index element={<Home />} />
-            <Route path="/home" element={<Home />} />
             <Route path="/more" element={<More />} />
+            <Route path="/rewards-leaderboard" element={<Leaderboard />} />
             <Route path="/reward-summary" element={<RewardSummary />} />
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
@@ -128,7 +133,6 @@ const App = () => {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/profile-update" element={<UserProfileUpdate />} />
             <Route path="/get-started" element={<GetStarted />} />
-            <Route path="/rewards-leaderboard" element={<Leaderboard />} />
 
           </Route>
         </Route>
