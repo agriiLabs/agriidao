@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import imagePath from "../assets/images/agriiclub-logo.svg";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../hooks/Context";
-import { BountyPoint, CampaignUser } from "../../../declarations/bounty/bounty.did";
+import {
+  BountyPoint,
+  CampaignUser,
+} from "../../../declarations/bounty/bounty.did";
 
 import Count from "../pages/bounty/count/Count";
 import CountPending from "../pages/bounty/count/CountPending";
 import CountRejected from "../pages/bounty/count/CountRejected";
 import CountAccepted from "../pages/bounty/count/CountAccepted";
 
-
 const Home = () => {
-  const {logout} = useAuth()
-
   const { bountyActor } = useAuth();
   const { id } = useParams();
   const [campaignSubs, setCampaignSubs] = useState<CampaignUser[]>([]);
@@ -47,7 +48,6 @@ const Home = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersPending();
-    console.log("pending tasks", res)
     setCampaignPending(res);
   };
 
@@ -58,7 +58,6 @@ const Home = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersRejected();
-    console.log("rejected tasks", res)
     setCampaignRejected(res);
   };
 
@@ -69,7 +68,6 @@ const Home = () => {
       return;
     }
     const res = await bountyActor.getAllLatestCampaignUsersAccepted();
-    console.log("rejected tasks", res)
     setCampaignAccepted(res);
   };
 
@@ -80,110 +78,80 @@ const Home = () => {
       return;
     }
     const res = await bountyActor.getBountyPointByUserId();
-    if ('ok' in res) {
+    if ("ok" in res) {
       setBountyPoint(res.ok);
     } else {
       console.error("Error retrieving bounty points");
     }
   };
 
-
   return (
     <>
       {/* header */}
       <div className="header header-fixed header-logo-center">
-        <a className="header-title">Reward Summary</a>
-        {/* <a href="#" data-back-button className="header-icon header-icon-1">
-          <i className="fas fa-arrow-left"></i>
-        </a> */}
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
-          <i className="fas fa-lightbulb"></i>
+        <a className="header-title">
+          <img src={imagePath} width="100" alt="Default Profile" />
         </a>
+      
+        {/* <a href="#" data-toggle-theme className="header-icon header-icon-4">
+          <i className="fas fa-lightbulb"></i>
+        </a> */}
       </div>
 
       {/* body */}
       <div className="page-content header-clear-medium">
         <div className="card card-style">
           <div className="content">
-            <p className="font-700 text-uppercase color-highlight font-12 opacity-70 mb-3 mt-n2">
-              Submission Summary
+            <p className="font-700  color-highlight font-15 opacity-90 mb-3 mt-n2">
+            Welcome to agriiClub!
             </p>
-            <Link to={"/total-submissions"} className="d-flex">
-              <div className="align-self-center">
-                <p className="font-15 mb-n2">Total Submissions</p>
-              </div>
-              <div className="align-self-center ms-auto">
-                <p className="font-15 mb-n2">
-                  <Count {...{ campaignSubs }} />
-                </p>
-              </div>
-            </Link>
-            <div className="divider divider-margins w-100 mt-2 mb-3"></div>
-            <Link to={"/total-pending"} className="d-flex">
-              <div className="align-self-center">
-                <p className="font-15 mb-n2">Total Pending</p>
-              </div>
-              <div className="align-self-center ms-auto">
-                <p className="font-15 mb-0"><CountPending {...{ campaignPending }} /></p>
-              </div>
-            </Link>
-            <div className="divider divider-margins w-100 mt-2 mb-3"></div>
-            <Link to={"/total-accepted"} className="d-flex">
-              <div className="align-self-center">
-                <p className="font-15 mb-n2">Total Accepted</p>
-              </div>
-              <div className="align-self-center ms-auto">
-                <p className="font-15 mb-0"><CountAccepted {...{ campaignAccepted }} /></p>
-              </div>
-            </Link>
-            <div className="divider divider-margins w-100 mt-2 mb-3"></div>
-            <Link to={"/total-rejected"} className="d-flex">
-              <div className="align-self-center">
-                <p className="font-15 mb-n2">Total Rejected</p>
-              </div>
-              <div className="align-self-center ms-auto">
-                <p className="font-15 mb-0"><CountRejected {...{ campaignRejected }} /></p>
-              </div>
-            </Link>
+            <p className="font-15">
+              Thank you for joining agriiClub, the
+              revolutionary platform transforming the African agricultural
+              landscape. Engage with our vibrant community, earn social rewards,
+              and soon explore innovative DeFi and asset tokenisation
+              opportunities. Together, we're enhancing food security, empowering
+              farmers, and driving sustainable growth across Africa. Dive in and
+              be part of the change!
+            </p>
           </div>
         </div>
 
         <div className="card card-style">
           <div className="content">
-            <p className="font-700 text-uppercase color-highlight font-12 opacity-70 mb-3 mt-n2">
-              Points Summary
+            <p className="font-700 color-highlight font-15 opacity-90 mb-3 mt-n2">
+            Why agriiClub?
             </p>
-            <div className="row mb-0">
-              <div className="col-6">
-                <p className="font-15">Total Points</p>
-              </div>
-              <div className="col-6">
-                <p className="font-15 text-end mb-0"> {bountyPoint?.balance}</p>
-              </div>
-            </div>
+            <p className="font-15">
+            <ul>
+                <li><strong>Social Rewards:</strong> Earn rewards for your interactions and contributions within the community.</li>
+                <li><strong>DeFi Opportunities:</strong>   Participate in stokvels and royalty financing to support and invest in agricultural projects, including real-world agricultural assets (RWA).</li>
+                <li><strong>Asset Tokenisation:</strong> Turn freeze-dried agricultural produce into tradable digital assets, opening up global markets and investment opportunities.</li>
+                <li><strong>Decentralised Food Security:</strong> Contribute to a transparent, sustainable, and decentralised global food security system by supporting African agriculture and reducing food wastage.</li>
+            </ul>
+            </p>
           </div>
         </div>
 
-        <div className="content">
-        <Link
-            to={"/rewards-leaderboard"}
-            className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
-          >
-            View Leaderboard
-          </Link>
+        <div className="card card-style">
+          <div className="content">
+            <p className="font-700 color-highlight font-15 opacity-90 mb-3 mt-n2">
+              Our Roadmap
+            </p>
+            <p className="font-15">
+              <ul>
+              <li><strong>Phase 1: Social Rewards (Now Live)</strong> - Earn rewards for engaging with the community.</li>
+              <li><strong>Phase 2: DeFi Integration</strong> - Unlock financial tools to support agricultural projects, including RWA investments.</li>
+              <li><strong>Phase 3: Asset Tokenisation</strong> - Transform freeze-dried agricultural produce into digital assets, enabling global trade and investment.</li>
+              </ul>
+              </p>
+          </div>
         </div>
 
-        <div className="content">
-          <Link
-            to={"/reward-campaigns"}
-            className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
-          >
-            View Campaigns
-          </Link>
-        </div>
+        <div className="content"></div>
       </div>
     </>
   );
 };
 
-export default Home
+export default Home;
