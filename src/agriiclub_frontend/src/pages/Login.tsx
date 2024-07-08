@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import imagePath from "../assets/images/agriiclub-logo.svg";
+import { useEffect } from "react";
 import { useAuth } from "../hooks/Context";
 import { useNavigate } from "react-router-dom";
 
@@ -21,16 +22,18 @@ const Login = () => {
             <div className="col-md-8 col-lg-6 col-xl-5">
               <div className="card bg-pattern">
                 <div className="card-body p-4">
-                  <div className="text-center w-75 m-auto">
-                    <a href="/">
-                      <img src="/images/logo-dark.png" alt="" height="22" />
-                    </a>
+                  <div className="text-center w-75 m-auto" style={{ paddingBottom: '30px' }}>
+                  <img
+                    src={imagePath}
+                    width="120"
+                    alt="Default Profile"
+                  />
                   </div>
 
 
                   <div className="text-center m-auto">
-                    <button className="btn btn-primary" onClick={() => {
-                      console.log('Login button clicked');
+                  
+                    <button className="btn bg-blue-dark" onClick={() => {
                       login();
                       }}>
                       
@@ -39,9 +42,9 @@ const Login = () => {
                   </div>
 
                   <div className="text-center w-75 m-auto">
-                    {isAuthenticated === false && (
+                    {/* {isAuthenticated === false && (
                       <div>You are not authorised to access this DApp.</div>
-                    )}
+                    )} */}
 
                     {isAuthenticated === null && (
                       <h3>Checking authorization</h3>
