@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-
-import { Button } from "react-bootstrap";
-import { User, Profile } from "../../../../declarations/user/user.did";
+import { useNavigate } from "react-router-dom";
+import { Profile } from "../../../../declarations/user/user.did";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { toastError, toastSuccess } from "../../utils/Utils";

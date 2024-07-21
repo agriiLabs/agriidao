@@ -49,6 +49,8 @@ const CampaignDetail = () => {
     }
   };
 
+
+
   const handleTaskRules = () => {
     setShowRulesModal(true);
   }

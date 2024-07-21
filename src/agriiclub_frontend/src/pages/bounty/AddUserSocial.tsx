@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { useNavigate, useParams } from "react-router-dom";
-import { Response } from "../../utils/Types";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import { Campaign, UserSocialMediaRequest } from "../../../../declarations/bounty/bounty.did"
 import { useDispatch } from "react-redux";
 import { setUserSocialMediaRequest } from "../../redux/slices/app";
+import { AcCategory } from "../../../../declarations/settings/settings.did";
 
 type FormData = {
     userName: string
@@ -17,10 +16,34 @@ type FormData = {
 const AddUserSocial = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {bountyActor, identity, temporaryVal} = useAuth();
-    const { id } = useParams();
-    const [camapign, setCampaign] = useState<Campaign | null>(null)
-    // const principal = identity?.getPrincipal();
+    const { settingsActor, identity, temporaryVal} = useAuth();
+    const [socialMedia, setSocialMedia] = useState<AcCategory | null>(null);
+
+    useEffect(() => {
+        getSocialMedia();
+      }, [temporaryVal]);
+    
+      //get social Media name
+      const getSocialMedia = async () => {
+        if (!settingsActor) {
+          console.error("settingsActor is null");
+          return;
+        }
+        try {
+          const res = await settingsActor.getAcCategoryLatest(temporaryVal || "");
+          if ("ok" in res) {
+            setSocialMedia(res.ok);
+          } else {
+            console.error("Error getting social media name: ", res.err);
+          }
+        } catch (error) {
+          console.error("Error getting social media name: ", error);
+        }
+      };
+    
+      let socialName = socialMedia?.name; // set social media name
+    
+
 
     const schema = z.object({
         userName: z
@@ -62,7 +85,7 @@ const AddUserSocial = () => {
     return (
         <>
             <div className="header header-fixed header-logo-center">
-                <a className="header-title">{  temporaryVal }</a>
+                <a className="header-title">{  socialName }</a>
                 <a href="#" data-back-button className="header-icon header-icon-1"><i
                         className="fas fa-arrow-left"></i></a>
                 <a href="#" data-toggle-theme className="header-icon header-icon-4"><i className="fas fa-lightbulb"></i></a>

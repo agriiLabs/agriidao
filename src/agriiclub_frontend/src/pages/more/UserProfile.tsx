@@ -56,7 +56,7 @@ const UserProfile = () => {
                 <div className="flex-grow-1">
                   <div>
                     <p className="font-16 mb-1">
-                      Principal {user.id.toString()}
+                      <strong>Wallet ID:</strong> {user.id.toString()}
                     </p>
                     <p className="mb-0 pb-1 pr-3">
                       Member since{" "}

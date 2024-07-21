@@ -13,7 +13,6 @@ import {
 } from "../../../../declarations/bounty/bounty.did";
 import { useDispatch } from "react-redux";
 import { setCampaignUserRequest } from "../../redux/slices/app";
-import { Button } from "react-bootstrap";
 
 type FormData = {
   url: string;
@@ -26,15 +25,11 @@ const AddCampaignSub = () => {
   const { bountyActor } = useAuth();
   const { id } = useParams();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
-  const [campaignTasks, setCampaignTasks] = useState<CampaignTask[] | null>(
-    null
-  );
+  const [campaignTasks, setCampaignTasks] = useState<CampaignTask[] | null>(null);
 
   const schema = z.object({
     url: z
-      .string()
-      .min(3, { message: "Name must be 3 or more characters long" })
-      .max(40, { message: "Name must be less than 40 chararcters long" }),
+      .string().url({ message: "Invalid url" }),
     campaignTaskId: z.string().min(1, { message: "Task type required" }),
   });
 
@@ -126,18 +121,21 @@ const AddCampaignSub = () => {
               <div className="input-style no-borders input-required">
                 <i className="fa fa-check disabled valid color-green-dark"></i>
                 <i className="fa fa-check disabled invalid color-red-dark"></i>
-                <em>(required)</em>
+                {/* <em>(required)</em> */}
                 <input
-                  placeholder="What is the web link?"
+                  placeholder="Link to the completed task"
                   type="text"
                   id="url"
                   {...register("url")}
                   className="textinput textInput form-control"
                 />
+                {errors.url && (
+                    <span style={{color: "red"}}>{errors.url.message}</span>
+                  )}
               </div>
 
               <div className="input-style input-style-2 input-required">
-                <em>(required)</em>
+                {/* <em>(required)</em> */}
                 <i className="fa fa-check disabled valid color-green-dark"></i>
                 <i className="fa fa-check disabled invalid color-red-dark"></i>
                 <select
