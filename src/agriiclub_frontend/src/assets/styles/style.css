@@ -6366,6 +6366,16 @@ input[type=number] {
   color: #2758a7 !important;
 }
 
+.footer-bar-1 .nav-item .nav-icon {
+  width: 19px;
+}
+
+.footer-bar-1 .active-nav .nav-icon i,
+.footer-bar-1 .active-nav .nav-icon span,
+.footer-bar-3 .active-nav .nav-icon i {
+  color: #2758a7 !important;
+}
+
 .form-floating-over > .form-control:focus ~ label {
   color: #2758a7;
 }

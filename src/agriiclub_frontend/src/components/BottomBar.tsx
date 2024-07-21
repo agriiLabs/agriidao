@@ -4,12 +4,10 @@ import { NavLink } from "react-router-dom";
 const BottomBar = () => {
   return (
     <div id="footer-bar" className="footer-bar-1">
-      <NavLink to="/home" id="home-nav-bottom">
-      <img
-        src={imagePath}
-        width="19"
-        alt="agriiClub icon"
-      />
+      <NavLink to="/home" id="home-nav-bottom" 
+      className={({ isActive }) => isActive ? "nav-item active-nav" : "nav-item"}
+      >
+        <img src={imagePath} width="19" alt="agriiClub icon" className="nav-icon"/>
         <span>Home</span>
       </NavLink>
       {/* <NavLink to="/" id="funds-nav-bottom">
@@ -24,11 +22,23 @@ const BottomBar = () => {
         <i className="fa fa-users"></i>
         <span>CoOp</span>
       </NavLink> */}
-      <NavLink to="/reward-summary" id="bounty-nav-bottom">
-        <i className="fa fa-award"></i>
+      <NavLink
+        to="/reward-summary"
+        id="bounty-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }
+      >
+        <i className="fa fa-award active"></i>
         <span>Rewards</span>
       </NavLink>
-      <NavLink to="/" id="funds-nav-bottom">
+      <NavLink
+        to="/stokvels"
+        id="funds-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }
+      >
         <i className="fa fa-handshake"></i>
         <span>Stokvels</span>
       </NavLink>
@@ -36,7 +46,8 @@ const BottomBar = () => {
         <i className="fa fa-award"></i>
         <span>agriiPay</span>
       </NavLink> */}
-      <NavLink to="/more" id="more-nav-bottom">
+      <NavLink to="/more" id="more-nav-bottom" 
+      className={({ isActive }) => isActive ? "nav-item active-nav" : "nav-item"}>
         <i className="fa fa-bars"></i>
         <span>More</span>
       </NavLink>
@@ -45,4 +56,3 @@ const BottomBar = () => {
 };
 
 export default BottomBar;
-
