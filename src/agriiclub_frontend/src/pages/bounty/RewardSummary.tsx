@@ -150,22 +150,23 @@ const RewardSummary = () => {
           </div>
         </div>
 
-        <div className="card card-style">
+        {bountyPoint && <div className="card card-style">
           <div className="content">
             <p className="font-700 text-uppercase color-highlight font-12 opacity-70 mb-3 mt-n2">
               Points Summary
             </p>
             <div className="row mb-0">
               <div className="col-6">
-                <p className="font-15">Total Points</p>
+                <p className="font-15 mb-0">Total Points</p>
+                <p className="font-12">4 Points = 1 AGRII</p>
               </div>
               <div className="col-6">
-                <p className="font-15 text-end mb-0"> {bountyPoint?.balance} </p>
-                
+                <p className="font-15 text-end mb-0"> {bountyPoint.balance} </p>
+                <p className="font-12 opacity-50 text-end">{bountyPoint.balance / 4 } AGRII</p>
               </div>
             </div>
           </div>
-        </div>
+        </div>}
 
         <div >
           <Link

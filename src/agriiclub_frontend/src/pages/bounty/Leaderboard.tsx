@@ -8,7 +8,7 @@ const Leaderboard = () => {
   const { bountyActor } = useAuth();
   const [bountyPoints, setBountyPoints] = useState<BountyPoint[]>([]);
   const navigate = useNavigate();
-
+  
   const getAllLatestBountyPoints = async () => {
     if (!bountyActor) {
       console.error("caller or bountyActor is null");
@@ -77,7 +77,7 @@ const Leaderboard = () => {
               {bountyPoints && bountyPoints.length > 0 ? (
                 bountyPoints.map((bountyPoint: BountyPoint, index: number) => (
                   <tr key={index}>
-                    <th scope="row">#{index + 1}</th>
+                    <th scope="row">{index + 1}</th>
                     <td align="left" width="65%">
                       {/* {position.user.profile_pic ? (
                                             <img className="rounded-xl mr-3" src={position.user.profile_pic} alt="Profile" width="25" height="25" />

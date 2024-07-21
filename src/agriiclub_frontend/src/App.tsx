@@ -107,18 +107,18 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        
 
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/stokvels" element={<Stokvels />} />
-          
-          
+          <Route path="/rewards-leaderboard" element={<Leaderboard />} />
+          <Route path="/reward-summary" element={<RewardSummary />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/more" element={<More />} />
-            <Route path="/rewards-leaderboard" element={<Leaderboard />} />
-            <Route path="/reward-summary" element={<RewardSummary />} />
+            
+            
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />
@@ -136,6 +136,7 @@ const App = () => {
 
           </Route>
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
