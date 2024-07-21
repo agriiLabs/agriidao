@@ -19,16 +19,19 @@ import {
 } from "@dfinity/auth-client";
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
+import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
 // import { canisterId as iiCanId } from "../../../declarations/internet_identity";
 import {
   network,
   userIdlFactory,
   bountyIdlFactory,
+  settingsIdlFactory,
   bountyCanisterId,
   userCanisterId,
+  settingsCanisterId,
 } from "../exporter";
 
-const iiCanId = "a3shf-5eaaa-aaaaa-qaafa-cai";
+const iiCanId = "asrmz-lmaaa-aaaaa-qaaeq-cai";
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
 
@@ -36,6 +39,7 @@ type ContextType = {
   identity: Identity | null;
   bountyActor: ActorSubclass<_bountyService> | null;
   userActor: ActorSubclass<_userService> | null;
+  settingsActor: ActorSubclass<_settingsService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -48,6 +52,7 @@ const initialContext: ContextType = {
   identity: null,
   bountyActor: null,
   userActor: null,
+  settingsActor: null, 
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -87,6 +92,8 @@ export const Context = (options = defaultOptions) => {
     useState<ActorSubclass<_bountyService> | null>(null);
   const [userActor, setUserActor] =
     useState<ActorSubclass<_userService> | null>(null);
+  const [settingsActor, setSettingsActor] =
+    useState<ActorSubclass<_settingsService> | null>(null);
   const [user, setUser] = useState(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
 
@@ -120,6 +127,7 @@ export const Context = (options = defaultOptions) => {
   };
 
   const handleAuthenticated = async (client: AuthClient) => {
+    setAuthClient(client)
     setIsAuthenticated(true);
     const _identity = client.getIdentity();
     setIdentity(_identity);
@@ -142,6 +150,7 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setUserActor(_userBackend);
+    
 
     // set bounty actor
     const _bountyBackend: ActorSubclass<_bountyService> = Actor.createActor(
@@ -150,14 +159,25 @@ export const Context = (options = defaultOptions) => {
         agent,
         canisterId: bountyCanisterId,
       }
-    );
+    );  
     setBountyActor(_bountyBackend);
+
+    // set settings actor
+    const _settingsBackend: ActorSubclass<_settingsService> = Actor.createActor(
+      settingsIdlFactory,
+      {
+        agent,
+        canisterId: settingsCanisterId,
+      }
+    );
+    setSettingsActor(_settingsBackend);
   };
 
   return {
     identity,
     bountyActor,
     userActor,
+    settingsActor,
     isAuthenticated,
     login,
     logout,

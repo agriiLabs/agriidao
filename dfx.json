@@ -2,7 +2,7 @@
   "canisters": {
     "agriiclub_frontend": {
       "source": [
-        "src/agriiclub_frontend/dist"
+        "src/agriiclub_frontend/dist", "well-known"
       ],
       "type": "assets",
       "workspace": "agriiclub_frontend"
@@ -12,7 +12,7 @@
       "frontend": {},
       "remote": {
         "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+          "ic": "asrmz-lmaaa-aaaaa-qaaeq-cai"
         }
       },
       "type": "custom",
