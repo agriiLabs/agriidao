@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../utils/Types";
 import CampaignRewards from "./component/CampaignRewards";
 import CampaignRules from "./component/CampaignRules";
+import { UserSocialMedia } from "../../../../declarations/bounty/bounty.did";
 
 const CampaignDetail = () => {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ const CampaignDetail = () => {
   const location = useLocation();
   const { campaign: initialCampaign } = location.state || { campaign: { rules: '' }};
   const [campaign, setCampaign] = useState(initialCampaign);
+  const [userSocial, setUserSocial] = useState<UserSocialMedia | null>(null);
   const [showRewardsModal, setShowRewardsModal] = useState(false);
   const [showRulesModal, setShowRulesModal] = useState(false);
 
@@ -31,6 +33,27 @@ const CampaignDetail = () => {
       setCampaign(res.ok);
     } else {
       console.error(res.err); //not sure if this is correct
+    }
+  };
+
+  useEffect(() => {
+    if (bountyActor){
+       getSocialMedia();
+    }
+  }, [id, bountyActor], ); 
+
+  const getSocialMedia = async () => {
+    if (!id || !bountyActor) {
+      console.error("bountyActor is null");
+      return;
+    }
+    const res: Response = await bountyActor.getUserSocialMediaBySocialMediaId(campaign.campaignType);
+    console.log("bounty: ", bountyActor)
+    if (res.ok) {
+      setUserSocial(res.ok);
+    
+    } else {
+      console.error(res.err);
     }
   };
 
@@ -85,10 +108,17 @@ const CampaignDetail = () => {
           <div className="content">
             <div className="row mb-0">
               <div className="col-6">
-                <p className="font-15">Name</p>
+                <p className="font-15">Campaign</p>
               </div>
               <div className="col-6">
                 <p className="font-15 text-end">{campaign?.name}</p>
+              </div>
+              <div className="divider divider-margins w-100 mt-2 mb-2"></div>
+              <div className="col-6">
+                <p className="font-15">My Username</p>
+              </div>
+              <div className="col-6">
+                <p className="font-15 text-end">{userSocial?.userName}</p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
               <div className="col-3">
@@ -107,7 +137,7 @@ const CampaignDetail = () => {
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
               <div className="col-6">
-                <p className="font-15 mt-1">Total Value</p>
+                <p className="font-15 mt-1">Total Reward</p>
               </div>
               <div className="col-6">
                 <p className="font-15 text-end mt-1">
