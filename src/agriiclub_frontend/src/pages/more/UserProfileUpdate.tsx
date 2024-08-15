@@ -8,7 +8,7 @@ import { toastError, toastSuccess } from "../../utils/Utils";
 
 const UserProfileUpdate = () => {
   const { userActor } = useAuth();
-  const { user, profile } = useSelector((state: RootState) => state.app) 
+  const { profile } = useSelector((state: RootState) => state.app) 
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -88,9 +88,7 @@ const UserProfileUpdate = () => {
         >
           <i className="fas fa-arrow-left"></i>
         </button>
-        <a href="#" data-toggle-theme className="header-icon header-icon-4">
-          <i className="fas fa-lightbulb"></i>
-        </a>
+        
       </div>
 
       <div className="page-content header-clear-medium">

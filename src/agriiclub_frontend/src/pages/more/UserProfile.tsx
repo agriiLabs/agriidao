@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/Context";
-import { setProfile } from "../../redux/slices/app";
+
 
 export interface Response {
   err?: any;
@@ -21,8 +20,6 @@ const UserProfile = () => {
   const handleBack = () => {
     navigate(`/more`);
   };
-
-
 
   useEffect(() => {
     if (profile) {
@@ -159,12 +156,7 @@ const UserProfile = () => {
                       </Link>
                     )}
 
-                    {/* <Link
-                  to={"/profile-create/"}
-                  className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
-                >
-                  Create Profile
-                </Link> */}
+                    
                   </div>
                 </div>
               </div>
