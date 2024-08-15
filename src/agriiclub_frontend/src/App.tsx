@@ -31,6 +31,7 @@ import { setProfile, setUser } from "./redux/slices/app";
 import UserProfileCreate from "./pages/more/UserProfileCreate";
 import Leaderboard from "./pages/bounty/Leaderboard";
 import Stokvels from "./pages/stokvels/Stokvels";
+import UpdateUserSocial from "./pages/bounty/UpdateUserSocial";
 
 export interface Response {
   err?: any;
@@ -94,6 +95,7 @@ const App = () => {
         }
       })();
     }
+    
   });
   
   const ProtectedRoutes = () => {
@@ -107,18 +109,14 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        
-
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/stokvels" element={<Stokvels />} />
           <Route path="/rewards-leaderboard" element={<Leaderboard />} />
           <Route path="/reward-summary" element={<RewardSummary />} />
+          <Route path="/more" element={<More />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/more" element={<More />} />
-            
-            
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />
@@ -127,6 +125,7 @@ const App = () => {
             <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
             <Route path="/add-social-media" element={<AddUserSocial />} />
             <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
+            <Route path="/update-social-media" element={<UpdateUserSocial />} />
             <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
             <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
             <Route path="/profile-create" element={<UserProfileCreate />} />
