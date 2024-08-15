@@ -11,7 +11,7 @@ const AddUserSocialPreview = () => {
   const { bountyActor, settingsActor } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userSocialMediaRequest } = useSelector((state: RootState) => state.app);
+  const { userSocialMediaRequest, selectedCampaign } = useSelector((state: RootState) => state.app);
   const [saving, setSaving] = useState(false);
   const [socialMedia, setSocialMedia] = useState<AcCategory | null>(null);
 
@@ -34,7 +34,6 @@ const AddUserSocialPreview = () => {
       const res = await settingsActor.getAcCategoryLatest(userSocialMediaRequest?.socialMediaId || "");
       if ("ok" in res) {
         setSocialMedia(res.ok);
-        console.log(res);
       } else {
         console.error("Error getting social media name: ", res.err);
       }
@@ -57,7 +56,7 @@ const AddUserSocialPreview = () => {
         setSaving(false);
         dispatch(setUserSocialMediaRequest(null));
         toastSuccess("Social media account successfully added");
-        navigate("/reward-summary");
+        navigate(`/reward-campaign-detail/${selectedCampaign?.id}`);
       } else {
         setSaving(false);
         console.error("Error saving social media username request: ", res.err);
