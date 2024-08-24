@@ -45,7 +45,7 @@ const App = () => {
   type Result = { ok: User } | { err: string };
 
   useEffect(() => {
-    if (identity && userActor) {
+    if (isAuthenticated && identity && userActor) {
       (async () => {
         const _user = await userActor.getUserByCaller();
           if (_user && "ok" in _user) {
@@ -115,8 +115,9 @@ const App = () => {
           <Route path="/stokvels" element={<Stokvels />} />
           <Route path="/rewards-leaderboard" element={<Leaderboard />} />
           <Route path="/reward-summary" element={<RewardSummary />} />
-          <Route path="/more" element={<More />} />
+          
           <Route element={<ProtectedRoutes />}>
+            <Route path="/more" element={<More />} />
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />

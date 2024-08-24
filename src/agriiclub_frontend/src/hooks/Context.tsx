@@ -99,10 +99,9 @@ export const Context = (options = defaultOptions) => {
 
   useEffect(() => {
     AuthClient.create(options.createOptions).then(async (client) => {
-      setAuthClient(client);
-      if (await client.isAuthenticated()) {
+      // if (await client.isAuthenticated()) {
         handleAuthenticated(client);
-      }
+      // }
     });
   }, []);
 
@@ -128,7 +127,7 @@ export const Context = (options = defaultOptions) => {
 
   const handleAuthenticated = async (client: AuthClient) => {
     setAuthClient(client)
-    setIsAuthenticated(true);
+    setIsAuthenticated(await client.isAuthenticated());
     const _identity = client.getIdentity();
     setIdentity(_identity);
 

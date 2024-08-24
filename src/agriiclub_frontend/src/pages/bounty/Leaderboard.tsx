@@ -8,7 +8,6 @@ const Leaderboard = () => {
   const { bountyActor } = useAuth();
   const [bountyPoints, setBountyPoints] = useState<BountyPoint[]>([]);
   const navigate = useNavigate();
-  
   const getAllLatestBountyPoints = async () => {
     if (!bountyActor) {
       console.error("caller or bountyActor is null");
@@ -16,7 +15,6 @@ const Leaderboard = () => {
     }
     try {
       const res = await bountyActor.getAllLatestBountyPointUsers();
-
       const sortedRes = res.sort((a, b) => b.balance -a.balance);
       setBountyPoints(sortedRes);
     } catch (error) {
