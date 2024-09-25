@@ -101,6 +101,7 @@ const Leaderboard = () => {
               )}
             </tbody>
           </table>
+          <br/>
         </div>
       </div>
     </>
