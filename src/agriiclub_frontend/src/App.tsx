@@ -32,6 +32,8 @@ import UserProfileCreate from "./pages/more/UserProfileCreate";
 import Leaderboard from "./pages/bounty/Leaderboard";
 import Stokvels from "./pages/stokvels/Stokvels";
 import UpdateUserSocial from "./pages/bounty/UpdateUserSocial";
+import DaoLayout from "./components/agriidao/DaoLayout";
+import DaoHome from "./pages/agriidao/DaoHome";
 
 export interface Response {
   err?: any;
@@ -115,9 +117,9 @@ const App = () => {
           <Route path="/stokvels" element={<Stokvels />} />
           <Route path="/rewards-leaderboard" element={<Leaderboard />} />
           <Route path="/reward-summary" element={<RewardSummary />} />
-          
+          <Route path="/more" element={<More />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/more" element={<More />} />
+            
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />
@@ -135,6 +137,10 @@ const App = () => {
             <Route path="/get-started" element={<GetStarted />} />
 
           </Route>
+        </Route>
+        <Route element={<DaoLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/agriidao/home" element={<DaoHome />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
