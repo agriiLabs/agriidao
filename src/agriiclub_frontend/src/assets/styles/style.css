@@ -13,7 +13,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  color: #1f1f1f;
+  color: #18252F;
   font-family: "Source Sans Pro", sans-serif !important;
   margin-bottom: 5px;
   letter-spacing: -0.3px;
@@ -52,6 +52,7 @@ p {
   color: #6c6c6c;
   margin-bottom: 30px;
   padding-bottom: 0px;
+  font-size: 14px;
 }
 
 /*Page Stucture Settings*/
@@ -4978,6 +4979,10 @@ input[type=number] {
   color: #FFF !important;
 }
 
+.color-dark {
+  color: #18252F !important;
+}
+
 .color-black {
   color: #000 !important;
 }
@@ -4987,7 +4992,7 @@ input[type=number] {
 }
 
 .bg-black {
-  background-color: #000 !important;
+  background-color: #18252F !important;
 }
 
 /*Main Color Settings*/
@@ -5496,6 +5501,10 @@ input[type=number] {
 
 .border-green-dark {
   border-color: #8CC152 !important;
+}
+
+.border-dark {
+  border-color: #18252F !important;
 }
 
 .focus-green:focus {
@@ -6389,6 +6398,10 @@ input[type=number] {
   color: #FFF !important;
 }
 
+.color-dark {
+  color: #18252F !important;
+}
+
 .color-black {
   color: #000 !important;
 }
@@ -6399,6 +6412,10 @@ input[type=number] {
 
 .bg-black {
   background-color: #000 !important;
+}
+
+.bg-dark {
+  background-color: #18252F !important;
 }
 
 .border-transparent {
@@ -6558,7 +6575,9 @@ input[type=number] {
 }
 
 .bg-29 {
-  background-image: url(../images/pictures/29.jpg);
+  background-image: url(../../assets/images/busi02.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 .bg-30 {

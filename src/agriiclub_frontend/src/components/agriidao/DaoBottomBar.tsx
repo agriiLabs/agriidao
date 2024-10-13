@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const BottomBar = () => {
   return (
-    <div id="footer-bar" className="footer-bar-1">
+    <div id="footer-bar" className="footer-bar-3">
       <NavLink to="/home" id="home-nav-bottom" 
       className={({ isActive }) => isActive ? "nav-item active-nav" : "nav-item"}
       >
@@ -23,25 +23,25 @@ const BottomBar = () => {
         <span>CoOp</span>
       </NavLink> */}
       <NavLink
-        to="/reward-summary"
+        to="/ecosystem"
         id="bounty-nav-bottom"
         className={({ isActive }) =>
           isActive ? "nav-item active-nav" : "nav-item"
         }
       >
-        <i className="fa fa-award active"></i>
+        <i className="fa fa-network-wired active"></i>
         <span>DApps</span>
       </NavLink>
-      <NavLink
-        to="/stokvels"
+      {/* <NavLink
+        to="/ecosystem"
         id="funds-nav-bottom"
         className={({ isActive }) =>
           isActive ? "nav-item active-nav" : "nav-item"
         }
       >
-        <i className="fa fa-handshake"></i>
-        <span>Roadmap</span>
-      </NavLink>
+        <i className="fa fa-trophy"></i>
+        <span>Rewards</span>
+      </NavLink> */}
       {/* <NavLink to="/reward-summary" id="bounty-nav-bottom">
         <i className="fa fa-award"></i>
         <span>agriiPay</span>

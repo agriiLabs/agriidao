@@ -19,9 +19,7 @@ const Layout = () => {
     <div id="wrapper">
         {loading && <Loader />}
         <div className="content-page">
-          <div className="content">
-              <Outlet />
-          </div>
+          <Outlet />
         </div>
         
         <Bottombar />
