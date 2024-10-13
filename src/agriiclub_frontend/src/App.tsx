@@ -4,6 +4,7 @@ import {
   Route,
   Outlet,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -34,6 +35,19 @@ import Stokvels from "./pages/stokvels/Stokvels";
 import UpdateUserSocial from "./pages/bounty/UpdateUserSocial";
 import DaoLayout from "./components/agriidao/DaoLayout";
 import DaoHome from "./pages/agriidao/DaoHome";
+import Profile from "./pages/profile/Profile";
+import DaoMore from "./pages/agriidao/DaoMore";
+import FoodSystemChallenge from "./pages/agriidao/DaoFoodSystemChallenge";
+import HowItWorks from "./pages/agriidao/DaoHowItWorks";
+import Ecosystem from "./pages/agriidao/DaoEcosystem";
+import Esg from "./pages/agriidao/DaoEsg";
+import Initiatives from "./pages/agriidao/DaoInitiatives";
+import Protocol from "./pages/agriidao/DaoProtocol";
+import Club from "./pages/agriidao/DaoClub";
+import Market from "./pages/agriidao/DaoMarket";
+import Price from "./pages/agriidao/DaoPrice";
+import Trace from "./pages/agriidao/DaoTrace";
+import ScrollToTop from "./components/ScrollToTop";
 
 export interface Response {
   err?: any;
@@ -56,12 +70,14 @@ const App = () => {
           } else {
             const user: User = {
               id: identity.getPrincipal(),
+              username: [],
               referralCode: [],
               referredBy: [],
               userType: {
                 member: true,
                 farmer: false,
                 agent: false,
+                trader: false,
               },
               dapp: {
                 agriiclub: {
@@ -110,38 +126,52 @@ const App = () => {
 
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/stokvels" element={<Stokvels />} />
-          <Route path="/rewards-leaderboard" element={<Leaderboard />} />
-          <Route path="/reward-summary" element={<RewardSummary />} />
-          <Route path="/more" element={<More />} />
-          <Route element={<ProtectedRoutes />}>
-            
-            <Route path="/total-submissions" element={<TotalSubmission />} />
-            <Route path="/total-pending" element={<TotalPending />} />
-            <Route path="/total-rejected" element={<TotalRejected />} />
-            <Route path="/total-accepted" element={<TotalAccepted />} />
-            <Route path="/reward-campaigns" element={<RewardCampaigns />} />
-            <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
-            <Route path="/add-social-media" element={<AddUserSocial />} />
-            <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
-            <Route path="/update-social-media" element={<UpdateUserSocial />} />
-            <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
-            <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
-            <Route path="/profile-create" element={<UserProfileCreate />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/profile-update" element={<UserProfileUpdate />} />
-            <Route path="/get-started" element={<GetStarted />} />
-
-          </Route>
-        </Route>
+        {/* DAO */}
         <Route element={<DaoLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/agriidao/home" element={<DaoHome />} />
+            <Route index element={<DaoHome />} />
+            <Route path="/home" element={<DaoHome />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/more" element={<DaoMore />} />
+            <Route path="/african-food-systems-challenges" element={<FoodSystemChallenge />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/ecosystem" element={<Ecosystem />} />
+            <Route path="/esg" element={<Esg />} />
+            <Route path="/environmental-social-governance" element={<Navigate to="/esg" replace />} />
+            <Route path="/initiatives" element={<Initiatives />} />
+            <Route path="/protocol" element={<Protocol />} />
+            <Route path="/club" element={<Club />} />
+            <Route path="/market" element={<Market />} />
+            <Route path="/price" element={<Price />} />
+            <Route path="/trace" element={<Trace />} />   
         </Route>
+        <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/club/home" element={<Home />} />
+            <Route path="/stokvels" element={<Stokvels />} />
+            <Route path="/rewards-leaderboard" element={<Leaderboard />} />
+            <Route path="/reward-summary" element={<RewardSummary />} />
+            <Route path="club/more" element={<More />} />
+            <Route element={<ProtectedRoutes />}>
+              
+              <Route path="/total-submissions" element={<TotalSubmission />} />
+              <Route path="/total-pending" element={<TotalPending />} />
+              <Route path="/total-rejected" element={<TotalRejected />} />
+              <Route path="/total-accepted" element={<TotalAccepted />} />
+              <Route path="/reward-campaigns" element={<RewardCampaigns />} />
+              <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
+              <Route path="/add-social-media" element={<AddUserSocial />} />
+              <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
+              <Route path="/update-social-media" element={<UpdateUserSocial />} />
+              <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
+              <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
+              <Route path="/club/profile/profile-create" element={<UserProfileCreate />} />
+              <Route path="/club/profile" element={<UserProfile />} />
+              <Route path="/club/profile-update" element={<UserProfileUpdate />} />
+              <Route path="/get-started" element={<GetStarted />} />
+            </Route>
+          </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
