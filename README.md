@@ -19,7 +19,7 @@ The ecosystem comprises several key components:
 
 ## Getting Started
 
-1. **Visit our [Website](https://www.agriidao.org)**: Learn more about agriiDAO, its mission, and upcoming initiatives.
+1. **Visit our [Website](https://agriidao.org)**: Learn more about agriiDAO, its mission, and upcoming initiatives.
 2. **Join the Community**: Follow us on social media to stay updated and participate in discussions.
 3. **Contribute**: Explore our repositories, report issues, or propose new features.
 
