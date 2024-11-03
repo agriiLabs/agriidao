@@ -142,14 +142,14 @@ const UserProfile = () => {
                   <div className="col-12">
                     {profileExists ? (
                       <Link
-                        to={"/profile-update/"}
+                        to={"club/profile-update/"}
                         className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800"
                       >
                         Update Profile
                       </Link>
                     ) : (
                       <Link
-                        to={"/profile-create/"}
+                        to={"profile-create/"}
                         className="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800"
                       >
                         Create Profile

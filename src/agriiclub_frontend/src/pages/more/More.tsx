@@ -31,7 +31,7 @@ function More() {
         <div className="card card-style">
           <div className="content my-0">
             <div className="list-group list-custom-small">
-            <Link to={`/profile/`}>
+            <Link to={`/club/profile/`}>
                 <i className="fa fa-user color-blue-dark"></i>
                 <span className="opacity-70">Profile</span>
                 <i className="fa fa-angle-right"></i>
