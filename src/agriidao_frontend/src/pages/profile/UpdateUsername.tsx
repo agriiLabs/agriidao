@@ -67,10 +67,10 @@ function UpdateUsername() {
 
     const body: User = {
       ...user,
-      username: [username],
+      username: username ? [username] :[],
       referralCode: [code],
       referralLink: [generateReferralLink(code)],
-      referredBy: signupReferralCode ? [signupReferralCode] : []
+      referredBy: signupReferralCode ? [signupReferralCode] : [],
     };
     try {
       const res = await userActor.updateUser(body);
@@ -128,7 +128,7 @@ function UpdateUsername() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="col-12 btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3"
+                    className="col-12 btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme mt-3"
                   >
                     {saving ? "Updating..." : "Update"}
                   </button>
