@@ -24,7 +24,6 @@ import AddUserSocialPreview from "./pages/bounty/AddUserSocialPreview";
 import CampaignSubmission from "./pages/bounty/CampaignSubmission";
 import More from "./pages/more/More";
 import CampaignSubmissionPreview from "./pages/bounty/CampaignSubmissionPreview";
-import UserProfile from "./pages/more/UserProfile";
 import GetStarted from "./pages/GetStarted";
 import UserProfileUpdate from "./pages/profile/UserProfileUpdate";
 import { useDispatch } from "react-redux";
@@ -50,6 +49,10 @@ import Trace from "./pages/agriidao/DaoTrace";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateUsername from "./pages/profile/UpdateUsername";
 import ReferralLanding from "./pages/profile/ReferralLanding";
+import CommodityList from "./pages/agriiprice/agent/CommodityList";
+import AgentMarketList from "./pages/agriiprice/agent/AgentMarkets";
+import AddCommodityPrice from "./pages/agriiprice/agent/AddCommodityPrice";
+import MarketPrices from "./pages/agriiprice/MarketPrices";
 
 export interface Response {
   err?: any;
@@ -158,6 +161,7 @@ const App = () => {
             <Route path="/rewards-leaderboard" element={<Leaderboard />} />  
             <Route path="/reward-campaigns" element={<RewardCampaigns />} />
             <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
+            <Route path="/markets" element={<MarketPrices />} />
 
             <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
@@ -176,6 +180,10 @@ const App = () => {
             <Route path="/update-social-media" element={<UpdateUserSocial />} />
             <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
             <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
+
+            <Route path="commodity-list/:id" element={<CommodityList />} />
+            <Route path="/market-agents/:id" element={<AgentMarketList />} />
+            <Route path="/add-commodity-price/:id" element={<AddCommodityPrice />} />
             </Route>
         </Route>
         <Route element={<Layout />}>

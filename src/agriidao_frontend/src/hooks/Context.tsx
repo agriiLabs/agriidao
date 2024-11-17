@@ -20,15 +20,18 @@ import {
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
+import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
 // import { canisterId as iiCanId } from "../../../declarations/internet_identity";
 import {
   network,
   userIdlFactory,
   bountyIdlFactory,
   settingsIdlFactory,
+  commodityIdlFactory,
   bountyCanisterId,
   userCanisterId,
   settingsCanisterId,
+  commodityCanisterId,
 } from "../exporter";
 
 const iiCanId = "a3shf-5eaaa-aaaaa-qaafa-cai";
@@ -40,6 +43,7 @@ type ContextType = {
   bountyActor: ActorSubclass<_bountyService> | null;
   userActor: ActorSubclass<_userService> | null;
   settingsActor: ActorSubclass<_settingsService> | null;
+  commodityActor: ActorSubclass<_commodityService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -53,6 +57,7 @@ const initialContext: ContextType = {
   bountyActor: null,
   userActor: null,
   settingsActor: null, 
+  commodityActor: null,
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -94,6 +99,8 @@ export const Context = (options = defaultOptions) => {
     useState<ActorSubclass<_userService> | null>(null);
   const [settingsActor, setSettingsActor] =
     useState<ActorSubclass<_settingsService> | null>(null);
+  const [commodityActor, setCommodityActor] =
+    useState<ActorSubclass<_commodityService> | null>(null);
   const [user, setUser] = useState(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
 
@@ -123,6 +130,9 @@ export const Context = (options = defaultOptions) => {
     setIsAuthenticated(false);
     setIdentity(null);
     setUserActor(null);
+    localStorage.clear();
+    sessionStorage.clear();
+    setUser(null);
   };
 
   const handleAuthenticated = async (client: AuthClient) => {
@@ -170,6 +180,16 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setSettingsActor(_settingsBackend);
+
+    // set commodity actor
+    const _commodityBackend: ActorSubclass<_commodityService> = Actor.createActor(
+      commodityIdlFactory,
+      {
+        agent,
+        canisterId: commodityCanisterId,
+      }
+    );
+    setCommodityActor(_commodityBackend);
   };
 
   return {
@@ -177,6 +197,7 @@ export const Context = (options = defaultOptions) => {
     bountyActor,
     userActor,
     settingsActor,
+    commodityActor,
     isAuthenticated,
     login,
     logout,

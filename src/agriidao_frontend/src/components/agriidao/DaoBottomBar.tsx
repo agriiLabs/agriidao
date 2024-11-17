@@ -27,6 +27,15 @@ const BottomBar = () => {
         <i className="fa fa-chart-pie"></i>
         <span>Portfolio</span>
       </NavLink>*/}
+      <NavLink to="/markets" 
+      id="portfolio-nav-bottom"
+      className={({ isActive }) =>
+        isActive ? "nav-item active-nav" : "nav-item"
+      }>
+      
+        <i className="fa fa-chart-line"></i>
+        <span>Markets</span>
+      </NavLink>
       <NavLink 
         to="/reward-campaigns" 
         id="cgc-nav-bottom"
