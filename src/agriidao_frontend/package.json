@@ -1,10 +1,10 @@
 {
-  "name": "agriiclub_frontend",
+  "name": "agriidao_frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "setup": "npm i && dfx canister create agriiclub_backend && dfx generate agriiclub_backend && dfx deploy",
+    "setup": "npm i && dfx canister create agriidao_backend && dfx generate agriidao_backend && dfx deploy",
     "start": "vite --port 3000",
     "prebuild": "dfx generate",
     "build": "tsc && vite build",
