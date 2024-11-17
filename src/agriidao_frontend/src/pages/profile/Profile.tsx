@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { WalletAddress, WalletAddressRequest } from "../../../../declarations/user/user.did";
+import {
+  WalletAddress,
+  WalletAddressRequest,
+} from "../../../../declarations/user/user.did";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
 import { useAccount } from "wagmi";
 import { timeStamp } from "console";
@@ -43,6 +46,8 @@ const Profile = () => {
     trader: "Trader",
   };
 
+  const agent = user?.userType?.agent;
+
   useEffect(() => {
     if (profile) {
       setProfileExists(true);
@@ -73,6 +78,7 @@ const Profile = () => {
       return;
     }
     const res = await bountyActor.getBountyPointByUserId();
+    console.log("bounty points", res);
     if ("ok" in res) {
       setBountyPoint(res.ok);
     } else {
@@ -80,7 +86,7 @@ const Profile = () => {
     }
   };
 
-  // shortner principal id
+  // shorten principal id
   const formatUserId = (user: { id: string }) => {
     if (!user.id || user.id.length <= 8) {
       return user.id;
@@ -108,40 +114,40 @@ const Profile = () => {
   };
 
   // eth wallet address
-  useEffect(() => {
-    if (address) {
-      saveWalletAddress(address);
-    }
-  }, [address]);
+  // useEffect(() => {
+  //   if (address) {
+  //     saveWalletAddress(address);
+  //   }
+  // }, [address]);
 
-  const saveWalletAddress = async (_address: string) => {
-    const body: WalletAddressRequest = {
-      address: _address,
-      chain: {
-        ETH: null,
-      },
-    };
+  // const saveWalletAddress = async (_address: string) => {
+  //   const body: WalletAddressRequest = {
+  //     address: _address,
+  //     chain: {
+  //       ETH: null,
+  //     },
+  //   };
 
-    await userActor?.addWalletAddress(body);
-  };
+  //   await userActor?.addWalletAddress(body);
+  // };
 
-  const getWalletAddressByCaller = async () => {
-    if (!userActor) {
-      console.error("userActor is null");
-      return;
-    }
-    userActor.getWalletAddressByCaller().then((result: Response) => {
-      if ("ok" in result) {
-        setWalletAddress(result.ok.address);
-      } else {
-        console.error("Error getting wallet address", result);
-      }
-    });
-  };
+  // const getWalletAddressByCaller = async () => {
+  //   if (!userActor) {
+  //     console.error("userActor is null");
+  //     return;
+  //   }
+  //   userActor.getWalletAddressByCaller().then((result: Response) => {
+  //     if ("ok" in result) {
+  //       setWalletAddress(result.ok.address);
+  //     } else {
+  //       console.error("Error getting wallet address", result);
+  //     }
+  //   });
+  // };
 
-  useEffect(() => {
-    getWalletAddressByCaller();
-  }, [userActor, user]);
+  // useEffect(() => {
+  //   getWalletAddressByCaller();
+  // }, [userActor, user]);
 
   return (
     <>
@@ -246,24 +252,46 @@ const Profile = () => {
           </div>
           <div className="divider mb-0"></div>
           <div className="content ">
-            
             {profileExists ? (
-                      <Link
-                        to={"profile-update/"}
-                        className="btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme"
-                      >
-                        Manage Profile
-                      </Link>
-                    ) : (
-                      <Link
-                        to={"profile-create/"}
-                        className="btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme"
-                      >
-                        Complete Profile
-                      </Link>
-                    )}
+              <Link
+                to={"profile-update/"}
+                className="btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme"
+              >
+                Manage Profile
+              </Link>
+            ) : (
+              <Link
+                to={"profile-create/"}
+                className="btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme"
+              >
+                Complete Profile
+              </Link>
+            )}
           </div>
         </div>
+
+      { agent && (
+        <div className="card card-style">
+          <div className="content">
+            
+              <NavLink
+              to={`/market-agents/${user?.id}`}
+              id="nav-bottom"
+              className="font-15 color-dark d-flex "
+            >
+              <div className="align-self-center ">
+                <p className="font-15 mb-0">My Markets</p>  
+              </div>
+              <i className="fa fa-angle-right ms-auto text-end mt-2" />                
+             
+             
+              
+            </NavLink>
+            
+            
+          </div> 
+        </div>
+        )} 
 
         {bountyPoint && (
           <div className="card card-style">
@@ -277,7 +305,7 @@ const Profile = () => {
                 <div className="col-6 text-end">
                   <NavLink
                     to="/reward-summary"
-                    id="cgc-nav-bottom"
+                    id="nav-bottom"
                     className="font-12 color-dark"
                   >
                     View More
