@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import QRCode from "react-qr-code";
 import imagePath from "../../assets/images/agriidao-logo.svg";
-import imagePath1 from "../../assets/images/bg.png";
+import imagePath1 from "../../assets/images/bg0.png";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import imagePath3 from "../../assets/images/rewards-home.png";
-import imagePath4 from "../../assets/images/bg4.png";
+import imagePath4 from "../../assets/images/markets-home.png";
 import imagePath5 from "../../assets/images/bg5.png";
 import imagePath6 from "../../assets/images/landing/bg.png";
 import { useAuth } from "../../hooks/Context";
@@ -109,13 +109,13 @@ const Home = () => {
         >
           <div className="card-bottom mx-3 mb-5 pb-3">
             <h1 className="color-white mb-2 font-900">
-              Zero Waste.
-              <br /> Maximum Value.
+              Because Food
+              <br />Is Not A Weapon.
             </h1>
-            <p className="color-white opacity-80 mb-0">
+            {/* <p className="color-white opacity-80 mb-0">
               Tokenizing African agriculture with freeze-drying technology to
               create stable, nutrient-rich RWAs for a sustainable future.
-            </p>
+            </p> */}
           </div>
           <div className="card-overlay bg-black opacity-20"></div>
           <div className="card-overlay bg-gradient py-5"></div>
@@ -145,6 +145,33 @@ const Home = () => {
               marginRight: 0,
             }}
           >
+            <img src={imagePath4} alt="img" />
+            <div className="content">
+              <h2 className="font-500">agriiPrice: Daily Market Insights</h2>
+              <p className="mb-2">
+                agriiPrice delivers real-time agricultural market data across
+                Africa. Access daily price updates for crops, uncover market
+                trends, and make informed decisions to maximize your trading
+                potential.
+              </p>
+              <Link
+                to={`/markets`}
+                className="btn btn-sm rounded-sm text-uppercase font-500 border-dark color-dark bg-theme bg-theme"
+              >
+                View Market Prices
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="content">
+          <div
+            className="card card-style"
+            style={{
+              marginLeft: 0,
+              marginRight: 0,
+            }}
+          >
             <img src={imagePath3} alt="img" />
             <div className="content">
               <h2 className="font-500">Social Rewards: Earn by Engaging</h2>
@@ -162,8 +189,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-
-        
 
         <div className="content color-dark mb-4">
           <h3 className="mb-4 font-500">
@@ -195,7 +220,7 @@ const Home = () => {
             <strong className="font-500"> decentralized finance.</strong>
           </p>
         </div>
-      
+
         <div
           className="card card-style bg-29"
           style={{
@@ -219,11 +244,9 @@ const Home = () => {
           </div>
           <div className="card-overlay "></div>
         </div>
-       
       </div>
     </>
   );
 };
 
 export default LandingPage;
-

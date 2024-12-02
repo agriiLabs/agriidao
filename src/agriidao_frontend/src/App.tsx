@@ -53,6 +53,7 @@ import CommodityList from "./pages/agriiprice/agent/CommodityList";
 import AgentMarketList from "./pages/agriiprice/agent/AgentMarkets";
 import AddCommodityPrice from "./pages/agriiprice/agent/AddCommodityPrice";
 import MarketPrices from "./pages/agriiprice/MarketPrices";
+import CommodityDetail from "./pages/agriiprice/CommodityDetail";
 
 export interface Response {
   err?: any;
@@ -89,9 +90,7 @@ const App = () => {
                 trader: false,
               },
               dapp: {
-                agriiclub: {
-                  timeStamp: [BigInt(Date.now())],
-                },
+                agriiclub: {timeStamp: []},
                 agriiprice: {timeStamp: []}, // change to same as agriiclub
                 agriiMarket: {timeStamp: []},
               },
@@ -162,6 +161,7 @@ const App = () => {
             <Route path="/reward-campaigns" element={<RewardCampaigns />} />
             <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
             <Route path="/markets" element={<MarketPrices />} />
+            <Route path="/market-price/:id" element={<CommodityDetail data={[]} />} />
 
             <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />

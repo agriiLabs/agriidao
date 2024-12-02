@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
 import {
-  Commodity,
   MarketLocationCommodity,
 } from "../../../../../declarations/commodity/commodity.did";
 
@@ -24,7 +23,6 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
   }, [commoditySub]);
 
   const getCommodity = async () => {
-    console.log("commoditySub: ", commoditySub);
     if (!commoditySub || !commodityActor) {
       console.error("commodity request not found");
       return;
@@ -33,7 +31,6 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
       const res = await commodityActor.getCommodityLatest(
         commoditySub.commodityId
       );
-      console.log("commodity res: ", res);
       if ("ok" in res) {
         setCommodity(res.ok);
       } else {

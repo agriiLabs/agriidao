@@ -44,7 +44,6 @@ const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
   }, [mLCommodity]);
 
   const getCommodity = async () => {
-    // console.log("commoditySub: ", marketPriceSub);
     if (!mLCommodity || !commodityActor) {
       console.error("commodity request not found");
       return;
@@ -115,11 +114,20 @@ const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
   //   calculateAllPriceDifferences();
 
   return (
+    
     <tr>
-      <td>{commodity?.name}</td>
-      <td>1</td>
-      {marketPriceSub.pricePerKg ? marketPriceSub.pricePerKg.toFixed(2) : "N/A"}
+      <Link 
+        to={`/market-price/${marketPriceSub?.marketLocationCommodityId}`}
+        
+      >
+      <td className="text-left text-dark">{commodity?.name}</td>
+      </Link>
+      <td className="mb-1" style={{ paddingTop: 0 }}>1</td>
+      <td className="mb-1" style={{ paddingTop: 0 }}>
+        {marketPriceSub.pricePerKg ? marketPriceSub.pricePerKg.toFixed(2) : "N/A"}
+      </td>
       {/* <td>{difference}</td> */}
+      
     </tr>
   );
 };

@@ -250,7 +250,7 @@ const Profile = () => {
               />
             </div>
           </div>
-          <div className="divider mb-0"></div>
+          {/* <div className="divider mb-0"></div>
           <div className="content ">
             {profileExists ? (
               <Link
@@ -267,7 +267,7 @@ const Profile = () => {
                 Complete Profile
               </Link>
             )}
-          </div>
+          </div> */}
         </div>
 
       { agent && (
@@ -332,7 +332,7 @@ const Profile = () => {
           </div>
         )}
 
-        <div className="card card-style">
+        {/* <div className="card card-style">
           <div className="content mb-0">
             <div className="row mb-2 mt-n2">
               <div className="col-6 text-start">
@@ -340,9 +340,6 @@ const Profile = () => {
                   My DApps
                 </h4>
               </div>
-              {/* <div className="col-6 text-end">
-                        <a href="#" className="font-12">View All</a>
-                    </div> */}
             </div>
             <div className="divider mb-3"></div>
 
@@ -358,7 +355,7 @@ const Profile = () => {
                 <div>
                   <p className="font-16 font-400 mb-0">agriiCOOP</p>
                   <p className="font-12 text-muted mt-0">
-                    Activated: 29 Sept 2024
+                    Activated: Not activated
                   </p>
                 </div>
               </div>
@@ -415,7 +412,7 @@ const Profile = () => {
               </div>
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -10,13 +10,18 @@ import ProfileClick from "../profile/component/ProfileClick";
 import MarketPriceSubs from "./components/MarketPriceSubs";
 import transformBigIntToString from "./components/BigIntToString";
 import CountryName from "../../components/agriidao/CountryName";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setSelectedMarketLocation } from "../../redux/slices/app";
 
 const MarketPrices = () => {
+  const dispatch = useDispatch();
   const { commodityActor } = useAuth();
   const [mLCommodity, setMLCommodity] = useState<MarketLocationCommodity[]>([]);
+  const {selectedMarketLocation} = useSelector((state: RootState) => state.app);
 
   const [prices, setPrices] = useState<MarketPrice[]>([]);
-  const [market, setMarket] = useState<MarketLocation | null>(null);
+  // const [market, setMarket] = useState<MarketLocation | null>(null);
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
 
@@ -49,17 +54,17 @@ const MarketPrices = () => {
     const res = await commodityActor.getMarketLocationByCountryId(countryId);
 
     if (res.length > 0) {
-      setMarket(res[0]);
+      dispatch(setSelectedMarketLocation(res[0]));
     } else {
-      setMarket(null);
+      dispatch(setSelectedMarketLocation(null));
     }
   };
 
   useEffect(() => {
-    if (market && commodityActor) {
-      fetchMarketData(market.id, commodityActor);
+    if (selectedMarketLocation && commodityActor) {
+      fetchMarketData(selectedMarketLocation.id, commodityActor);
     }
-  }, [market, commodityActor]);
+  }, [selectedMarketLocation, commodityActor]);
 
   const fetchMarketData = async (marketId: string, commodityActor: any) => {
     try {
@@ -91,14 +96,13 @@ const MarketPrices = () => {
   const handleMarketChange = (event: HandleMarketChangeEvent) => {
     const marketId = event.target.value;
     setSelectedCountryId(marketId);
-    // console.log("Selected market:", marketId);
+    console.log("Selected market:", marketId);
 
     // Find the selected market object and update state
-    const selectedMarket = markets.find((m) => m.id === marketId);
-    console.log("Selected market object:", selectedMarket);
-    if (selectedMarket !== market) {
-      setMarket(selectedMarket || null);
-    } //TODO: The selector doesn't after populates once
+    const selectedMarket = markets.find((m) => m.countryId === marketId);
+    if (selectedMarket !== selectedMarketLocation) {
+      dispatch(setSelectedMarketLocation(selectedMarket || null));
+    } 
   };
 
   return (
@@ -119,10 +123,11 @@ const MarketPrices = () => {
 
       <div className="page-content header-clear-medium">
         <div className="content my-0 mb-4">
+        <div className="input-style has-borders no-icon mb-4">
           <select
             id="marketLocation"
             className="select form-control"
-            value={selectedCountryId || ""}
+            value={selectedMarketLocation?.countryId || ""}
             onChange={handleMarketChange} // Update state on change
           >
             <option value="">Select Market</option>
@@ -132,19 +137,11 @@ const MarketPrices = () => {
               </option>
             ))}
           </select>
+          </div>
         </div>
-
-        {/* {market ? (
-        <div>
-          <h3>Selected Market:</h3>
-          <pre>{JSON.stringify(market, null, 2)}</pre>
-        </div>
-      ) : (
-        <p>No market selected</p>
-      )} */}
         <div className="card card-style">
           <table
-            className="table table-borderless text-center rounded-sm "
+            className="table table-borderless text-left rounded-sm "
             style={{ overflow: "hidden", backgroundColor: "#fff" }}
           >
             <thead>

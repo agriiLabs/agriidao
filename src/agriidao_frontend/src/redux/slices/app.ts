@@ -27,6 +27,7 @@ export interface GlobalState {
   profile: Profile | null;
   bountyPoints: BountyPoint[] | null;
   marketLocationAgent: MarketLocationAgent | null;
+  selectedMarketLocation: MarketLocation | null;
 }
 
 const initialState: GlobalState = {
@@ -39,6 +40,7 @@ const initialState: GlobalState = {
   profile: null,
   bountyPoints: null,
   marketLocationAgent: null,
+  selectedMarketLocation: null,
 };
 
 export const appSlice = createSlice({
@@ -84,6 +86,9 @@ export const appSlice = createSlice({
     setMarketLocationAgent: (state,action: PayloadAction<MarketLocationAgent | null>) => {
       state.marketLocationAgent = action.payload;
     },
+    setSelectedMarketLocation: (state, action: PayloadAction<MarketLocation | null>) => {
+      state.selectedMarketLocation = action.payload;
+      },
   },
 });
 
@@ -97,6 +102,7 @@ export const {
   setProfile,
   setBountyPoints,
   setMarketLocationAgent,
+  setSelectedMarketLocation,
 } = appSlice.actions;
 
 export default appSlice.reducer;
