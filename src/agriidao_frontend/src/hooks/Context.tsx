@@ -21,20 +21,27 @@ import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
 import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
-// import { canisterId as iiCanId } from "../../../declarations/internet_identity";
+import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
+import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
+
 import {
   network,
   userIdlFactory,
   bountyIdlFactory,
   settingsIdlFactory,
   commodityIdlFactory,
+  coopIndexerIdlFactory,
+  coopLedgerIdlFactory,
   bountyCanisterId,
   userCanisterId,
   settingsCanisterId,
   commodityCanisterId,
+  coopIndexerCanisterId,
+  coopLedgerCanisterId,
+
 } from "../exporter";
 
-const iiCanId = "a3shf-5eaaa-aaaaa-qaafa-cai";
+const iiCanId = "ahw5u-keaaa-aaaaa-qaaha-cai";
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
 
@@ -44,6 +51,8 @@ type ContextType = {
   userActor: ActorSubclass<_userService> | null;
   settingsActor: ActorSubclass<_settingsService> | null;
   commodityActor: ActorSubclass<_commodityService> | null;
+  coopIndexerActor: ActorSubclass<_coopIndexerService> | null;
+  coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -58,6 +67,8 @@ const initialContext: ContextType = {
   userActor: null,
   settingsActor: null, 
   commodityActor: null,
+  coopIndexerActor: null,
+  coopLedgerActor: null,
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -102,6 +113,10 @@ export const Context = (options = defaultOptions) => {
   const [commodityActor, setCommodityActor] =
     useState<ActorSubclass<_commodityService> | null>(null);
   const [user, setUser] = useState(null);
+  const [coopIndexerActor, setCoopIndexerActor] = 
+    useState<ActorSubclass<_coopIndexerService> | null>(null);
+  const [coopLedgerActor, setCoopLedgerActor] = 
+    useState<ActorSubclass<_coopLedgerService> | null >(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
 
   useEffect(() => {
@@ -190,6 +205,28 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setCommodityActor(_commodityBackend);
+
+    // set coop indexer actor
+    const _coOpIndexerBackend: ActorSubclass<_coopIndexerService> =
+    Actor.createActor(
+      coopIndexerIdlFactory,
+      {
+        agent,
+        canisterId: coopIndexerCanisterId,
+      }
+    );
+    setCoopIndexerActor(_coOpIndexerBackend);
+
+    // set coop ledger actor
+    const _coopLedgerBackend: ActorSubclass<_coopLedgerService> =
+    Actor.createActor(
+      coopLedgerIdlFactory,
+      {
+        agent,
+        canisterId: coopLedgerCanisterId,
+      }
+    );
+    setCoopLedgerActor(_coopLedgerBackend);
   };
 
   return {
@@ -198,6 +235,8 @@ export const Context = (options = defaultOptions) => {
     userActor,
     settingsActor,
     commodityActor,
+    coopIndexerActor,
+    coopLedgerActor,
     isAuthenticated,
     login,
     logout,
