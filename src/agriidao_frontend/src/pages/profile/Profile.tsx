@@ -55,7 +55,6 @@ const Profile = () => {
   }, [profile]);
 
   useEffect(() => {
-    console.log("user", user);
     if (isAuthenticated && user) {
       if (user.username.length === 0) {
         navigate("/update-username");
@@ -78,7 +77,6 @@ const Profile = () => {
       return;
     }
     const res = await bountyActor.getBountyPointByUserId();
-    console.log("bounty points", res);
     if ("ok" in res) {
       setBountyPoint(res.ok);
     } else {
