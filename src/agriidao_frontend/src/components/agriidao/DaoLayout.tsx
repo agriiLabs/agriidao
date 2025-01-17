@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Loader from './Loader';
 import DaoBottombar from './DaoBottomBar';
 import DesktopBottomBar from './DesktopBottomBar';
+import DesktopTopBar from './DesktopTopBar';
 
 const Layout = () => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,9 @@ const Layout = () => {
   return (
     <div id="wrapper">
         {loading && <Loader />}
-        <div className="content-page">          
+        {!isMobile && <DesktopTopBar/> }
+        <div className="content-page">  
+                
           <Outlet />        
         </div>
         
