@@ -167,7 +167,7 @@ const MarketPrices = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4}>No prices found</td>
+                  <td colSpan={4}>Select Market Above</td>
                 </tr>
               )}
             </tbody>
