@@ -54,6 +54,12 @@ import AgentMarketList from "./pages/agriiprice/agent/AgentMarkets";
 import AddCommodityPrice from "./pages/agriiprice/agent/AddCommodityPrice";
 import MarketPrices from "./pages/agriiprice/MarketPrices";
 import CommodityDetail from "./pages/agriiprice/CommodityDetail";
+import CoopHome from "./pages/coops/CoopHome";
+import MemberCoop from "./pages/coops/MemberCoop";
+import Coops from "./pages/coops/Coops";
+import CoopDetail from "./pages/coops/CoopDetail";
+import CoopUnitsPreview from "./pages/coops/CoopUnitsPreview";
+import CoopUnits from "./pages/coops/CoopUnits";
 
 export interface Response {
   err?: any;
@@ -91,7 +97,7 @@ const App = () => {
               },
               dapp: {
                 agriiclub: {timeStamp: []},
-                agriiprice: {timeStamp: []}, // change to same as agriiclub
+                agriiprice: {timeStamp: []}, 
                 agriiMarket: {timeStamp: []},
               },
               isDelete: false,
@@ -162,6 +168,14 @@ const App = () => {
             <Route path="/reward-campaign-detail/:id" element={<CampaignDetail />} />
             <Route path="/markets" element={<MarketPrices />} />
             <Route path="/market-price/:id" element={<CommodityDetail data={[]} />} />
+            <Route path="/coop" element={<CoopHome />} />
+            <Route path="/coop-portfolio/:id" element={<MemberCoop />} />
+            <Route path="/coops" element={<Coops />} />
+            <Route path="/coop-detail/:id" element={<CoopDetail />} />
+            <Route path="/coop-units/:id" element={<CoopUnits />} />
+            <Route path="/coop-units-preview/:id" element={<CoopUnitsPreview />} />
+
+
 
             <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
@@ -184,6 +198,8 @@ const App = () => {
             <Route path="commodity-list/:id" element={<CommodityList />} />
             <Route path="/market-agents/:id" element={<AgentMarketList />} />
             <Route path="/add-commodity-price/:id" element={<AddCommodityPrice />} />
+
+            
             </Route>
         </Route>
         <Route element={<Layout />}>

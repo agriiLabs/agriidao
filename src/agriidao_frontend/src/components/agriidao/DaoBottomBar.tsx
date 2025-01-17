@@ -19,11 +19,15 @@ const BottomBar = () => {
         />
         <span>Home</span>
       </NavLink>
-      {/* <NavLink to="/" id="funds-nav-bottom">
+      <NavLink to="/coop" 
+        id="funds-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }>
         <i className="fa fa-handshake"></i>
-        <span>Stokvels</span>
+        <span>Co-ops</span>
       </NavLink>
-      <NavLink to="/" id="portfolio-nav-bottom">
+      {/* <NavLink to="/" id="portfolio-nav-bottom">
         <i className="fa fa-chart-pie"></i>
         <span>Portfolio</span>
       </NavLink>*/}
@@ -32,7 +36,6 @@ const BottomBar = () => {
       className={({ isActive }) =>
         isActive ? "nav-item active-nav" : "nav-item"
       }>
-      
         <i className="fa fa-chart-line"></i>
         <span>Markets</span>
       </NavLink>
