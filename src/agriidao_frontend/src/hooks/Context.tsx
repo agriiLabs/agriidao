@@ -56,7 +56,6 @@ type ContextType = {
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
-
   temporaryVal: string | null;
   setTempVal(args: string | null): void;
 };
