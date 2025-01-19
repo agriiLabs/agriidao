@@ -22,7 +22,7 @@ import CampaignDetail from "./pages/bounty/CampaignDetail";
 import AddUserSocial from "./pages/bounty/AddUserSocial";
 import AddUserSocialPreview from "./pages/bounty/AddUserSocialPreview";
 import CampaignSubmission from "./pages/bounty/CampaignSubmission";
-import More from "./pages/more/More";
+// import More from "./pages/more/More";
 import CampaignSubmissionPreview from "./pages/bounty/CampaignSubmissionPreview";
 import GetStarted from "./pages/GetStarted";
 import UserProfileUpdate from "./pages/profile/UserProfileUpdate";
@@ -48,7 +48,7 @@ import Price from "./pages/agriidao/DaoPrice";
 import Trace from "./pages/agriidao/DaoTrace";
 import ScrollToTop from "./components/ScrollToTop";
 import UpdateUsername from "./pages/profile/UpdateUsername";
-import ReferralLanding from "./pages/profile/ReferralLanding";
+// import ReferralLanding from "./pages/profile/ReferralLanding";
 import CommodityList from "./pages/agriiprice/agent/CommodityList";
 import AgentMarketList from "./pages/agriiprice/agent/AgentMarkets";
 import AddCommodityPrice from "./pages/agriiprice/agent/AddCommodityPrice";
@@ -150,7 +150,7 @@ const App = () => {
         <Route element={<DaoLayout />}>
             <Route index element={<DaoHome />} />
             <Route path="/home" element={<DaoHome />} />
-            <Route path="/referral" element={<ReferralLanding />} />
+            {/* <Route path="/referral" element={<ReferralLanding />} /> */}
             
             <Route path="/more" element={<DaoMore />} />
             <Route path="/african-food-systems-challenges" element={<FoodSystemChallenge />} />
@@ -209,7 +209,7 @@ const App = () => {
             <Route path="/club/home" element={<Home />} />
             <Route path="/stokvels" element={<Stokvels />} />
             
-            <Route path="club/more" element={<More />} />
+            {/* <Route path="club/more" element={<More />} /> */}
             <Route element={<ProtectedRoutes />}>  
               
               

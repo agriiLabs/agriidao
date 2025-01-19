@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
-import { network } from "../../../exporter";
-import { idlFactory } from "../../../../../declarations/coop_manager";
+import { network } from "../../../constants/canisters_config";
+import { idlFactory } from "../../../../../declarations/coop_manager/coop_manager.did.js";
 import { _SERVICE } from "../../../../../declarations/coop_manager/coop_manager.did";
 
 
