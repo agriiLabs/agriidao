@@ -1,5 +1,5 @@
 import { FC } from 'react'; 
-import Modal from 'react-bootstrap/Modal'; 
+import { Modal } from "react-bootstrap"; 
 import { Coop } from "../../../../../declarations/coop_manager/coop_manager.did";
 
 type Props = {
@@ -10,27 +10,25 @@ type Props = {
 
 const DescriptionModal: FC<Props> = ({ showDescriptionModal, setShowDescriptionModal, coop }) => {
   const safeDescription = coop?.description ? String(coop.description) : '';
-  const handleClose = () => setShowDescriptionModal(false);
-
-  return (
+  const handleClose = () => setShowDescriptionModal(false); 
+  
+  return ( 
     <Modal
-      show={showDescriptionModal}
-      onHide={handleClose}
-      centered
-      size="xl"
-    >
-        <Modal.Dialog  
-          style={{ width: '100%', maxWidth: 'none', margin: 0 }} 
-        > 
-          <Modal.Header closeButton> 
-            <Modal.Title>Coop Description</Modal.Title> 
-          </Modal.Header> 
-          <Modal.Body> 
-          <p className="font-15" dangerouslySetInnerHTML={{ __html: safeDescription }}></p>
-          </Modal.Body> 
-          
-        </Modal.Dialog> 
-      </Modal> 
+    show={showDescriptionModal}
+    onHide={handleClose}
+    // centered 
+    size="xl"
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>Coop Description</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <p
+        className="font-15"
+        dangerouslySetInnerHTML={{ __html: safeDescription }}
+      ></p>
+    </Modal.Body>
+  </Modal>
   ); 
 }
 export default DescriptionModal; 

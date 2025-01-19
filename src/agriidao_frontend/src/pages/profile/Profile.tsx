@@ -70,6 +70,7 @@ const Profile = () => {
     }
   }, [bountyActor]);
 
+  // get user bountyPoints
   const getBountyPoints = async () => {
     if (!bountyActor) {
       console.error("caller or bountyActor is null");
@@ -83,6 +84,7 @@ const Profile = () => {
     }
   };
 
+  // shorten principal id
   const formatUserId = (user: { id: string }) => {
     if (!user.id || user.id.length <= 8) {
       return user.id;
@@ -92,6 +94,7 @@ const Profile = () => {
     return `${firstPart}...${lastPart}`;
   };
 
+  // copy principal id
   const handleCopy = () => {
     if (user?.id) {
       navigator.clipboard
@@ -103,6 +106,7 @@ const Profile = () => {
     }
   };
 
+  //reveal prinicipal id
   const toggleReveal = () => {
     setIsRevealed((prev) => !prev); // Toggle reveal state
   };
@@ -215,6 +219,7 @@ const Profile = () => {
 
                 {user?.userType &&
                   Object.entries(user.userType).map(([key, value]) => {
+                    // Check if the userType exists for user
                     return value &&
                       userTypeChips[key as keyof typeof userTypeChips] ? (
                       <div key={key} className="chip chip-small bg-gray-light">
@@ -227,8 +232,6 @@ const Profile = () => {
                       </div>
                     ) : null;
                   })}
-
-                  <ConnectWallet />
 
                 {/* <w3m-button /> */}
               </div>
