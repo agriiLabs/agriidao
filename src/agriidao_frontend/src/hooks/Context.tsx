@@ -23,7 +23,7 @@ import type { _SERVICE as _settingsService } from "../../../declarations/setting
 import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_manager/coop_manager.did";
-import {canisterId as iiCanId} from "../../../declarations/internet_identity";
+import {canisterId as iiCanId } from "../../../declarations/internet_identity";
 
 import {
   network,
@@ -55,7 +55,6 @@ type ContextType = {
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
-
   temporaryVal: string | null;
   setTempVal(args: string | null): void;
 };

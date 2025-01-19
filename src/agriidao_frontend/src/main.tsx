@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./hooks/Context";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { AppKitProvider } from "./components/agriidao/AppKitProvider";
 
 const rootElement = document.getElementById("root");
