@@ -12,6 +12,7 @@ import {
   Coop,
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "./components/CoopActor";
+import TransactionIcon from "./components/TransactionIcon";
 
 interface CoopMember {
   id: string;
@@ -92,13 +93,14 @@ const MemberCoop = () => {
         const tokenPrice = 1;
         const transactionsWithUsdValue = transactions?.map((tx) => {
           const usdValue =
-            tx.txType.toLowerCase() === "mint" || tx.txType.toLowerCase() === "burn"
-              ? tx.amount * unitPrice 
-              : tx.amount * (tokenPrice ?? 0); 
-        
+            tx.txType.toLowerCase() === "mint" ||
+            tx.txType.toLowerCase() === "burn"
+              ? tx.amount * unitPrice
+              : tx.amount * (tokenPrice ?? 0);
+
           return {
             ...tx,
-            usdValue, // Add the calculated USD value to the transaction
+            usdValue, 
           };
         });
 
@@ -222,51 +224,43 @@ const MemberCoop = () => {
             {transactions && transactions.length > 0 ? (
               <>
                 {transactions.slice(0, 3).map((tx, index) => {
-          // Determine the ticker based on the transaction type
-          const displayTicker =
-            tx.txType === "mint" || tx.txType === "redeem"
-              ? tx.ticker // Co-op unit ticker
-              : tx.tokenSymbol ; // Deposit/withdraw token ticker
+                  const displayTicker =
+                    tx.txType === "mint" || tx.txType === "redeem"
+                      ? tx.ticker
+                      : tx.tokenSymbol;
 
-          return (
-            <Link
-              to={`/transaction-detail/${tx.txId}`} // Link to transaction detail
-              className="d-flex mb-3 text-decoration-none"
-              key={index}
-            >
-              <div className="align-self-center">
-                <img
-                  className="rounded-xl me-3"
-                  src={imagePath2}
-                  data-src={"#"}
-                  width="35"
-                  height="35"
-                  alt={"Default Co-op Image"}
-                />
-              </div>
-              <div className="align-self-center">
-                <p className="mb-n2 font-14">{tx.txType}</p>
-                <p className="font-11 opacity-60">
-                  {new Date(
-                    Number(tx.timestamp / 1000000n)
-                  ).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="align-self-center ms-auto text-end">
-                <p className="mb-n1 font-14">
-                  {tx.amount.toFixed(3)} {displayTicker}
-                </p>
-                <p className="font-11 opacity-60">
-                  ${tx.usdValue.toFixed(2)}
-                </p>
-              </div>
-            </Link>
-          );
-        })}
+                  return (
+                    <Link
+                      to={`/transaction-detail/${tx.txId}`}
+                      className="d-flex mb-3 text-decoration-none"
+                      key={index}
+                    >
+                      <div className="align-self-center">
+                        <TransactionIcon txType={tx.txType} />
+                      </div>
+                      <div className="align-self-center">
+                        <p className="mb-n2 font-14">{tx.txType}</p>
+                        <p className="font-11 opacity-60">
+                          {new Date(
+                            Number(tx.timestamp / 1000000n)
+                          ).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="align-self-center ms-auto text-end">
+                        <p className="mb-n1 font-14">
+                          {tx.amount.toFixed(3)} {displayTicker}
+                        </p>
+                        <p className="font-11 opacity-60">
+                          ${tx.usdValue.toFixed(2)}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
 
                 <div className="text-center mt-3">
                   <Link
-                    to={`/all-coop-activity/${coop?.id}`} 
+                    to={`/all-coop-activity/${coop?.id}`}
                     className="font-14 text-decoration-none text-grey"
                     style={{
                       color: "inherit",
