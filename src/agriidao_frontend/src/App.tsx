@@ -60,6 +60,7 @@ import Coops from "./pages/coops/Coops";
 import CoopDetail from "./pages/coops/CoopDetail";
 import CoopUnitsPreview from "./pages/coops/CoopUnitsPreview";
 import CoopUnits from "./pages/coops/CoopUnits";
+import MemberActivity from "./pages/coops/MemberActivity";
 
 export interface Response {
   err?: any;
@@ -174,6 +175,7 @@ const App = () => {
             <Route path="/coop-detail/:id" element={<CoopDetail />} />
             <Route path="/coop-units/:id" element={<CoopUnits />} />
             <Route path="/coop-units-preview/:id" element={<CoopUnitsPreview />} />
+            <Route path="all-coop-activity/:id" element={<MemberActivity />} />
 
 
 
