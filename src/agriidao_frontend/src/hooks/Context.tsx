@@ -22,8 +22,8 @@ import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bo
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
 import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
-import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_manager/coop_manager.did";
-import {canisterId as iiCanId} from "../../../declarations/internet_identity";
+import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
+// import {canisterId as iiCanId} from "../../../declarations/internet_identity";
 
 import {
   network,
@@ -43,6 +43,7 @@ import {
 
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
+const iiCanId = "c2lt4-zmaaa-aaaaa-qaaiq-cai";
 
 type ContextType = {
   identity: Identity | null;
@@ -99,6 +100,7 @@ const defaultOptions: DefaultOptions = {
         : "https://identity.ic0.app/#authorize",
   },
 };
+console.log("iiCanId", iiCanId);
 export const Context = (options = defaultOptions) => {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(null);
