@@ -15,14 +15,13 @@ import {
 } from "../../../../declarations/user/user.did";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
 import { useAccount } from "wagmi";
-import { timeStamp } from "console";
 import ConnectWallet from "./ConnectWallet";
 
-declare global {
-  interface Window {
-    ethereum: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     ethereum: any;
+//   }
+// }
 
 export interface Response {
   err?: any;
