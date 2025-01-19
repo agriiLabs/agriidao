@@ -86,20 +86,29 @@ const MemberCoop = () => {
             user.id,
             coop.id
           );
-  
-        const unitPrice = coop?.unitPrice ?? 0; 
-        const transactionsWithUsdValue = transactions?.map((tx) => ({
-          ...tx,
-          usdValue: tx.amount * unitPrice, 
-        }));
-  
+
+        const unitPrice = coop?.unitPrice ?? 0;
+        // const tokenPrice = coop?.tokenPrice ?? 0; :TODO: //dynamically retreieve token price from the market
+        const tokenPrice = 1;
+        const transactionsWithUsdValue = transactions?.map((tx) => {
+          const usdValue =
+            tx.txType.toLowerCase() === "mint" || tx.txType.toLowerCase() === "burn"
+              ? tx.amount * unitPrice 
+              : tx.amount * (tokenPrice ?? 0); 
+        
+          return {
+            ...tx,
+            usdValue, // Add the calculated USD value to the transaction
+          };
+        });
+
         if (transactionsWithUsdValue) {
-          setTransactions(transactionsWithUsdValue); 
+          setTransactions(transactionsWithUsdValue);
           const totalUsdValue = transactionsWithUsdValue.reduce(
             (acc, tx) => acc + tx.usdValue,
             0
-          ); 
-          setUsdValue(totalUsdValue); 
+          );
+          setUsdValue(totalUsdValue);
         }
       } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -107,71 +116,11 @@ const MemberCoop = () => {
     }
   };
 
-  const tabs = [
-    {
-      id: "tab-1",
-      label: "Activity",
-      content: (
-        <div>
-          {transactions && transactions.length > 0 ? (
-            transactions.map((tx, index) => (
-              <Link
-                to={`/transaction-detail/${tx.txId}`} 
-                className="d-flex mb-3 text-decoration-none" 
-                key={index}
-              >
-                <div className="align-self-center">
-                  <img
-                    className="rounded-xl me-3"
-                    src={imagePath2}
-                    data-src={"#"}
-                    width="35"
-                    height="35"
-                    alt={"Default Co-op Image"}
-                  />
-                </div>
-                <div className="align-self-center">
-                  <p className="mb-n2 font-14">{tx.txType}</p>
-                  <p className="font-11 opacity-60">
-                    {new Date(
-                      Number(tx.timestamp / 1000000n)
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="align-self-center ms-auto text-end">
-                  <p className="mb-n1 font-14 ">
-                    {tx.amount} {coop?.ticker}
-                  </p>
-                  <p className="font-11 opacity-60">
-                    ${tx.usdValue.toFixed(2)} 
-                  </p>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <p>No transactions found.</p>
-          )}
-          ,
-        </div>
-      ),
-    },
-
-    {
-      id: "tab-2",
-      label: "Projects",
-      content: (
-        <div>
-          <p>Projects Content</p>
-        </div>
-      ),
-    },
-  ];
-
   return (
     <>
       <div className="header header-fixed header-logo-center">
         <a href="#" className="header-title">
-          {coop?.name} 
+          {coop?.name}
         </a>
         <button
           onClick={() => window.history.back()}
@@ -183,7 +132,7 @@ const MemberCoop = () => {
         <ProfileClick />
       </div>
 
-      <div className=" header-clear-medium my-0 mb-4">
+      <div className="page-content header-clear-medium">
         <div className="card card-style">
           <div className="content text-center">
             <div className="d-flex justify-content-center align-items-center mb-2 text-center">
@@ -203,9 +152,133 @@ const MemberCoop = () => {
           </div>
         </div>
 
-        <div className="card card-style bg-theme pb-0">
-          <div className="content" id="tab-group-2">
-            <Tabs tabs={tabs} defaultActiveTab="tab-1" />
+        <div className="card card-style mb-4">
+          <div className="content mb-4">
+            <h4 className="font-700 text-uppercase font-12 opacity-50">
+              My Projects
+            </h4>
+            <div className="divider mb-3" />
+            {/* {transactions && transactions.length > 0 ? (
+              <>
+                {transactions.slice(0, 2).map((tx, index) => (
+                  <Link
+                    to={`/transaction-detail/${tx.txId}`} 
+                    className="d-flex mb-3 text-decoration-none"
+                    key={index}
+                  >
+                    <div className="align-self-center">
+                      <img
+                        className="rounded-xl me-3"
+                        src={imagePath2}
+                        data-src={"#"}
+                        width="35"
+                        height="35"
+                        alt={"Default Co-op Image"}
+                      />
+                    </div>
+                    <div className="align-self-center">
+                      <p className="mb-n2 font-14">{tx.txType}</p>
+                      <p className="font-11 opacity-60">
+                        {new Date(
+                          Number(tx.timestamp / 1000000n)
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="align-self-center ms-auto text-end">
+                      <p className="mb-n1 font-14 ">
+                        {tx.amount} {coop?.ticker}
+                      </p>
+                      <p className="font-11 opacity-60">
+                        ${tx.usdValue.toFixed(2)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+
+                <div className="text-center mt-3">
+                  <Link
+                    to="/all-transactions" 
+                    className="font-14 text-decoration-none text-grey"
+                    style={{
+                      color: "inherit",
+                    }}
+                  >
+                    View All
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <p>No transactions found.</p>
+            )} */}
+          </div>
+        </div>
+
+        <div className="card card-style mb-4">
+          <div className="content mb-4">
+            <h4 className="font-700 text-uppercase font-12 opacity-50">
+              My Activity
+            </h4>
+            <div className="divider mb-3" />
+            {transactions && transactions.length > 0 ? (
+              <>
+                {transactions.slice(0, 3).map((tx, index) => {
+          // Determine the ticker based on the transaction type
+          const displayTicker =
+            tx.txType === "mint" || tx.txType === "redeem"
+              ? tx.ticker // Co-op unit ticker
+              : tx.tokenSymbol ; // Deposit/withdraw token ticker
+
+          return (
+            <Link
+              to={`/transaction-detail/${tx.txId}`} // Link to transaction detail
+              className="d-flex mb-3 text-decoration-none"
+              key={index}
+            >
+              <div className="align-self-center">
+                <img
+                  className="rounded-xl me-3"
+                  src={imagePath2}
+                  data-src={"#"}
+                  width="35"
+                  height="35"
+                  alt={"Default Co-op Image"}
+                />
+              </div>
+              <div className="align-self-center">
+                <p className="mb-n2 font-14">{tx.txType}</p>
+                <p className="font-11 opacity-60">
+                  {new Date(
+                    Number(tx.timestamp / 1000000n)
+                  ).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="align-self-center ms-auto text-end">
+                <p className="mb-n1 font-14">
+                  {tx.amount.toFixed(3)} {displayTicker}
+                </p>
+                <p className="font-11 opacity-60">
+                  ${tx.usdValue.toFixed(2)}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+
+                <div className="text-center mt-3">
+                  <Link
+                    to={`/all-coop-activity/${coop?.id}`} 
+                    className="font-14 text-decoration-none text-grey"
+                    style={{
+                      color: "inherit",
+                    }}
+                  >
+                    View All
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <p>No transactions found.</p>
+            )}
           </div>
         </div>
       </div>
