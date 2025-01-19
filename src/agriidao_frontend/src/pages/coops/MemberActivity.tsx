@@ -10,6 +10,7 @@ import {
   Coop,
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "./components/CoopActor";
+import TransactionIcon from "./components/TransactionIcon";
 
 interface CoopMember {
   id: string;
@@ -86,10 +87,20 @@ const MemberActivity = () => {
           );
 
         const unitPrice = coop?.unitPrice ?? 0;
-        const transactionsWithUsdValue = transactions?.map((tx) => ({
-          ...tx,
-          usdValue: tx.amount * unitPrice,
-        }));
+        // const tokenPrice = coop?.tokenPrice ?? 0; :TODO: //dynamically retreieve token price from the market
+        const tokenPrice = 1;
+        const transactionsWithUsdValue = transactions?.map((tx) => {
+          const usdValue =
+            tx.txType.toLowerCase() === "mint" ||
+            tx.txType.toLowerCase() === "burn"
+              ? tx.amount * unitPrice
+              : tx.amount * (tokenPrice ?? 0);
+
+          return {
+            ...tx,
+            usdValue, 
+          };
+        });
 
         if (transactionsWithUsdValue) {
           setTransactions(transactionsWithUsdValue);
@@ -136,14 +147,7 @@ const MemberActivity = () => {
                   key={index}
                 >
                   <div className="align-self-center">
-                    <img
-                      className="rounded-xl me-3"
-                      src={imagePath2}
-                      data-src={"#"}
-                      width="35"
-                      height="35"
-                      alt={"Default Co-op Image"}
-                    />
+                    <TransactionIcon txType={tx.txType} />
                   </div>
                   <div className="align-self-center">
                     <p className="mb-n2 font-14">{tx.txType}</p>
@@ -155,7 +159,7 @@ const MemberActivity = () => {
                   </div>
                   <div className="align-self-center ms-auto text-end">
                     <p className="mb-n1 font-14 ">
-                      {tx.amount} {coop?.ticker}
+                      {tx.amount.toFixed(3)} {coop?.ticker}
                     </p>
                     <p className="font-11 opacity-60">
                       ${tx.usdValue.toFixed(2)}
