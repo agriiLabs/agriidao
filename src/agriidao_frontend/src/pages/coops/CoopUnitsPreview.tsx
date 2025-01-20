@@ -3,14 +3,23 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import getCoopActor from "./components/CoopActor";
 import {
   Coop,
+  MintUnitsArgs,
   PlatformFees,
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import { toastSuccess } from "../../utils/Utils";
 import ProfileClick from "../profile/component/ProfileClick";
+import { IcrcWallet } from "@dfinity/oisy-wallet-signer/icrc-wallet";
+import { WALLET_URL } from "../../constants/wallets";
+import { toast } from "react-toastify";
+import { Principal } from "@dfinity/principal";
+import { ckUSDCe6s, USDCCanisterId } from "../../constants/canisters_config";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const CoopUnitsPreview = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.app);
   const { id } = useParams();
   const [coop, setCoop] = useState<Coop | null>(null);
   const { units, unitPrice } = location.state || {};
@@ -58,6 +67,7 @@ const CoopUnitsPreview = () => {
   //   subTotal * fees.reduce((acc, fee) => acc + (fee.depositFee ?? 0), 0);
   const platformFee = subTotal * 0.01;
   const total = subTotal + coopFee + platformFee;
+
   console.log("coopFee", coopFee);
   console.log("platformFee", platformFee);
   console.log("total", total);
@@ -69,11 +79,52 @@ const CoopUnitsPreview = () => {
         console.error("Coop ID is undefined");
         return;
       }
-      const coopActor = await getCoopActor(id);
-      await coopActor.mintUnits(units, total, "txTest");
-      setSaving(false);
-      toastSuccess("Units minted successfully");
-      navigate("/coop");
+      let wallet: IcrcWallet | undefined;
+      wallet = await IcrcWallet.connect({
+        url: WALLET_URL,
+      });
+
+      const accounts = await wallet?.accounts();
+
+      const account = accounts?.[0];
+
+      if (!account) {
+        toast.error("No account found");
+        return;
+      }
+      if (!user) {
+        return;
+      }
+      console.log("Approving, waiting for approval");
+      let res = await wallet?.approve({
+        owner: account.owner,
+        params: {
+          expected_allowance: BigInt(total * ckUSDCe6s),
+          expires_at: undefined,
+          spender: {
+            owner: Principal.fromText(id),
+            subaccount: [],
+          },
+          amount: BigInt(total * ckUSDCe6s),
+        },
+        ledgerCanisterId: USDCCanisterId,
+      });
+      console.log("approval res", res);
+      if (res) {
+        let mintArgs: MintUnitsArgs = {
+          unitAmount: units,
+          tokenAmount: BigInt(total * ckUSDCe6s),
+          blockheight: res,
+          userId: user.id,
+        };
+
+        const coopActor = await getCoopActor(id);
+        await coopActor.mintUnits(mintArgs);
+
+        setSaving(false);
+        toastSuccess("Units minted successfully");
+        navigate("/coop");
+      }
     } catch (error) {
       setSaving(false);
       console.error("Error minting units:", error);

@@ -1,6 +1,6 @@
 import { Actor, ActorSubclass, HttpAgent } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
-import { network } from "../../../constants/canisters_config";
+import { host, network } from "../../../constants/canisters_config";
 import { idlFactory } from "../../../../../declarations/coop_manager/coop_manager.did.js";
 import { _SERVICE } from "../../../../../declarations/coop_manager/coop_manager.did";
 
@@ -8,8 +8,8 @@ import { _SERVICE } from "../../../../../declarations/coop_manager/coop_manager.
 const getCoopActor = async (canisterId: string) => {
     const authClient = await AuthClient.create();
     const identity = authClient.getIdentity();
-    const agent = new HttpAgent({
-      host: "http://localhost:4943",
+    const agent = await HttpAgent.create({
+      host,
       identity,
     });
     if (network === "local") {

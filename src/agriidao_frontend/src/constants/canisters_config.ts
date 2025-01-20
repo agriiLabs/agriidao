@@ -16,9 +16,8 @@ export { idlFactory as coopLedgerIdlFactory } from "../../../declarations/coop_l
 // export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
 // export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
 // export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
-
-
-
+// export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
+// export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
 
 //local
 
@@ -30,10 +29,12 @@ export const coopIndexerCanisterId = "b77ix-eeaaa-aaaaa-qaada-cai"
 export const coopLedgerCanisterId = "by6od-j4aaa-aaaaa-qaadq-cai"
 
 // Tokens 
-export const USDCCanisterId = "xevnm-gaaaa-aaaar-qafnq-cai"
-
+export const USDCCanisterId = "pynoo-qqaaa-aaaag-atzuq-cai"
+export const ckUSDCe6s = 1000000
 
 
 
 type Env = "ic" | "local"
-export const network: Env = "local"
+export const network: Env = "ic"
+
+export const host = network === "ic" ? "https://icp0.io" : "http://localhost:4943"

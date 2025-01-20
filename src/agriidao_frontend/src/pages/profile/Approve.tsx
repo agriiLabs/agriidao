@@ -26,7 +26,7 @@ const Approve = () => {
                 owner: account.owner,
                 params: {
                     expected_allowance: BigInt(20000000),
-                    expires_at: null,
+                    expires_at: undefined,
                     spender: {
                         owner: Principal.fromText(coopLedgerCanisterId),
                         subaccount: [],
