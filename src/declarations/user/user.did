@@ -1,0 +1,109 @@
+type WalletAddressRequest = 
+ record {
+   address: text;
+   chain: AddressType;
+ };
+type WalletAddressId = principal;
+type WalletAddress = 
+ record {
+   address: text;
+   chain: AddressType;
+   id: principal;
+   timeStamp: Time;
+ };
+type UserType = 
+ record {
+   agent: bool;
+   farmer: bool;
+   member: bool;
+   trader: bool;
+ };
+type User = 
+ record {
+   dapp:
+    record {
+      agriiMarket: record {timeStamp: opt Time;};
+      agriiclub: record {timeStamp: opt Time;};
+      agriiprice: record {timeStamp: opt Time;};
+    };
+   id: principal;
+   isDelete: bool;
+   referralCode: opt text;
+   referralLink: opt text;
+   referredBy: opt text;
+   timeStamp: Time;
+   userType: UserType;
+   username: opt text;
+ };
+type Time = int;
+type Result_2 = 
+ variant {
+   err: text;
+   ok: Profile;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: WalletAddress;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: User;
+ };
+type ProfileRequest = 
+ record {
+   countryId: opt text;
+   dob: text;
+   email: opt text;
+   firstName: text;
+   lastName: text;
+   mobile: opt text;
+   profilePic: opt text;
+ };
+type ProfileId = principal;
+type Profile = 
+ record {
+   countryId: opt text;
+   dob: text;
+   email: opt text;
+   firstName: text;
+   id: principal;
+   isDeactivated: bool;
+   lastName: text;
+   mobile: opt text;
+   profilePic: opt text;
+   timeStamp: Time;
+ };
+type AgriiUser = 
+ service {
+   addProfile: (ProfileRequest) -> ();
+   addUser: (User) -> ();
+   addWalletAddress: (WalletAddressRequest) -> ();
+   checkUsernameExists: (text) -> (bool) query;
+   deactivateUser: (Profile) -> ();
+   getAllLatestUsers: () -> (vec User);
+   getProfileByCaller: () -> (Result_2) query;
+   getProfileLatestByPrincipal: (ProfileId) -> (Result_2);
+   getUserByCaller: () -> (Result) query;
+   getUserLatestByPrincipal: (principal) -> (Result);
+   getUserVersions: (principal) -> (vec User) query;
+   getUsers: () -> (vec User) query;
+   getWalletAddressByCaller: () -> (Result_1) query;
+   getWalletAddressLatestByPrincipal: (WalletAddressId) -> (Result_1);
+   updateProfile: (Profile) -> ();
+   updateUser: (User) -> (Result);
+   updateUserType: (UserType, principal) -> ();
+   updateWalletAddress: (WalletAddress) -> ();
+   validateReferralCode: (text) -> (opt User) query;
+ };
+type AddressType = 
+ variant {
+   BSC;
+   BTC;
+   ETH;
+   ICP;
+   POL;
+   SOL;
+ };
+service : () -> AgriiUser

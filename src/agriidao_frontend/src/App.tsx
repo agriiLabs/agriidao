@@ -176,32 +176,24 @@ const App = () => {
             <Route path="/coop-units/:id" element={<CoopUnits />} />
             <Route path="/coop-units-preview/:id" element={<CoopUnitsPreview />} />
             <Route path="all-coop-activity/:id" element={<MemberActivity />} />
-
-
-
             <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/profile-create" element={<UserProfileCreate />} />
             <Route path="/profile/profile-update" element={<UserProfileUpdate />} />
             <Route path="/update-username" element={<UpdateUsername />} />
-            
             <Route path="/reward-summary" element={<RewardSummary />} />
             <Route path="/total-submissions" element={<TotalSubmission />} />
             <Route path="/total-pending" element={<TotalPending />} />
             <Route path="/total-rejected" element={<TotalRejected />} />
             <Route path="/total-accepted" element={<TotalAccepted />} />
-            
             <Route path="/add-social-media" element={<AddUserSocial />} />
             <Route path="/add-social-media-preview" element={<AddUserSocialPreview />} />
             <Route path="/update-social-media" element={<UpdateUserSocial />} />
             <Route path="/campaign-submission/:id" element={<CampaignSubmission />} />
             <Route path="/campaign-submission-preview" element={<CampaignSubmissionPreview />} />
-
             <Route path="commodity-list/:id" element={<CommodityList />} />
             <Route path="/market-agents/:id" element={<AgentMarketList />} />
             <Route path="/add-commodity-price/:id" element={<AddCommodityPrice />} />
-
-            
             </Route>
         </Route>
         <Route element={<Layout />}>

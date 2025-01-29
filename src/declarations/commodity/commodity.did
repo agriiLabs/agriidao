@@ -1,0 +1,181 @@
+type Time = int;
+type Result_4 = 
+ variant {
+   err: text;
+   ok: Commodity;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: MarketLocationAgent;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: MarketPrice;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: MarketLocationCommodity;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: MarketLocation;
+ };
+type MarketPriceRequest = 
+ record {
+   currency: text;
+   marketLocationCommodityId: text;
+   marketLocationId: text;
+   price: float64;
+   pricePerKg: float64;
+   status: record {
+             accepted: bool;
+             pending: bool;
+             rejected: bool;
+           };
+   unitKg: int;
+   userId: text;
+ };
+type MarketPrice = 
+ record {
+   createdBy: text;
+   currency: text;
+   id: text;
+   isDelete: bool;
+   isPaid: bool;
+   marketLocationCommodityId: text;
+   marketLocationId: text;
+   price: float64;
+   pricePerKg: float64;
+   status: record {
+             accepted: bool;
+             pending: bool;
+             rejected: bool;
+           };
+   timeStamp: Time;
+   unitKg: int;
+   userId: text;
+ };
+type MarketLocationRequest = 
+ record {
+   countryId: text;
+   name: text;
+ };
+type MarketLocationCommodityRequest = 
+ record {
+   commodityId: text;
+   marketLocationId: text;
+ };
+type MarketLocationCommodity = 
+ record {
+   commodityId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   marketLocationId: text;
+   timeStamp: Time;
+ };
+type MarketLocationAgentRequest = 
+ record {
+   marketLocationId: text;
+   userId: text;
+ };
+type MarketLocationAgent = 
+ record {
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   marketLocationId: text;
+   timeStamp: Time;
+   userId: text;
+ };
+type MarketLocation = 
+ record {
+   countryId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   timeStamp: Time;
+ };
+type CommodityRequest = 
+ record {
+   acCategoryId: text;
+   commodityPic: text;
+   name: text;
+   ticker: text;
+ };
+type CommodityActor = 
+ service {
+   addCommodity: (CommodityRequest) -> ();
+   /// *********************************
+   /// ******** MARKET LOCATION ********
+   /// *********************************
+   addMarketLocation: (MarketLocationRequest) -> ();
+   /// *******************************************
+   /// ******** MARKET LOCATION AGENTS ***********
+   /// *******************************************
+   addMarketLocationAgent: (MarketLocationAgentRequest) -> ();
+   addMarketLocationCommodity: (MarketLocationCommodityRequest) -> ();
+   addMarketPrice: (MarketPriceRequest) -> ();
+   deleteCommodity: (Commodity) -> ();
+   deleteMarketLocation: (MarketLocation) -> ();
+   deleteMarketLocationAgent: (MarketLocationAgent) -> ();
+   deleteMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   deleteMarketPrice: (MarketPrice) -> ();
+   getAllLatestCommodities: () -> (vec Commodity) query;
+   getAllLatestCommoditiesByCategoryName: (text) -> (vec Commodity) query;
+   getAllLatestMarketCommoditiesByMarketId: (text) ->
+    (vec MarketLocationCommodity) query;
+   getAllLatestMarketLocationAgents: () -> (vec MarketLocationAgent) query;
+   getAllLatestMarketLocationCommodities: () ->
+    (vec MarketLocationCommodity) query;
+   getAllLatestMarketLocationsByCommodityName: (text) ->
+    (vec MarketLocationCommodity) query;
+   getAllLatestMarketPrices: () -> (vec MarketPrice) query;
+   getAllMarketLocationAgentsByMarketId: (text) ->
+    (vec MarketLocationAgent) query;
+   getAllMarketLocationVersions: (text) -> (vec MarketLocation) query;
+   getAllMarketLocationsLatest: () -> (vec MarketLocation) query;
+   getCommodityByCategory: (text) -> (vec Commodity) query;
+   getCommodityLatest: (text) -> (Result_4) query;
+   getCommodityVersions: (text) -> (vec Commodity) query;
+   getLatestMarketLocationAgentVersions: (text) ->
+    (vec MarketLocationAgent) query;
+   getLatestMarketLocationAgentbyId: (text) -> (Result_3) query;
+   getLatestMarketPriceById: (text) -> (Result_2) query;
+   getLatestMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
+   getLatestMarketPriceVersionsById: (text) -> (vec MarketPrice) query;
+   getMarketLocationAgentByAgentId: (text) -> (vec MarketLocationAgent) query;
+   getMarketLocationByAgentId: (text) -> (vec MarketLocationAgent);
+   getMarketLocationByCountryId: (text) -> (vec MarketLocation) query;
+   getMarketLocationCommodityByCommodityId: (text) ->
+    (vec MarketLocationCommodity) query;
+   getMarketLocationCommodityById: (text) -> (Result_1) query;
+   getMarketLocationCommodityVersions: (text) ->
+    (vec MarketLocationCommodity) query;
+   getMarketLocationLatest: (text) -> (Result) query;
+   getMarketLocationsByCountryName: (text) -> (vec MarketLocation) query;
+   getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice) query;
+   getMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
+   updateCommodity: (Commodity) -> ();
+   updateMarkeLocation: (MarketLocation) -> ();
+   updateMarketLocationAgent: (MarketLocationAgent) -> ();
+   updateMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   updateMarketPrice: (MarketPrice) -> ();
+ };
+type Commodity = 
+ record {
+   acCategoryId: text;
+   commodityPic: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   ticker: text;
+   timeStamp: Time;
+ };
+service : () -> CommodityActor

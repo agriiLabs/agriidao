@@ -1,0 +1,21 @@
+type Time = int;
+type CoopTransaction = 
+ record {
+   amount: float64;
+   coopId: principal;
+   ticker: opt text;
+   timestamp: Time;
+   tokenSymbol: opt text;
+   txId: text;
+   txType: text;
+   userId: principal;
+ };
+service : {
+  addTransaction: (CoopTransaction) -> ();
+  getAllTransactions: () -> (vec CoopTransaction);
+  getTransactionByTxId: (text) -> (CoopTransaction);
+  getTransactionsByCoopId: (principal) -> (vec CoopTransaction) query;
+  getTransactionsByUserId: (principal) -> (vec CoopTransaction) query;
+  getTransactionsByUserIdAndCoopId: (principal, principal) ->
+   (vec CoopTransaction) query;
+}

@@ -1,0 +1,50 @@
+type Time = int;
+type Result = 
+ variant {
+   err: text;
+   ok: principal;
+ };
+type MembershipRecordId = text;
+type MembershipRecord = 
+ record {
+   coopId: principal;
+   id: text;
+   isActive: bool;
+   timestamp: Time;
+   userId: principal;
+ };
+type CoopRequest = 
+ record {
+   availableUnit: int;
+   description: text;
+   isCommunity: bool;
+   lockPeriod: int;
+   managementFee: float64;
+   maxValue: float64;
+   name: text;
+   payoutFrequency: int;
+   summary: text;
+   ticker: text;
+   totalUnit: int;
+   unitImage: opt text;
+   unitPrice: float64;
+ };
+type CoopRecord = 
+ record {
+   canisterId: principal;
+   createdAt: Time;
+   isCommunity: bool;
+   name: text;
+ };
+service : {
+  addMembershipRecord: (MembershipRecord) -> (bool);
+  createCoOpCanister: (CoopRequest) -> (Result);
+  getAllMemberships: () -> (vec MembershipRecord);
+  getCommunityCoops: () -> (vec CoopRecord);
+  getCreatedCanisters: () -> (vec CoopRecord) query;
+  getDaoCoops: () -> (vec CoopRecord);
+  getMembership: (MembershipRecordId) -> (MembershipRecord);
+  getMembershipByCaller: (principal) -> (vec MembershipRecord);
+  getMembershipsByCoopId: (principal) -> (vec MembershipRecord) query;
+  updateMembershipRecord: (MembershipRecordId) -> (MembershipRecord);
+}

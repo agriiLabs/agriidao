@@ -91,6 +91,7 @@ const CoopHome = () => {
         const coopActor = await getCoopActor(coop.canisterId.toText());
         if (userId) {
           const coopBalance = await coopActor.getMemberbyUserId(userId);
+          console.log("coop balance", coopBalance);
           balances[coop.canisterId.toText()] = coopBalance ?? 0;
         }
       } catch (error) {

@@ -127,7 +127,7 @@ const CoopUnitsPreview = () => {
       }
     } catch (error) {
       setSaving(false);
-      console.error("Error minting units:", error);
+      console.log("Error minting units:", error);
     }
   };
 

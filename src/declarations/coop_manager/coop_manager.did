@@ -1,0 +1,94 @@
+type TransactionId = text;
+type Transaction = 
+ record {
+   amount: float64;
+   linkedTx: opt text;
+   managementFee: float64;
+   platformFee: float64;
+   ticker: opt text;
+   timestamp: Time;
+   tokenStandard: opt text;
+   tokenSymbol: opt text;
+   tokenTxHash: opt text;
+   txId: text;
+   txType: text;
+   userId: principal;
+ };
+type Time = int;
+type PlatformFees = 
+ record {
+   depositFee: float64;
+   proposalId: opt text;
+   royaltyFee: float64;
+   timestamp: Time;
+   transactionFee: float64;
+ };
+type MintUnitsArgs = 
+ record {
+   blockheight: nat;
+   tokenAmount: nat;
+   unitAmount: float64;
+   userId: principal;
+ };
+type CoopMemberId = text;
+type CoopMember = 
+ record {
+   balance: float64;
+   coop: principal;
+   id: text;
+   isActive: bool;
+   timestamp: Time;
+   userId: principal;
+ };
+type CoopManager = 
+ service {
+   getAllMembers: () -> (vec CoopMember);
+   getDetails: () -> (Coop) query;
+   getFeeHistory: () -> (vec PlatformFees);
+   getMemberById: (CoopMemberId) -> (CoopMember);
+   getMemberVersionById: (CoopMemberId) -> (vec CoopMember);
+   getMemberbyUserId: (principal) -> (CoopMember);
+   getTransactionById: (TransactionId) -> (Transaction);
+   getTransactions: () -> (vec Transaction);
+   mintUnits: (MintUnitsArgs) -> (bool);
+   redeemUnits: (float64, text) -> (bool);
+ };
+type CoopInitArgs = 
+ record {
+   initAvailableUnit: int;
+   initCreatedBy: text;
+   initDescription: text;
+   initIsCommunity: bool;
+   initLockPeriod: int;
+   initManagementFee: float64;
+   initMaxValue: float64;
+   initName: text;
+   initPayoutFrequency: int;
+   initSummary: text;
+   initTicker: text;
+   initTimestamp: Time;
+   initTotalUnit: int;
+   initUnitImage: opt text;
+   initUnitPrice: float64;
+ };
+type Coop = 
+ record {
+   availableUnit: int;
+   createdBy: text;
+   description: text;
+   id: principal;
+   isActive: bool;
+   isCommunity: bool;
+   lockPeriod: int;
+   managementFee: float64;
+   maxValue: float64;
+   name: text;
+   payoutFrequency: int;
+   summary: text;
+   ticker: text;
+   timestamp: Time;
+   totalUnit: int;
+   unitImage: opt text;
+   unitPrice: float64;
+ };
+service : (CoopInitArgs) -> CoopManager
