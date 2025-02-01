@@ -8,6 +8,7 @@ import imagePath2 from "../../assets/images/default-user-profile.png";
 import { useAuth } from "../../hooks/Context";
 import { Principal } from "@dfinity/principal";
 import DescriptionModal from "./components/DescriptionModal";
+import { ckUSDCe6s } from "../../constants/canisters_config";
 
 const CoopDetail = () => {
   const { coopIndexerActor } = useAuth();
@@ -38,16 +39,19 @@ const CoopDetail = () => {
       if (!id) {
         console.error("Coop ID is undefined");
         return;
-      }
-
+      } 
       const coopActor = await getCoopActor(id);
       const coopDetails = await coopActor.getDetails();
-
+      // console.log("coopDetails", coopDetails);
+      if (!coopDetails) {
+        console.error("No details found for this Co-op ID:", id);
+        return;
+      }
       if (coopDetails) {
         setCoop(coopDetails);
         setAllocatedUnits(
-          Number(coopDetails.totalUnit) - Number(coopDetails.availableUnit)
-        );
+          (Number(coopDetails.totalUnit) - Number(coopDetails.availableUnit)
+        ))
         console.log("Fetched Co-op Details:", coopDetails);
       }
     } catch (error) {
@@ -82,6 +86,11 @@ const CoopDetail = () => {
   const handleCoopParticipation = () => {
    navigate(`/coop-units/${id}`);
   }
+
+  const managementFee = coop?.managementFee ?? 0; // Default to 0 if undefined
+  const formattedFee = parseFloat((Number(managementFee) / 100_000_000 * 100).toFixed(2));
+  const unitPrice = coop?.unitPrice ?? 0;
+  const formattedUnitPrice = parseFloat((Number(unitPrice) / 100_000_000).toFixed(2));
 
   return (
     <> 
@@ -128,7 +137,7 @@ const CoopDetail = () => {
                   </div>
                   <div className="ms-auto">
                     <p className="font-14">
-                      {allocatedUnits * (coop?.unitPrice ?? 0)} USD
+                      {allocatedUnits * (Number(coop?.unitPrice) ?? 0)} USD
                     </p>
                   </div>
                 </div>
@@ -183,7 +192,7 @@ const CoopDetail = () => {
                 <p className="font-14 mt-1">Unit Price</p>
               </div>
               <div className="col-6">
-                <p className="font-14 text-end mt-1">{coop?.unitPrice} USD</p>
+                <p className="font-14 text-end mt-1">{formattedUnitPrice} USD</p>
               </div>
               <div className="col-6 mb-2">
                 <p className="font-14 mt-1">Issued Units</p>
@@ -230,7 +239,7 @@ const CoopDetail = () => {
               </div>
               <div className="col-6">
                 <p className="font-14 text-end mt-1">
-                  {((coop?.managementFee ?? 0) * 100).toFixed(2)}%
+                {formattedFee}%
                 </p>
               </div>
               <div className="col-12 mb-4">

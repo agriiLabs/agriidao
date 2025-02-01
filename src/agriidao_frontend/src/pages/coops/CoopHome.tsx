@@ -12,7 +12,7 @@ import {
 import imagePath1 from "../../assets/images/bg0.png";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import getCoopActor from "./components/CoopActor";
-import DAOPill from "./components/DAOPill";
+import DaoPill from "./components/DaoPill";
 
 const CoopHome = () => {
   const { coopIndexerActor, identity } = useAuth();
@@ -116,7 +116,7 @@ const CoopHome = () => {
       const coopDetail = coopDetails.find(
         (detail: Coop) => detail.id.toText() === coopId
       ); // Find the matching co-op details
-      const unitPrice = coopDetail?.unitPrice ?? 0; // Get the unit price of the co-op
+      const unitPrice = Number(coopDetail?.unitPrice) ?? 0; // Get the unit price of the co-op
       totalUsdValue += userBalance * unitPrice; // Multiply balance by unit price and add to total
     }
 
@@ -214,7 +214,7 @@ const CoopHome = () => {
                     {coop.name ?? "Unnamed Co-op"}
                   </p>
                   <p className="font-11 opacity-60">
-                    {!coop.isCommunity && <DAOPill />}
+                    {!coop.isCommunity && <DaoPill />}
                   </p>
                 </div>
                 <div className="align-self-center ms-auto text-end">

@@ -228,7 +228,7 @@ const Profile = () => {
                     ) : null;
                   })}
 
-                  <ConnectWallet />
+                  {/* <ConnectWallet /> */}
 
                 {/* <w3m-button /> */}
               </div>

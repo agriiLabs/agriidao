@@ -5,7 +5,7 @@ import { CoopRecord } from "../../../../declarations/coop_indexer/coop_indexer.d
 import { Link, NavLink } from "react-router-dom";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import getCoopActor from "./components/CoopActor";
-import DAOPill from "./components/DAOPill";
+import DAOPill from "./components/DaoPill";
 
 const Coops = () => {
   const { coopIndexerActor } = useAuth();

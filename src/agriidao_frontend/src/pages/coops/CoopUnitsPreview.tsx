@@ -22,7 +22,7 @@ const CoopUnitsPreview = () => {
   const { user } = useSelector((state: RootState) => state.app);
   const { id } = useParams();
   const [coop, setCoop] = useState<Coop | null>(null);
-  const { units, unitPrice } = location.state || {};
+  const { units } = location.state || {};
   const [fees, setFees] = useState<PlatformFees[]>([]);
   const [saving, setSaving] = useState(false);
 
@@ -60,14 +60,21 @@ const CoopUnitsPreview = () => {
   //   const fees = await coopActor.getFeeHistory();
   //   setFees(fees);
   // };
+  const unitPrice = coop?.unitPrice;
+  const managementFee = coop?.managementFee;
+  const subTotal = (units * (Number(unitPrice) ?? 0)) / 100_000_000;
+  const coopFee = (subTotal * (Number(coop?.managementFee) ?? 0)) / 100_000_000;
+  const formattedUnitePrice = parseFloat((Number(unitPrice) / 100_000_000).toFixed(2));
 
-  const subTotal = units * (coop?.unitPrice ?? 0);
-  const coopFee = subTotal * (coop?.managementFee ?? 0);
   // const platformFee =
   //   subTotal * fees.reduce((acc, fee) => acc + (fee.depositFee ?? 0), 0);
-  const platformFee = subTotal * 0.01;
-  const total = subTotal + coopFee + platformFee;
+  const platformFee = (subTotal * 0.01);
+  const total = (subTotal + coopFee + platformFee);
 
+  console.log("units", units);
+  console.log("unitPrice", unitPrice);
+  console.log("managementFee", managementFee);
+  console.log("subTotal", subTotal);
   console.log("coopFee", coopFee);
   console.log("platformFee", platformFee);
   console.log("total", total);
@@ -99,7 +106,7 @@ const CoopUnitsPreview = () => {
       let res = await wallet?.approve({
         owner: account.owner,
         params: {
-          expected_allowance: BigInt(total * ckUSDCe6s),
+          expected_allowance: undefined,
           expires_at: undefined,
           spender: {
             owner: Principal.fromText(id),
@@ -161,7 +168,7 @@ const CoopUnitsPreview = () => {
                 <p className="font-14 mt-1">Unit Price</p>
               </div>
               <div className="col-6">
-                <p className="font-14 text-end mt-1">{coop?.unitPrice} USD</p>
+                <p className="font-14 text-end mt-1">{formattedUnitePrice} USD</p>
               </div>
               <div className="divider divider-margins mt-2 mb-2"></div>
               {units ? (
