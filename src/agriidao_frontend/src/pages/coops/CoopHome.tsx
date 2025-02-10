@@ -85,43 +85,46 @@ const CoopHome = () => {
 
   const getAllCoopBalances = async () => {
     const balances: { [key: string]: any } = {};
-
+  
     for (const coop of coops ?? []) {
       try {
         const coopActor = await getCoopActor(coop.canisterId.toText());
+  
         if (userId) {
           const coopBalance = await coopActor.getMemberbyUserId(userId);
-          balances[coop.canisterId.toText()] = coopBalance ?? 0;
+          console.log(`Balance for ${coop.canisterId}:`, coopBalance);
+  
+          balances[coop.canisterId.toText()] = coopBalance !== null && coopBalance !== undefined ? coopBalance : 0;
         }
       } catch (error) {
-        console.log(
-          `Failed to fetch balance for co-op ${coop.canisterId}:`,
-          error
-        );
+        console.warn(`Failed to fetch balance for co-op ${coop.canisterId}:`, error);
+        
         balances[coop.canisterId.toText()] = 0;
       }
     }
-
+  
     setCoopBalances(balances);
     console.log("All balances:", balances);
   };
+  
 
   const totalBalance = () => {
-    if (!coopBalances || !coopDetails) return 0;
-
+    if (!coopBalances || !coopDetails) return "0.00";
+  
     let totalUsdValue = 0;
-
+  
     for (const coopId in coopBalances) {
-      const userBalance = coopBalances[coopId]?.balance ?? 0; // Get the user’s balance for the co-op
-      const coopDetail = coopDetails.find(
-        (detail: Coop) => detail.id.toText() === coopId
-      ); // Find the matching co-op details
-      const unitPrice = Number(coopDetail?.unitPrice) ?? 0; // Get the unit price of the co-op
-      totalUsdValue += userBalance * unitPrice; // Multiply balance by unit price and add to total
+      const userBalance = Number(coopBalances[coopId]?.balance) || 0; 
+      const coopDetail = coopDetails.find((detail: Coop) => detail.id.toText() === coopId);
+  
+      const unitPrice = coopDetail ? Number(coopDetail.unitPrice) || 0 : 0; 
+  
+      totalUsdValue += userBalance * unitPrice; 
     }
-
-    return totalUsdValue.toFixed(2); // Format to 2 decimal places
+  
+    return totalUsdValue.toFixed(2); 
   };
+  
 
   const handleClick = () => {
     navigate(`/coops`);

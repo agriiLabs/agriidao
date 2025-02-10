@@ -1,17 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import QRCode from "react-qr-code";
 import imagePath from "../../assets/images/agriidao-logo.svg";
 import imagePath1 from "../../assets/images/bg0.png";
 import imagePath3 from "../../assets/images/rewards-home.png";
 import imagePath4 from "../../assets/images/markets-home.png";
 import imagePath5 from "../../assets/images/bg5.png";
-import imagePath6 from "../../assets/images/agriidao-app.png";
-import imagePath7 from "../../assets/images/icp-logo.png";
 import { User } from "../../../../declarations/user/user.did";
 import ProfileClick from "../profile/component/ProfileClick";
+import DesktopLandingPage from "../desktop/Home";
 
-// Extend the User type to include isLoggedIn property
 interface ExtendedUser extends User {
   isLoggedIn: boolean;
 }
@@ -20,127 +17,123 @@ const LandingPage = () => {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    // Detect if the user is on a desktop device
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobile = /android|iphone|ipad|mobile|ipod/.test(userAgent);
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
     setIsDesktop(!isMobile);
 
-    // Dynamically load the corresponding CSS file
-    if (!isMobile) {
-      import("../../assets/landing/styles/style.min.css").then(() => {
-        console.log("Desktop CSS loaded");
-      });
-    } else {
-      import("../../assets/styles/style.css").then(() => {
-        console.log("Mobile CSS loaded");
-      });
-    }
+    const loadStyles = async () => {
+      if (!isMobile) {
+        await import("../../assets/landing/styles/style.min.css");
+      } else {
+        await import("../../assets/styles/style.css");
+      }
+    };
+
+    loadStyles();
   }, []);
 
   return <div>{isDesktop ? <DesktopLandingPage /> : <Home />}</div>;
 };
 
 // Desktop-specific landing page component
-const DesktopLandingPage = () => {
-  const cardHeightHero = 650;
-  const qrHeight = 100;
-  const appHeight = 600;
+// const DesktopLandingPage = () => {
+//   const cardHeightHero = 650;
+//   const qrHeight = 100;
+//   const appHeight = 600;
 
-  return (
-    <div>
-      <section className="bg-half  d-table w-100 overflow-hidden">
-        <div className="container position-relative">
-          <div className="row align-items-center">
-            <div className="col-lg-7 col-md-7">
-              <div className="title-heading">
-                <h1 className="heading fw-bold mb-3">
-                  Digitizing Food Systems <br /> for Global Impact.
-                </h1>
-                <p className="para-desc text-muted">
-                  Join the movement to transform agriculture into a sustainable,<br/>
-                  zero-waste future powered by innovation and collaboration.
-                </p>
-                <div className="mt-4">
-                  <QRCode
-                    className="mb-1"
-                    style={{ height: `${qrHeight}px` }}
-                    value="https://agriidao.org"
-                  />
-                  <p className="para-desc text-muted mt-4">
-                    Scan the QR code to access the agriiDAO ecosystem.
-                    <br />
-                    Alternatively visit <strong>agriidao.org</strong> from your
-                    smartphone.
-                  </p>
-                </div>
-              </div>
-            </div>
+//   return (
+//     <div>
+//       <section className="bg-half  d-table w-100 overflow-hidden">
+//         <div className="container position-relative">
+//           <div className="row align-items-center">
+//             <div className="col-lg-7 col-md-7">
+//               <div className="title-heading">
+//                 <h1 className="heading fw-bold mb-3">
+//                   Digitizing Food Systems <br /> for Global Impact.
+//                 </h1>
+//                 <p className="para-desc text-muted">
+//                   Join the movement to transform agriculture into a sustainable,<br/>
+//                   zero-waste future powered by innovation and collaboration.
+//                 </p>
+//                 <div className="mt-4">
+//                   <QRCode
+//                     className="mb-1"
+//                     style={{ height: `${qrHeight}px` }}
+//                     value="https://agriidao.org"
+//                   />
+//                   <p className="para-desc text-muted mt-4">
+//                     Scan the QR code to access the agriiDAO ecosystem.
+//                     <br />
+//                     Alternatively visit <strong>agriidao.org</strong> from your
+//                     smartphone.
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
 
-            <div className="col-lg-5 col-md-5 mt-4 pt-2 mt-sm-0 pt-sm-0">
-              <div className="modern-app-bg-shape position-relative">
-                <img
-                  src={imagePath6}
-                  className="img-fluid mover mx-auto d-block"
-                  alt=""
-                  style={{
-                    height: `${appHeight}px`,
-                  }}
-                />
+//             <div className="col-lg-5 col-md-5 mt-4 pt-2 mt-sm-0 pt-sm-0">
+//               <div className="modern-app-bg-shape position-relative">
+//                 <img
+//                   src={imagePath6}
+//                   className="img-fluid mover mx-auto d-block"
+//                   alt=""
+//                   style={{
+//                     height: `${appHeight}px`,
+//                   }}
+//                 />
 
-                <div className="modern-app-absolute-left">
-                  <div className="card">
-                    <div className="features  d-flex justify-content-between align-items-center rounded shadow p-3">
-                      <div className="d-flex align-items-center">
-                        <div className="icon  text-center ">
-                        <img
-                          src={imagePath7}
-                          className="avatar avatar-small avatar-ex-sm"
-                          alt=""
-                        />
-                        </div>
-                        <div className="flex-1 ms-3">
-                          <h6 className="mb-0 text-muted">Powered by agriiProtocol on</h6>
-                          <p className="fs-5 text-dark  mb-0">
-                            The World Computer 
+//                 <div className="modern-app-absolute-left">
+//                   <div className="card">
+//                     <div className="features  d-flex justify-content-between align-items-center rounded shadow p-3">
+//                       <div className="d-flex align-items-center">
+//                         <div className="icon  text-center ">
+//                         <img
+//                           src={imagePath7}
+//                           className="avatar avatar-small avatar-ex-sm"
+//                           alt=""
+//                         />
+//                         </div>
+//                         <div className="flex-1 ms-3">
+//                           <h6 className="mb-0 text-muted">Powered by agriiProtocol on</h6>
+//                           <p className="fs-5 text-dark  mb-0">
+//                             The World Computer 
                             
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+//                           </p>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
 
-                <div className="modern-app-absolute-right">
-                  <div className="card rounded shadow">
-                    <div className="p-3">
-                      <div className="d-flex align-items-center">
+//                 <div className="modern-app-absolute-right">
+//                   <div className="card rounded shadow">
+//                     <div className="p-3">
+//                       <div className="d-flex align-items-center">
                         
-                        <div className="flex-1 ms-2">
-                          <h6 className="text-dark mb-0">9000+ fresh produce prices</h6>
-                          <p className="text-muted small mb-0">agriiPrice</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+//                         <div className="flex-1 ms-2">
+//                           <h6 className="text-dark mb-0">9000+ fresh produce prices</h6>
+//                           <p className="text-muted small mb-0">agriiPrice</p>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
 
                 
-              </div>
-            </div>
-          </div>
-        </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
         
-      </section>
-    </div>
-  );
-};
+//       </section>
+//     </div>
+//   );
+// };
 
 const Home = () => {
   const cardHeightHero = 250;
 
   return (
     <>
-      {/* header */}
       <div className="header header-fixed header-logo-center">
         <a className="header-title">
           <img src={imagePath} width="100" alt="Default Profile" />
@@ -148,7 +141,6 @@ const Home = () => {
         <ProfileClick />
       </div>
 
-      {/* body */}
       <div className="page-content header-clear">
         <div
           className="card"

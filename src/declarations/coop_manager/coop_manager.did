@@ -1,0 +1,94 @@
+type TransactionId = text;
+type Transaction = 
+ record {
+   amount: nat;
+   linkedTx: opt text;
+   managementFee: nat;
+   platformFee: nat;
+   ticker: opt text;
+   timestamp: Time;
+   tokenStandard: opt text;
+   tokenSymbol: opt text;
+   tokenTxHash: opt text;
+   txId: text;
+   txType: text;
+   userId: principal;
+ };
+type Time = int;
+type PlatformFees = 
+ record {
+   depositFee: nat;
+   proposalId: opt text;
+   royaltyFee: nat;
+   timestamp: Time;
+   transactionFee: nat;
+ };
+type MintUnitsArgs = 
+ record {
+   blockheight: nat;
+   tokenAmount: nat;
+   unitAmount: nat;
+   userId: principal;
+ };
+type CoopMemberId = text;
+type CoopMember = 
+ record {
+   balance: nat;
+   coop: principal;
+   id: text;
+   isActive: bool;
+   timestamp: Time;
+   userId: principal;
+ };
+type CoopManager = 
+ service {
+   getAllMembers: () -> (vec CoopMember);
+   getDetails: () -> (Coop) query;
+   getFeeHistory: () -> (vec PlatformFees);
+   getMemberById: (CoopMemberId) -> (CoopMember);
+   getMemberVersionById: (CoopMemberId) -> (vec CoopMember);
+   getMemberbyUserId: (principal) -> (CoopMember);
+   getTransactionById: (TransactionId) -> (Transaction);
+   getTransactions: () -> (vec Transaction);
+   mintUnits: (MintUnitsArgs) -> (bool);
+   redeemUnits: (nat, text) -> (bool);
+ };
+type CoopInitArgs = 
+ record {
+   initAvailableUnit: nat;
+   initCreatedBy: text;
+   initDescription: text;
+   initIsCommunity: bool;
+   initLockPeriod: int;
+   initManagementFee: nat;
+   initMaxValue: nat;
+   initName: text;
+   initPayoutFrequency: int;
+   initSummary: text;
+   initTicker: text;
+   initTimestamp: Time;
+   initTotalUnit: nat;
+   initUnitImage: opt text;
+   initUnitPrice: nat;
+ };
+type Coop = 
+ record {
+   availableUnit: nat;
+   createdBy: text;
+   description: text;
+   id: principal;
+   isActive: bool;
+   isCommunity: bool;
+   lockPeriod: int;
+   managementFee: nat;
+   maxValue: nat;
+   name: text;
+   payoutFrequency: int;
+   summary: text;
+   ticker: text;
+   timestamp: Time;
+   totalUnit: nat;
+   unitImage: opt text;
+   unitPrice: nat;
+ };
+service : (CoopInitArgs) -> CoopManager

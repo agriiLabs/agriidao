@@ -8,20 +8,17 @@ import { AuthProvider } from "./hooks/Context";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { AppKitProvider } from "./components/agriidao/AppKitProvider";
 
 const rootElement = document.getElementById("root");
 if (rootElement !== null) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <AppKitProvider>
         <Provider store={store}>
         <AuthProvider>
           <App />
           <ToastContainer />
         </AuthProvider>
       </Provider>
-      </AppKitProvider>   
     </React.StrictMode>
   );
 } else {

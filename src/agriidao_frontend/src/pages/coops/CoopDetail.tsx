@@ -22,42 +22,47 @@ const CoopDetail = () => {
   const [showDescriptionModal, setShowDescriptionModal] = useState(false);
 
   useEffect(() => {
-    console.log("id", id);
     if (id) {
       getCoopDetails();
     }
   }, [id]);
 
-  useEffect(() => {
-    if (id) {
-      getCoopMembers();
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     getCoopMembers();
+  //   }
+  // }, [id]);
 
   const getCoopDetails = async () => {
     try {
       if (!id) {
         console.error("Coop ID is undefined");
         return;
-      } 
+      }
+  
       const coopActor = await getCoopActor(id);
       const coopDetails = await coopActor.getDetails();
-      // console.log("coopDetails", coopDetails);
+  
       if (!coopDetails) {
         console.error("No details found for this Co-op ID:", id);
         return;
       }
-      if (coopDetails) {
-        setCoop(coopDetails);
-        setAllocatedUnits(
-          (Number(coopDetails.totalUnit) - Number(coopDetails.availableUnit)
-        ))
-        console.log("Fetched Co-op Details:", coopDetails);
-      }
+  
+      console.log("Fetched Co-op Details:", coopDetails);
+      setCoop(coopDetails);
     } catch (error) {
       console.error("Error fetching co-op details:", error);
     }
   };
+
+  useEffect(() => {
+    if (!coop) return;
+  
+    const totalUnit = Number(coop.totalUnit) || 0;
+    const availableUnit = Number(coop.availableUnit) || 0;
+    setAllocatedUnits(totalUnit - availableUnit);
+  
+  }, [coop]);
  
   const getCoopMembers = async () => {
     try {
@@ -87,7 +92,7 @@ const CoopDetail = () => {
    navigate(`/coop-units/${id}`);
   }
 
-  const managementFee = coop?.managementFee ?? 0; // Default to 0 if undefined
+  const managementFee = coop?.managementFee ?? 0; 
   const formattedFee = parseFloat((Number(managementFee) / 100_000_000 * 100).toFixed(2));
   const unitPrice = coop?.unitPrice ?? 0;
   const formattedUnitPrice = parseFloat((Number(unitPrice) / 100_000_000).toFixed(2));
@@ -147,7 +152,7 @@ const CoopDetail = () => {
                     <p className="font-14">Members</p>
                   </div>
                   <div className="ms-auto">
-                    <p className="font-14">{membersCount[id ?? ""] ?? 0}</p>
+                    {/* <p className="font-14">{membersCount[id ?? ""] ?? 0}</p> */}
                   </div>
                 </div>
               </div>
@@ -170,6 +175,7 @@ const CoopDetail = () => {
               className="btn accordion-btn opacity-80"
               style={{
                 marginBottom: "0",
+                paddingLeft: "0",
               }}
             >
               <span

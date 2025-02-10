@@ -23,7 +23,8 @@ import type { _SERVICE as _settingsService } from "../../../declarations/setting
 import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
-import {canisterId as iiCanId} from "../../../declarations/internet_identity";
+import type {_SERVICE as _projectsService} from "../../../declarations/projects/projects.did";
+// import {canisterId as iiCanId} from "../../../declarations/internet_identity";
 
 import {
   network,
@@ -39,11 +40,13 @@ import {
   commodityCanisterId,
   coopIndexerCanisterId,
   coopLedgerCanisterId,
+  projectsCanisterId,
+  projectsIdlFactory,
 } from "../constants/canisters_config";
 
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
-// const iiCanId = "c2lt4-zmaaa-aaaaa-qaaiq-cai";
+const iiCanId = "aax3a-h4aaa-aaaaa-qaahq-cai";
 
 type ContextType = {
   identity: Identity | null;
@@ -53,6 +56,7 @@ type ContextType = {
   commodityActor: ActorSubclass<_commodityService> | null;
   coopIndexerActor: ActorSubclass<_coopIndexerService> | null;
   coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
+  projectsActor: ActorSubclass<_projectsService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -68,6 +72,7 @@ const initialContext: ContextType = {
   commodityActor: null,
   coopIndexerActor: null,
   coopLedgerActor: null,
+  projectsActor: null,
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -118,6 +123,8 @@ export const Context = (options = defaultOptions) => {
   const [coopLedgerActor, setCoopLedgerActor] = 
     useState<ActorSubclass<_coopLedgerService> | null >(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
+  const [projectsActor, setProjectsActor] = useState<ActorSubclass<_projectsService> | null>(null);
+
 
   useEffect(() => {
     AuthClient.create(options.createOptions).then(async (client) => {
@@ -227,6 +234,17 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setCoopLedgerActor(_coopLedgerBackend);
+
+    // set projects actor
+    const _projectsBackend: ActorSubclass<_projectsService> = 
+    Actor.createActor(
+      projectsIdlFactory,
+      {
+        agent,
+        canisterId: projectsCanisterId,
+      }
+    );
+    setProjectsActor(_projectsBackend);
   };
 
   return {
@@ -237,6 +255,7 @@ export const Context = (options = defaultOptions) => {
     commodityActor,
     coopIndexerActor,
     coopLedgerActor,
+    projectsActor,
     isAuthenticated,
     login,
     logout,

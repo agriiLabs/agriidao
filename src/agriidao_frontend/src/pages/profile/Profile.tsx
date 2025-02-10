@@ -14,7 +14,6 @@ import {
   WalletAddressRequest,
 } from "../../../../declarations/user/user.did";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
-import { useAccount } from "wagmi";
 import ConnectWallet from "./ConnectWallet";
 
 // declare global {
@@ -36,7 +35,6 @@ const Profile = () => {
   const [copySuccess, setCopySuccess] = useState("");
   const [isRevealed, setIsRevealed] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
-  const { address, isConnecting, isDisconnected } = useAccount();
   const [bountyPoint, setBountyPoint] = useState<BountyPoint | null>(null);
 
   const userTypeChips = {

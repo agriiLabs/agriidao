@@ -27,6 +27,16 @@ const BottomBar = () => {
         <i className="fa fa-handshake"></i>
         <span>Co-ops</span>
       </NavLink>
+      <NavLink
+        to="/projects"
+        id="bounty-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }
+      >
+        <i className="fa fa-tractor active"></i>
+        <span>Projects</span>
+      </NavLink>
       {/* <NavLink to="/" id="portfolio-nav-bottom">
         <i className="fa fa-chart-pie"></i>
         <span>Portfolio</span>
@@ -48,16 +58,7 @@ const BottomBar = () => {
         <i className="fa fa-trophy"></i>
         <span>Rewards</span>
       </NavLink>
-      <NavLink
-        to="/ecosystem"
-        id="bounty-nav-bottom"
-        className={({ isActive }) =>
-          isActive ? "nav-item active-nav" : "nav-item"
-        }
-      >
-        <i className="fa fa-network-wired active"></i>
-        <span>DApps</span>
-      </NavLink>
+      
       {/* <NavLink
         to="/ecosystem"
         id="funds-nav-bottom"

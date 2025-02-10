@@ -1,0 +1,271 @@
+type UserSocialMediaRequest = 
+ record {
+   socialMediaId: text;
+   userId: principal;
+   userName: text;
+ };
+type UserSocialMedia = 
+ record {
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   socialMediaId: text;
+   timeStamp: Time;
+   userId: principal;
+   userName: text;
+ };
+type Time = int;
+type Tier = 
+ record {
+   amount: float64;
+   campaignId: text;
+   createdBy: text;
+   followFrom: int;
+   followTo: int;
+   id: text;
+   isDelete: bool;
+   name: text;
+   percent: float64;
+   timeStamp: Time;
+ };
+type Result_8 = 
+ variant {
+   err: text;
+   ok: Allocation;
+ };
+type Result_7 = 
+ variant {
+   err: text;
+   ok: Bounty__1;
+ };
+type Result_6 = 
+ variant {
+   err: text;
+   ok: Campaign;
+ };
+type Result_5 = 
+ variant {
+   err: text;
+   ok: CampaignUser;
+ };
+type Result_4 = 
+ variant {
+   err: text;
+   ok: BountyPoint;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: CampaignTask;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: Tier;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: UserSocialMedia;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type CampaignUserRequest = 
+ record {
+   campaignId: text;
+   campaignTaskId: text;
+   url: text;
+ };
+type CampaignUser = 
+ record {
+   campaignId: text;
+   campaignTaskId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   isPaid: bool;
+   status: variant {
+             accepted;
+             pending;
+             rejected;
+           };
+   timeStamp: Time;
+   updatedBy: text;
+   url: text;
+   userId: principal;
+ };
+type CampaignTaskRequest = 
+ record {
+   allocation: float64;
+   campaignId: text;
+   task: text;
+ };
+type CampaignTask = 
+ record {
+   allocation: float64;
+   campaignId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   task: text;
+   timeStamp: Time;
+ };
+type CampaignRequest = 
+ record {
+   availBal: float64;
+   bountyId: text;
+   campaignPic: text;
+   campaignType: text;
+   name: text;
+   notes: text;
+   rules: text;
+   totalValue: float64;
+   url: text;
+ };
+type Campaign = 
+ record {
+   availBal: float64;
+   bountyId: text;
+   campaignPic: text;
+   campaignType: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   isLive: bool;
+   name: text;
+   notes: text;
+   rules: text;
+   timeStamp: Time;
+   totalValue: float64;
+   url: text;
+ };
+type Bounty__1 = 
+ record {
+   acCategoryId: text;
+   availableBal: float64;
+   bountyPool: float64;
+   createdBy: text;
+   endDate: text;
+   id: text;
+   isDelete: bool;
+   isLive: bool;
+   name: text;
+   startDate: text;
+   timeStamp: Time;
+ };
+type BountyRequest = 
+ record {
+   acCategoryId: text;
+   availableBal: float64;
+   bountyPool: float64;
+   endDate: text;
+   name: text;
+   startDate: text;
+ };
+type BountyPoint = 
+ record {
+   balance: float64;
+   campaignId: opt text;
+   id: text;
+   timeStamp: Time;
+   totalIn: float64;
+   totalOut: float64;
+   userId: opt principal;
+ };
+type Bounty = 
+ service {
+   acceptCampaignUserSubmission: (CampaignUser) -> (Result);
+   addAllocation: (AllocationRequest, text) -> ();
+   addBounty: (BountyRequest) -> ();
+   /// *****************************
+   /// *****************************
+   addBountyPointUser: (principal) -> ();
+   addCampaign: (CampaignRequest) -> ();
+   addCampaignTask: (CampaignTaskRequest) -> ();
+   addCampaignUser: (CampaignUserRequest) -> (Result);
+   /// **********************************
+   /// ******** TIER *********************
+   /// **********************************
+   addTier: (Tier) -> ();
+   /// ***************************************
+   /// ******** USER SOCIAL MEDIA ************
+   /// ***************************************
+   addUserSocialMedia: (UserSocialMediaRequest) -> (Result);
+   checkCampaignSubmission: (text, principal, text) ->
+    (vec CampaignUser) query;
+   deleteAllocation: (text) -> (bool);
+   deleteBounty: (Bounty__1) -> ();
+   deleteCampaign: (Campaign) -> ();
+   deleteCampaignTask: (CampaignTask) -> ();
+   deleteCampaignUser: (text) -> (bool);
+   deleteTier: (Tier) -> ();
+   deleteUserSocialMedia: (UserSocialMedia) -> ();
+   getAllAllocations: () -> (vec Allocation) query;
+   getAllBountyPointVersions: (text) -> (vec BountyPoint) query;
+   getAllCampaignTaskVersionsById: (text) -> (vec CampaignTask) query;
+   getAllCampaignVersions: (text) -> (vec Campaign) query;
+   getAllCampaignsLatest: () -> (vec Campaign) query;
+   getAllLatestBounties: () -> (vec Bounty__1) query;
+   getAllLatestBountyCampaignsByName: (text) -> (vec Campaign) query;
+   getAllLatestBountyPointUsers: () -> (vec BountyPoint) query;
+   getAllLatestBountyPoints: () -> (vec BountyPoint) query;
+   getAllLatestCampaignTasks: () -> (vec CampaignTask) query;
+   getAllLatestCampaignUsers: () -> (vec CampaignUser) query;
+   getAllLatestCampaignUsersAccepted: () -> (vec CampaignUser) query;
+   getAllLatestCampaignUsersPending: () -> (vec CampaignUser) query;
+   getAllLatestCampaignUsersRejected: () -> (vec CampaignUser) query;
+   getAllLatestTiersByName: (text) -> (vec Tier) query;
+   getAllLatestUserSocialMedias: () -> (vec UserSocialMedia);
+   getAllLatestUserSocialMediasByUserId: (text) -> (Result_1) query;
+   getAllTierVersions: (text) -> (vec Tier) query;
+   getAllTiersLatest: () -> (vec Tier) query;
+   getAllocation: (text) -> (Result_8) query;
+   getBountyCampaigns: (text) -> (vec Campaign) query;
+   getBountyLatest: (text) -> (Result_7) query;
+   getBountyPointByCampaignId: (text) -> (Result_4) query;
+   getBountyPointByUserId: () -> (Result_4) query;
+   getBountyVersions: (text) -> (vec Bounty__1) query;
+   getCampaignCampaignTasks: (text) -> (vec CampaignTask) query;
+   getCampaignLatest: (text) -> (Result_6) query;
+   getCampaignTiers: (text) -> (vec Tier) query;
+   getCampaignUser: (text) -> (Result_5) query;
+   getCampaignUserVersions: (text) -> (vec CampaignUser) query;
+   getCampaignUsersByCampaignId: (text) -> (vec CampaignUser) query;
+   getLatestBountyPoint: (text) -> (Result_4) query;
+   getLatestCampaignTaskById: (text) -> (Result_3) query;
+   getTierLatest: (text) -> (Result_2) query;
+   getUserCampaignUsers: (principal) -> (vec CampaignUser) query;
+   getUserSocialMediaBySocialMediaId: (text) -> (Result_1) query;
+   getUserSocialMediaLatestById: (text) -> (Result_1) query;
+   getUserSocialMediaVersions: (text) -> (vec UserSocialMedia) query;
+   rejectCampaignUserSubmission: (CampaignUser) -> ();
+   socialMediaCheck: (text) -> (bool) query;
+   updateAllocation: (Allocation) -> ();
+   updateBounty: (Bounty__1) -> ();
+   updateCampaign: (Campaign) -> ();
+   updateCampaignTask: (CampaignTask) -> ();
+   updateTier: (Tier) -> ();
+   updateUserSocialMedia: (UserSocialMedia) -> (Result);
+ };
+type AllocationRequest = 
+ record {
+   amount: float64;
+   bountyId: text;
+   currency: text;
+   name: text;
+ };
+type Allocation = 
+ record {
+   amount: float64;
+   bountyId: text;
+   createdBy: text;
+   currency: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   timeStamp: Time;
+ };
+service : () -> Bounty

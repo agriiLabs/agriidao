@@ -25,6 +25,12 @@ const CoopUnitsPreview = () => {
   const { units } = location.state || {};
   const [fees, setFees] = useState<PlatformFees[]>([]);
   const [saving, setSaving] = useState(false);
+  const [unitPrice, setUnitPrice] = useState(0);
+const [managementFee, setManagementFee] = useState(0);
+const [subTotal, setSubTotal] = useState(0);
+const [coopFee, setCoopFee] = useState(0);
+const [platformFee, setPlatformFee] = useState(0);
+const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -60,25 +66,28 @@ const CoopUnitsPreview = () => {
   //   const fees = await coopActor.getFeeHistory();
   //   setFees(fees);
   // };
-  const unitPrice = coop?.unitPrice;
-  const managementFee = coop?.managementFee;
-  const subTotal = (units * (Number(unitPrice) ?? 0)) / 100_000_000;
-  const coopFee = (subTotal * (Number(coop?.managementFee) ?? 0)) / 100_000_000;
-  const formattedUnitePrice = parseFloat((Number(unitPrice) / 100_000_000).toFixed(2));
 
-  // const platformFee =
-  //   subTotal * fees.reduce((acc, fee) => acc + (fee.depositFee ?? 0), 0);
-  const platformFee = (subTotal * 0.01);
-  const total = (subTotal + coopFee + platformFee);
-
-  console.log("units", units);
-  console.log("unitPrice", unitPrice);
-  console.log("managementFee", managementFee);
-  console.log("subTotal", subTotal);
-  console.log("coopFee", coopFee);
-  console.log("platformFee", platformFee);
-  console.log("total", total);
-
+  useEffect(() => {
+    if (!coop) return;
+  
+    const unitPriceValue = Number(coop.unitPrice) || 0;
+    const managementFeeValue = Number(coop.managementFee) || 0;
+  
+    setUnitPrice(unitPriceValue / 100_000_000);
+    setManagementFee(managementFeeValue);
+  
+    const subTotalValue = (units * unitPriceValue) / 100_000_000;
+    const coopFeeValue = (subTotalValue * managementFeeValue) / 100_000_000;
+    const platformFeeValue = subTotalValue * 0.01;
+    const totalValue = subTotalValue + coopFeeValue + platformFeeValue;
+  
+    setSubTotal(subTotalValue);
+    setCoopFee(coopFeeValue);
+    setPlatformFee(platformFeeValue);
+    setTotal(totalValue);
+  
+  }, [coop, units]);
+  
   const handleConfirm = async () => {
     setSaving(true);
     try {
@@ -134,7 +143,7 @@ const CoopUnitsPreview = () => {
       }
     } catch (error) {
       setSaving(false);
-      console.error("Error minting units:", error);
+      console.log("Error minting units:", error);
     }
   };
 
@@ -168,7 +177,7 @@ const CoopUnitsPreview = () => {
                 <p className="font-14 mt-1">Unit Price</p>
               </div>
               <div className="col-6">
-                <p className="font-14 text-end mt-1">{formattedUnitePrice} USD</p>
+                <p className="font-14 text-end mt-1">{unitPrice} USD</p>
               </div>
               <div className="divider divider-margins mt-2 mb-2"></div>
               {units ? (

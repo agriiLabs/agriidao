@@ -1,0 +1,85 @@
+type Time = int;
+type Settings = 
+ service {
+   addAcCategory: (AcCategoryRequest) -> ();
+   addAcType: (AcTypeRequest) -> ();
+   assign_role: (principal, opt Role) -> ();
+   deleteAcCategory: (AcCategory) -> ();
+   deleteAcType: (AcType) -> ();
+   getAcCategoryLatest: (text) -> (Result_3) query;
+   getAcCategoryVersions: (text) -> (vec AcCategory) query;
+   getAcTypeLatest: (text) -> (Result_2) query;
+   getAcTypeVersions: (text) -> (vec AcType) query;
+   getAllCountries: () -> (vec Country) query;
+   getAllLatestAcCategories: () -> (vec AcCategory) query;
+   getAllLatestAcTypeCategories: (text) -> (vec AcCategory) query;
+   getAllLatestAcTypeCategoriesByName: (text) -> (vec AcCategory) query;
+   getAllLatestAcTypes: () -> (vec AcType) query;
+   getCategoryByName: (text) -> (text) query;
+   getCountryByCode: (text) -> (Result_1) query;
+   getCountryByName: (text) -> (Result_1) query;
+   getCountryByRegion: (text) -> (vec Country) query;
+   isAdmin: (principal) -> (bool);
+   isAuthorized: (principal) -> (bool);
+   my_role: () -> (Result) query;
+   updateAcCategory: (AcCategory) -> ();
+   updateAcType: (AcType) -> ();
+ };
+type Role = 
+ variant {
+   admin;
+   owner;
+   staff;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: AcCategory;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: AcType;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Country;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: Role;
+ };
+type Country = 
+ record {
+   callingCode: text;
+   code: text;
+   currency: text;
+   name: text;
+   region: text;
+ };
+type AcTypeRequest = record {name: text;};
+type AcType = 
+ record {
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   timeStamp: Time;
+ };
+type AcCategoryRequest = 
+ record {
+   acTypeId: text;
+   name: text;
+ };
+type AcCategory = 
+ record {
+   acTypeId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   timeStamp: Time;
+ };
+service : () -> Settings
