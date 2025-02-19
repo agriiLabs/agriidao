@@ -15,6 +15,7 @@ import { Principal } from "@dfinity/principal";
 import { ckUSDCe6s, USDCCanisterId } from "../../constants/canisters_config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { IcrcTransferError } from "@dfinity/ledger-icrc";
 
 const CoopUnitsPreview = () => {
   const location = useLocation();
@@ -95,17 +96,25 @@ const CoopUnitsPreview = () => {
       if (!user) {
         return;
       }
-      console.log("Approving, waiting for approval");
+      let mintArgs: MintUnitsArgs = {
+        unitAmount: units,
+        tokenAmount: BigInt(total * ckUSDCe6s),
+        blockheight: BigInt(0),
+        userId: user.id,
+      };
+      console.log("mintArgs", mintArgs);
+
+      const amount_to_mint = BigInt(total * ckUSDCe6s);
       let res = await wallet?.approve({
         owner: account.owner,
         params: {
-          expected_allowance: BigInt(total * ckUSDCe6s),
+          expected_allowance: undefined,
           expires_at: undefined,
           spender: {
             owner: Principal.fromText(id),
             subaccount: [],
           },
-          amount: BigInt(total * ckUSDCe6s),
+          amount: amount_to_mint,
         },
         ledgerCanisterId: USDCCanisterId,
       });
@@ -125,10 +134,13 @@ const CoopUnitsPreview = () => {
         toastSuccess("Units minted successfully");
         navigate("/coop");
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error("Error approving", error);
       setSaving(false);
-      console.log("Error minting units:", error);
-    }
+      if (error instanceof IcrcTransferError) {
+          console.error(error.errorType);
+      }
+  }
   };
 
   return (

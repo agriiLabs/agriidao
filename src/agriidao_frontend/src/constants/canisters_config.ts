@@ -12,29 +12,29 @@ export { idlFactory as coopLedgerIdlFactory } from "../../../declarations/coop_l
 // export const settingsCanisterId = "vfaax-lyaaa-aaaag-alfhq-cai"
 
 // // ic staging
-export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
-export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
-export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
-export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
-export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
-export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
+// export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
+// export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
+// export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
+// export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
+// export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
+// export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
 
 //local
 
-// export const bountyCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
-// export const commodityCanisterId = "bw4dl-smaaa-aaaaa-qaacq-cai"
-// export const userCanisterId = "a4tbr-q4aaa-aaaaa-qaafq-cai"
-// export const settingsCanisterId = "a3shf-5eaaa-aaaaa-qaafa-cai"
-// export const coopIndexerCanisterId = "b77ix-eeaaa-aaaaa-qaada-cai"
-// export const coopLedgerCanisterId = "by6od-j4aaa-aaaaa-qaadq-cai"
+export const bountyCanisterId = "avqkn-guaaa-aaaaa-qaaea-cai"
+export const commodityCanisterId = "cgpjn-omaaa-aaaaa-qaakq-cai"
+export const userCanisterId = "a3shf-5eaaa-aaaaa-qaafa-cai"
+export const settingsCanisterId = "a3shf-5eaaa-aaaaa-qaafa-cai"
+export const coopIndexerCanisterId = "ajuq4-ruaaa-aaaaa-qaaga-cai"
+export const coopLedgerCanisterId = "aovwi-4maaa-aaaaa-qaagq-cai"
 
 // Tokens 
-export const USDCCanisterId = "pynoo-qqaaa-aaaag-atzuq-cai"
+export const USDCCanisterId = "c5kvi-uuaaa-aaaaa-qaaia-cai"
 export const ckUSDCe6s = 1000000
 
 
 
 type Env = "ic" | "local"
-export const network: Env = "ic"
+export const network: Env = "local"
 
-export const host = network === "ic" ? "https://icp0.io" : "http://localhost:4943"
+export const host = network === "local" ? "http://localhost:4943" : "https://icp0.io" 
