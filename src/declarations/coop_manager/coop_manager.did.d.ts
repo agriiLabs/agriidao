@@ -4,7 +4,7 @@ import type { IDL } from '@dfinity/candid';
 
 export interface Coop {
   'id' : Principal,
-  'managementFee' : number,
+  'managementFee' : bigint,
   'ticker' : string,
   'isCommunity' : boolean,
   'name' : string,
@@ -17,9 +17,9 @@ export interface Coop {
   'availableUnit' : bigint,
   'timestamp' : Time,
   'unitImage' : [] | [string],
-  'unitPrice' : number,
+  'unitPrice' : bigint,
   'payoutFrequency' : bigint,
-  'maxValue' : number,
+  'maxValue' : bigint,
 }
 export interface CoopInitArgs {
   'initTicker' : string,
@@ -28,15 +28,15 @@ export interface CoopInitArgs {
   'initUnitImage' : [] | [string],
   'initSummary' : string,
   'initIsCommunity' : boolean,
-  'initUnitPrice' : number,
+  'initUnitPrice' : bigint,
   'initName' : string,
   'initDescription' : string,
   'initAvailableUnit' : bigint,
-  'initMaxValue' : number,
+  'initMaxValue' : bigint,
   'initLockPeriod' : bigint,
   'initCreatedBy' : string,
   'initTotalUnit' : bigint,
-  'initManagementFee' : number,
+  'initManagementFee' : bigint,
 }
 export interface CoopManager {
   'getAllMembers' : ActorMethod<[], Array<CoopMember>>,
@@ -48,11 +48,11 @@ export interface CoopManager {
   'getTransactionById' : ActorMethod<[TransactionId], Transaction>,
   'getTransactions' : ActorMethod<[], Array<Transaction>>,
   'mintUnits' : ActorMethod<[MintUnitsArgs], boolean>,
-  'redeemUnits' : ActorMethod<[number, string], boolean>,
+  'redeemUnits' : ActorMethod<[bigint, string], boolean>,
 }
 export interface CoopMember {
   'id' : string,
-  'balance' : number,
+  'balance' : bigint,
   'coop' : Principal,
   'userId' : Principal,
   'isActive' : boolean,
@@ -63,21 +63,21 @@ export interface MintUnitsArgs {
   'userId' : Principal,
   'tokenAmount' : bigint,
   'blockheight' : bigint,
-  'unitAmount' : number,
+  'unitAmount' : bigint,
 }
 export interface PlatformFees {
-  'transactionFee' : number,
-  'depositFee' : number,
-  'royaltyFee' : number,
+  'transactionFee' : bigint,
+  'depositFee' : bigint,
+  'royaltyFee' : bigint,
   'timestamp' : Time,
   'proposalId' : [] | [string],
 }
 export type Time = bigint;
 export interface Transaction {
-  'managementFee' : number,
+  'managementFee' : bigint,
   'linkedTx' : [] | [string],
   'ticker' : [] | [string],
-  'platformFee' : number,
+  'platformFee' : bigint,
   'tokenTxHash' : [] | [string],
   'tokenStandard' : [] | [string],
   'userId' : Principal,
@@ -85,7 +85,7 @@ export interface Transaction {
   'tokenSymbol' : [] | [string],
   'timestamp' : Time,
   'txType' : string,
-  'amount' : number,
+  'amount' : bigint,
 }
 export type TransactionId = string;
 export interface _SERVICE extends CoopManager {}

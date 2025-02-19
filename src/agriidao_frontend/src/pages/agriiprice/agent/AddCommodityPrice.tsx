@@ -180,8 +180,6 @@ const AddCommodityPrice = () => {
 
     event?.preventDefault();
 
-    console.log("Submitting price:", data.price, "for market:", mLCommodity?.marketLocationId);
-
     // Mark submission in local storage
     const today = new Date().toISOString().split("T")[0];
     localStorage.setItem(`lastSubmission-${mLCommodity?.id}`, today);

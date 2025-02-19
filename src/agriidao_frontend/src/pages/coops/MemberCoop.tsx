@@ -10,14 +10,10 @@ import { Link, useParams } from "react-router-dom";
 import {
   _SERVICE,
   Coop,
+  CoopMember,
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "./components/CoopActor";
 import TransactionIcon from "./components/TransactionIcon";
-
-interface CoopMember {
-  id: string;
-  balance: number;
-}
 
 const MemberCoop = () => {
   const { coopLedgerActor } = useAuth();
@@ -69,7 +65,7 @@ const MemberCoop = () => {
     let totalUsdValue = 0;
 
     const unitPrice = coop?.unitPrice ?? 0;
-    totalUsdValue += membership?.balance * unitPrice;
+    totalUsdValue += Number(membership?.balance * unitPrice);
     setBalance(totalUsdValue);
   };
 
@@ -95,7 +91,7 @@ const MemberCoop = () => {
           const usdValue =
             tx.txType.toLowerCase() === "mint" ||
             tx.txType.toLowerCase() === "burn"
-              ? tx.amount * unitPrice
+              ? tx.amount * Number(unitPrice)
               : tx.amount * (tokenPrice ?? 0);
 
           return {

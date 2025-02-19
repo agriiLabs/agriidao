@@ -7,19 +7,19 @@ export const idlFactory = ({ IDL }) => {
     'initUnitImage' : IDL.Opt(IDL.Text),
     'initSummary' : IDL.Text,
     'initIsCommunity' : IDL.Bool,
-    'initUnitPrice' : IDL.Float64,
+    'initUnitPrice' : IDL.Nat,
     'initName' : IDL.Text,
     'initDescription' : IDL.Text,
-    'initAvailableUnit' : IDL.Int,
-    'initMaxValue' : IDL.Float64,
+    'initAvailableUnit' : IDL.Nat,
+    'initMaxValue' : IDL.Nat,
     'initLockPeriod' : IDL.Int,
     'initCreatedBy' : IDL.Text,
-    'initTotalUnit' : IDL.Int,
-    'initManagementFee' : IDL.Float64,
+    'initTotalUnit' : IDL.Nat,
+    'initManagementFee' : IDL.Nat,
   });
   const CoopMember = IDL.Record({
     'id' : IDL.Text,
-    'balance' : IDL.Float64,
+    'balance' : IDL.Nat,
     'coop' : IDL.Principal,
     'userId' : IDL.Principal,
     'isActive' : IDL.Bool,
@@ -27,37 +27,37 @@ export const idlFactory = ({ IDL }) => {
   });
   const Coop = IDL.Record({
     'id' : IDL.Principal,
-    'managementFee' : IDL.Float64,
+    'managementFee' : IDL.Nat,
     'ticker' : IDL.Text,
     'isCommunity' : IDL.Bool,
     'name' : IDL.Text,
     'createdBy' : IDL.Text,
     'description' : IDL.Text,
-    'totalUnit' : IDL.Int,
+    'totalUnit' : IDL.Nat,
     'isActive' : IDL.Bool,
     'summary' : IDL.Text,
     'lockPeriod' : IDL.Int,
-    'availableUnit' : IDL.Int,
+    'availableUnit' : IDL.Nat,
     'timestamp' : Time,
     'unitImage' : IDL.Opt(IDL.Text),
-    'unitPrice' : IDL.Float64,
+    'unitPrice' : IDL.Nat,
     'payoutFrequency' : IDL.Int,
-    'maxValue' : IDL.Float64,
+    'maxValue' : IDL.Nat,
   });
   const PlatformFees = IDL.Record({
-    'transactionFee' : IDL.Float64,
-    'depositFee' : IDL.Float64,
-    'royaltyFee' : IDL.Float64,
+    'transactionFee' : IDL.Nat,
+    'depositFee' : IDL.Nat,
+    'royaltyFee' : IDL.Nat,
     'timestamp' : Time,
     'proposalId' : IDL.Opt(IDL.Text),
   });
   const CoopMemberId = IDL.Text;
   const TransactionId = IDL.Text;
   const Transaction = IDL.Record({
-    'managementFee' : IDL.Float64,
+    'managementFee' : IDL.Nat,
     'linkedTx' : IDL.Opt(IDL.Text),
     'ticker' : IDL.Opt(IDL.Text),
-    'platformFee' : IDL.Float64,
+    'platformFee' : IDL.Nat,
     'tokenTxHash' : IDL.Opt(IDL.Text),
     'tokenStandard' : IDL.Opt(IDL.Text),
     'userId' : IDL.Principal,
@@ -65,13 +65,13 @@ export const idlFactory = ({ IDL }) => {
     'tokenSymbol' : IDL.Opt(IDL.Text),
     'timestamp' : Time,
     'txType' : IDL.Text,
-    'amount' : IDL.Float64,
+    'amount' : IDL.Nat,
   });
   const MintUnitsArgs = IDL.Record({
     'userId' : IDL.Principal,
     'tokenAmount' : IDL.Nat,
     'blockheight' : IDL.Nat,
-    'unitAmount' : IDL.Float64,
+    'unitAmount' : IDL.Nat,
   });
   const CoopManager = IDL.Service({
     'getAllMembers' : IDL.Func([], [IDL.Vec(CoopMember)], []),
@@ -87,7 +87,7 @@ export const idlFactory = ({ IDL }) => {
     'getTransactionById' : IDL.Func([TransactionId], [Transaction], []),
     'getTransactions' : IDL.Func([], [IDL.Vec(Transaction)], []),
     'mintUnits' : IDL.Func([MintUnitsArgs], [IDL.Bool], []),
-    'redeemUnits' : IDL.Func([IDL.Float64, IDL.Text], [IDL.Bool], []),
+    'redeemUnits' : IDL.Func([IDL.Nat, IDL.Text], [IDL.Bool], []),
   });
   return CoopManager;
 };
@@ -100,15 +100,15 @@ export const init = ({ IDL }) => {
     'initUnitImage' : IDL.Opt(IDL.Text),
     'initSummary' : IDL.Text,
     'initIsCommunity' : IDL.Bool,
-    'initUnitPrice' : IDL.Float64,
+    'initUnitPrice' : IDL.Nat,
     'initName' : IDL.Text,
     'initDescription' : IDL.Text,
-    'initAvailableUnit' : IDL.Int,
-    'initMaxValue' : IDL.Float64,
+    'initAvailableUnit' : IDL.Nat,
+    'initMaxValue' : IDL.Nat,
     'initLockPeriod' : IDL.Int,
     'initCreatedBy' : IDL.Text,
-    'initTotalUnit' : IDL.Int,
-    'initManagementFee' : IDL.Float64,
+    'initTotalUnit' : IDL.Nat,
+    'initManagementFee' : IDL.Nat,
   });
   return [CoopInitArgs];
 };

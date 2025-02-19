@@ -1,4 +1,4 @@
-const DAOPill = () => (
+const DaoPill = () => (
     <span
       className="badge bg-dark"
       style={{
@@ -10,5 +10,5 @@ const DAOPill = () => (
       DAO
     </span>
   );
-  export default DAOPill;
+  export default DaoPill;
   

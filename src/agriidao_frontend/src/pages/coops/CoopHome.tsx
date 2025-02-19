@@ -12,7 +12,7 @@ import {
 import imagePath1 from "../../assets/images/bg0.png";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import getCoopActor from "./components/CoopActor";
-import DAOPill from "./components/DAOPill";
+import DaoPill from "./components/DaoPill";
 
 const CoopHome = () => {
   const { coopIndexerActor, identity } = useAuth();
@@ -85,44 +85,46 @@ const CoopHome = () => {
 
   const getAllCoopBalances = async () => {
     const balances: { [key: string]: any } = {};
-
+  
     for (const coop of coops ?? []) {
       try {
         const coopActor = await getCoopActor(coop.canisterId.toText());
+  
         if (userId) {
           const coopBalance = await coopActor.getMemberbyUserId(userId);
-          console.log("coop balance", coopBalance);
-          balances[coop.canisterId.toText()] = coopBalance ?? 0;
+          console.log(`Balance for ${coop.canisterId}:`, coopBalance);
+  
+          balances[coop.canisterId.toText()] = coopBalance !== null && coopBalance !== undefined ? coopBalance : 0;
         }
       } catch (error) {
-        console.log(
-          `Failed to fetch balance for co-op ${coop.canisterId}:`,
-          error
-        );
+        console.warn(`Failed to fetch balance for co-op ${coop.canisterId}:`, error);
+        
         balances[coop.canisterId.toText()] = 0;
       }
     }
-
+  
     setCoopBalances(balances);
     console.log("All balances:", balances);
   };
+  
 
   const totalBalance = () => {
-    if (!coopBalances || !coopDetails) return 0;
-
+    if (!coopBalances || !coopDetails) return "0.00";
+  
     let totalUsdValue = 0;
-
+  
     for (const coopId in coopBalances) {
-      const userBalance = coopBalances[coopId]?.balance ?? 0; // Get the user’s balance for the co-op
-      const coopDetail = coopDetails.find(
-        (detail: Coop) => detail.id.toText() === coopId
-      ); // Find the matching co-op details
-      const unitPrice = coopDetail?.unitPrice ?? 0; // Get the unit price of the co-op
-      totalUsdValue += userBalance * unitPrice; // Multiply balance by unit price and add to total
+      const userBalance = Number(coopBalances[coopId]?.balance) || 0; 
+      const coopDetail = coopDetails.find((detail: Coop) => detail.id.toText() === coopId);
+  
+      const unitPrice = coopDetail ? Number(coopDetail.unitPrice) || 0 : 0; 
+  
+      totalUsdValue += userBalance * unitPrice; 
     }
-
-    return totalUsdValue.toFixed(2); // Format to 2 decimal places
+  
+    return totalUsdValue.toFixed(2); 
   };
+  
 
   const handleClick = () => {
     navigate(`/coops`);
@@ -215,7 +217,7 @@ const CoopHome = () => {
                     {coop.name ?? "Unnamed Co-op"}
                   </p>
                   <p className="font-11 opacity-60">
-                    {!coop.isCommunity && <DAOPill />}
+                    {!coop.isCommunity && <DaoPill />}
                   </p>
                 </div>
                 <div className="align-self-center ms-auto text-end">

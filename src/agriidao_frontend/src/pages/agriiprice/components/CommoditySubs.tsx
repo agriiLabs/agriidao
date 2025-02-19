@@ -42,7 +42,6 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
   };
 
   useEffect(() => {
-    // Check if the user has submitted for this marketLocationId today
     const lastSubmission = localStorage.getItem(`lastSubmission-${commoditySub?.id}`);
     const today = new Date().toISOString().split("T")[0];
 
@@ -59,28 +58,23 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
 
   interface Commodity {
     name: string;
-    // Add other properties as needed
   }
 
   interface MarketLocationCommodity {
     id: string;
     commodityId: string;
-    // Add other properties as needed
   }
 
   return (
     <>
       {hasSubmitted ? (
-        // Render check icon and disable the link
         <div className="d-flex mb-3">
           <div className="align-self-center ">
           <p className="font-16">{commodity?.name}</p>
         </div>
         <i className="fa fa-check-circle ms-auto text-success text-end mt-2" />
         </div>
-        // <i className="fa fa-check ms-auto text-end text-dark mt-2" />
       ) : (
-        // Render angle-right icon with link
         <Link 
         to={`/add-commodity-price/${commoditySub?.id}`}
         className="d-flex mb-3"
@@ -94,14 +88,7 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
       
     </>
   );
-//             <div className="align-self-center ">
-//             <p className="font-16">{commodity?.name}</p>
-//             </div>
-          
-//           <i className="fa fa-angle-right ms-auto text-end text-dark mt-2" />
-//         </Link>
-     
-//   );
+
 };
 
 export default CommoditySubs;

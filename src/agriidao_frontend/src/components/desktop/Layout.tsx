@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import Loader from './Loader';
-import Bottombar from './BottomBar';
+import Loader from '../Loader';
+import DesktopBottomBar from './BottomBar';
+import DesktopTopBar from './TopBar';
 
 const Layout = () => {
   const [loading, setLoading] = useState(true);
@@ -18,11 +19,12 @@ const Layout = () => {
   return (
     <div id="wrapper">
         {loading && <Loader />}
+        <DesktopTopBar />
         <div className="content-page">
           <Outlet />
         </div>
         
-        <Bottombar />
+        <DesktopBottomBar />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {
   Navigate,
   useLocation
 } from "react-router-dom";
-import Layout from "./components/Layout";
+import Layout from "./components/desktop/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import RewardSummary from "./pages/bounty/RewardSummary";
@@ -61,6 +61,12 @@ import CoopDetail from "./pages/coops/CoopDetail";
 import CoopUnitsPreview from "./pages/coops/CoopUnitsPreview";
 import CoopUnits from "./pages/coops/CoopUnits";
 import MemberActivity from "./pages/coops/MemberActivity";
+import Projects from "./pages/projects/Projects";
+import AddProjectOwner from "./pages/projects/ProjectOwner";
+import AddProject from "./pages/projects/AddProject";
+import AddProjectPreview from "./pages/projects/AddProjectPreview";
+import StartProject from "./pages/projects/StartProject";
+import DesktopLandingPage from "./pages/desktop/Home";
 
 export interface Response {
   err?: any;
@@ -172,6 +178,13 @@ const App = () => {
             <Route path="/coop-units/:id" element={<CoopUnits />} />
             <Route path="/coop-units-preview/:id" element={<CoopUnitsPreview />} />
             <Route path="all-coop-activity/:id" element={<MemberActivity />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/start-project" element={<StartProject />} />
+            <Route path="/add-project-owner/" element={<AddProjectOwner />} />
+            <Route path="/add-project/" element={<AddProject />} />
+            <Route path="/add-project/preview/" element={<AddProjectPreview />} />
+            
+
             <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/profile-create" element={<UserProfileCreate />} />
@@ -192,9 +205,10 @@ const App = () => {
             <Route path="/add-commodity-price/:id" element={<AddCommodityPrice />} />
             </Route>
         </Route>
+
         <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/club/home" element={<Home />} />
+            <Route index element={<DesktopLandingPage />} />
+            <Route path="/home" element={<DesktopLandingPage />} />
             <Route path="/stokvels" element={<Stokvels />} />
             
             {/* <Route path="club/more" element={<More />} /> */}
