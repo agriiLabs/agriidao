@@ -6,17 +6,6 @@
       ],
       "type": "assets",
       "workspace": "agriidao_frontend"
-    },
-    "internet_identity": {
-      "type": "custom",
-      "candid": "https://github.com/dfinity/internet-identity/releases/download/release-2024-08-21/internet_identity.did",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/download/release-2024-08-21/internet_identity_dev.wasm.gz",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      },
-      "frontend": {}
     }
   },
   "defaults": {

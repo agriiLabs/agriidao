@@ -51,6 +51,13 @@ export const idlFactory = ({ IDL }) => {
     'timestamp' : Time,
     'proposalId' : IDL.Opt(IDL.Text),
   });
+  const MintingFees = IDL.Record({
+    'managementFee' : IDL.Nat,
+    'platformFee' : IDL.Nat,
+    'subTotal' : IDL.Nat,
+    'coopFee' : IDL.Nat,
+    'totalPrice' : IDL.Nat,
+  });
   const CoopMemberId = IDL.Text;
   const TransactionId = IDL.Text;
   const Transaction = IDL.Record({
@@ -77,6 +84,7 @@ export const idlFactory = ({ IDL }) => {
     'getAllMembers' : IDL.Func([], [IDL.Vec(CoopMember)], []),
     'getDetails' : IDL.Func([], [Coop], ['query']),
     'getFeeHistory' : IDL.Func([], [IDL.Vec(PlatformFees)], []),
+    'getFeesDetails' : IDL.Func([IDL.Nat], [MintingFees], ['query']),
     'getMemberById' : IDL.Func([CoopMemberId], [CoopMember], []),
     'getMemberVersionById' : IDL.Func(
         [CoopMemberId],

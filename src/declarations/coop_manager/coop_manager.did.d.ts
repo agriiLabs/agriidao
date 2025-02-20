@@ -42,6 +42,7 @@ export interface CoopManager {
   'getAllMembers' : ActorMethod<[], Array<CoopMember>>,
   'getDetails' : ActorMethod<[], Coop>,
   'getFeeHistory' : ActorMethod<[], Array<PlatformFees>>,
+  'getFeesDetails' : ActorMethod<[bigint], MintingFees>,
   'getMemberById' : ActorMethod<[CoopMemberId], CoopMember>,
   'getMemberVersionById' : ActorMethod<[CoopMemberId], Array<CoopMember>>,
   'getMemberbyUserId' : ActorMethod<[Principal], CoopMember>,
@@ -64,6 +65,13 @@ export interface MintUnitsArgs {
   'tokenAmount' : bigint,
   'blockheight' : bigint,
   'unitAmount' : bigint,
+}
+export interface MintingFees {
+  'managementFee' : bigint,
+  'platformFee' : bigint,
+  'subTotal' : bigint,
+  'coopFee' : bigint,
+  'totalPrice' : bigint,
 }
 export interface PlatformFees {
   'transactionFee' : bigint,
