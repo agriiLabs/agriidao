@@ -81,6 +81,7 @@ const RewardSummary = () => {
     const res = await bountyActor.getBountyPointByUserId();
     if ('ok' in res) {
       setBountyPoint(res.ok);
+      console.log("Bounty Points: ", res.ok);
     } else {
       console.error("Error retrieving bounty points");
     }

@@ -66,7 +66,17 @@ import AddProjectOwner from "./pages/projects/ProjectOwner";
 import AddProject from "./pages/projects/AddProject";
 import AddProjectPreview from "./pages/projects/AddProjectPreview";
 import StartProject from "./pages/projects/StartProject";
-import DesktopLandingPage from "./pages/desktop/Home";
+import DesktopLandingPage from "./pages/DesktopHome";
+import TestHome from "./pages/desktop/TestHome";
+import DMarketPrices from "./pages/desktop/agriiPrice/DMarketPrices";
+import DProfile from "./pages/desktop/profile/DProfile";
+import DLeaderboard from "./pages/desktop/bounty/DLeaderboard";
+import MyRewards from "./pages/desktop/bounty/MyRewards";
+import DCampaigns from "./pages/desktop/bounty/DCampaigns";
+import DCampaignDetail from "./pages/desktop/bounty/DCampaignDetail";
+import DCoops from "./pages/desktop/agriiCoop/DCoops";
+import DProfileCreate from "./pages/desktop/profile/DProfileCreate";
+import DProfileDetail from "./pages/desktop/profile/DProfileDetail";
 
 export interface Response {
   err?: any;
@@ -212,10 +222,16 @@ const App = () => {
 
         <Route element={<Layout />}>
             <Route index element={<DesktopLandingPage />} />
-            <Route path="/home" element={<DesktopLandingPage />} />
-            <Route path="/stokvels" element={<Stokvels />} />
-            
-            {/* <Route path="club/more" element={<More />} /> */}
+            <Route path="/home-dapp" element={<TestHome />} />
+            <Route path="/d/markets" element={<DMarketPrices />} />
+            <Route path="/d/profile" element={<DProfile />} />
+            <Route path="/d/profile-create" element={<DProfileCreate />} />
+            <Route path="/d/profile-detail/" element={<DProfileDetail />} />
+            <Route path="/d/leaderboard" element={<DLeaderboard />} />
+            <Route path="/d/rewards" element={<MyRewards />} />
+            <Route path="/d/campaigns" element={<DCampaigns />} />
+            <Route path="/d/campaigns/campaign-detail/:id" element={<DCampaignDetail />} />
+            <Route path="/d/coops" element={<DCoops />} />
             <Route element={<ProtectedRoutes />}>  
               
               

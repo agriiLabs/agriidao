@@ -24,7 +24,7 @@ import type {_SERVICE as _commodityService} from "../../../declarations/commodit
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
 import type {_SERVICE as _projectsService} from "../../../declarations/projects/projects.did";
-// import {canisterId as iiCanId} from "../../../declarations/internet_identity";
+// import {canisterId as iiCanId} from "../../../declarations/internet_identity/internet_identity.did";
 
 import {
   network,
@@ -46,7 +46,7 @@ import {
 
 const localhost = "http://localhost:4943";
 const host = "https://icp0.io";
-const iiCanId = "aax3a-h4aaa-aaaaa-qaahq-cai";
+const iiCanId = "ahw5u-keaaa-aaaaa-qaaha-cai";
 
 type ContextType = {
   identity: Identity | null;

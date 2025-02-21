@@ -19,8 +19,8 @@ export interface Milestone {
   'task3' : [] | [string],
   'isStart' : boolean,
   'approvedBy' : [] | [Principal],
-  'dueDate' : Time,
-  'description' : string,
+  'dueDate' : [] | [Time],
+  'description' : [] | [string],
   'projectId' : string,
   'timestamp' : Time,
   'budget' : number,
@@ -172,7 +172,8 @@ export interface ProjectTerm {
   'payoutFrequency' : bigint,
 }
 export type ProjectTermId = string;
-export type ProjectType = { 'SolarMiniGrid' : null } |
+export type ProjectType = { 'NotSpecified' : null } |
+  { 'SolarMiniGrid' : null } |
   { 'Farm' : null } |
   { 'Warehouse' : null } |
   { 'Proccessing' : null } |
@@ -184,6 +185,8 @@ export type ProjectType = { 'SolarMiniGrid' : null } |
 export type ProposalStatus = { 'Approved' : null } |
   { 'Rejected' : null } |
   { 'Pending' : null };
+export type Result = { 'ok' : null } |
+  { 'err' : string };
 export type Time = bigint;
 export interface Treasury {
   'balance' : number,
@@ -204,7 +207,7 @@ export interface _SERVICE {
   'addFinancialsExpense' : ActorMethod<[ProjectExpenseRequest], undefined>,
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
   'addMilestone' : ActorMethod<[Milestone], undefined>,
-  'addProject' : ActorMethod<[ProjectRequest], undefined>,
+  'addProject' : ActorMethod<[ProjectRequest], Result>,
   'addProjectFunder' : ActorMethod<[ProjectFunder], undefined>,
   'addProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
   'addProjectProposal' : ActorMethod<[ProjectProposalRequest], undefined>,

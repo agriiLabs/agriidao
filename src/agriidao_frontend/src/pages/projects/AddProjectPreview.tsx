@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useAuth } from "../../hooks/Context";
-import { setCoopRecord, setProjectRequest, setCountry } from "../../redux/slices/app";
+import {
+  setCoopRecord,
+  setProjectRequest,
+  setCountry,
+} from "../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../utils/Utils";
 import ProfileClick from "../profile/component/ProfileClick";
@@ -11,12 +15,14 @@ const AddProjectPreview = () => {
   const { projectsActor } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { projectRequest, coopRecord, country } = useSelector((state: RootState) => state.app);
+  const { projectRequest, coopRecord, country } = useSelector(
+    (state: RootState) => state.app
+  );
   const [saving, setSaving] = useState(false);
 
   console.log("projectRequest", projectRequest);
-    console.log("coopRecord", coopRecord);
-    console.log("country", country);
+  console.log("coopRecord", coopRecord);
+  console.log("country", country);
   const handleSave = async () => {
     if (!projectsActor) {
       console.error("projectsActor is null");
@@ -35,6 +41,9 @@ const AddProjectPreview = () => {
         dispatch(setCountry(null));
         toastSuccess("Project successfully added");
         navigate(`/projects`);
+      } else {
+        // throw new Error("Failed to add project");
+        console.log("Failed to add project", res);
       }
     } catch (error) {
       setSaving(false);
@@ -80,9 +89,7 @@ const AddProjectPreview = () => {
                 <p className="font-15">Governing Co-op</p>
               </div>
               <div className="col-7">
-                <p className="font-15 text-end">
-                  {coopRecord?.[0].name}
-                </p>
+                <p className="font-15 text-end">{coopRecord?.[0].name}</p>
               </div>
               <div className="divider divider-margins w-100 mt-2 mb-2"></div>
               <div className="col-5">

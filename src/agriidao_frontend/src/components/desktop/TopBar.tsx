@@ -1,24 +1,40 @@
-import React from 'react'
-import imagePath from "../../assets/images/agriidao-logo.svg";
+import React from "react";
+import DProfileClick from "../../pages/desktop/profile/DProfileClick";
 
-const DesktopTopBar = () => {
-  return (
-    <header id="topnav" className="defaultscroll sticky">
-        <div className="container d-flex justify-content-between align-items-center">
-            <a className="logo" href="">
-                <img src={imagePath} height="30" className="logo-light-mode" alt="agriiDAO logo" />
-            </a>
+interface DesktopTopBarProps {
 
+    onToggle: () => void;
+  
+  }
 
-            <div id="navigation">
-                <ul className="navigation-menu">
-                    <li><a href="#" className="sub-menu-item">Home</a></li>
-                    <li><a href="https://docsend.com/v/qt6yy/agriidao-whitepaper" target='_blank' className="sub-menu-item">White Paper</a></li>
-                </ul>
+  const DesktopTopBar: React.FC<DesktopTopBarProps> = ({ onToggle }) => {
+    return (
+        <div className="top-header">
+          <div className="header-bar d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              <a href="#" className="logo-icon me-3">
+                <img src="assets/images/logo-icon.png" height="30" alt="Logo" />
+              </a>
+              <button onClick={onToggle} className="btn btn-soft-light"><i className="mdi mdi-menu"></i></button>
+
             </div>
+    
+            <ul className="list-unstyled mb-0 d-flex">
+              <li className="list-inline-item">
+                <a href="#" className="btn btn-icon btn-soft-light">
+                  <i className="ti ti-bell"></i>
+                </a>
+              </li>
+              <li className="list-inline-item">
+                <a href="#" className="btn btn-soft-light">
+                  {/* <img src="assets/images/client/05.jpg" className="" alt="User" /> */}
+                  <DProfileClick/>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </header>
-  )
-}
+      );
+};
 
-export default DesktopTopBar
+export default DesktopTopBar;

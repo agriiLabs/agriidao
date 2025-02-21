@@ -16,6 +16,11 @@ type Treasury =
    totalOut: float64;
  };
 type Time = int;
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
 type ProposalStatus = 
  variant {
    Approved;
@@ -27,6 +32,7 @@ type ProjectType =
    AgTech;
    Farm;
    GreenHouse;
+   NotSpecified;
    Offtaking;
    Proccessing;
    ProcessingPlant;
@@ -198,8 +204,8 @@ type Milestone =
    approvedBy: opt principal;
    budget: float64;
    completedDate: opt Time;
-   description: text;
-   dueDate: Time;
+   description: opt text;
+   dueDate: opt Time;
    id: text;
    isComplete: bool;
    isStart: bool;
@@ -228,7 +234,7 @@ service : {
   addFinancialsExpense: (ProjectExpenseRequest) -> ();
   addFinancialsIncome: (ProjectIncomeRequest) -> ();
   addMilestone: (Milestone) -> ();
-  addProject: (ProjectRequest) -> ();
+  addProject: (ProjectRequest) -> (Result);
   addProjectFunder: (ProjectFunder) -> ();
   addProjectOwner: (ProjectOwner) -> ();
   addProjectProposal: (ProjectProposalRequest) -> ();

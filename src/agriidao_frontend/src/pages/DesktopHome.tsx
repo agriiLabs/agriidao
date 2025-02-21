@@ -1,16 +1,16 @@
-import imagePath6 from "../../assets/images/agriidao-app.png";
-import imagePath1 from "../../assets/images/ecosystem/coop.png";
-import imagePath2 from "../../assets/images/ecosystem/price.png";
-import imagePath3 from "../../assets/images/ecosystem/protocol.png";
-import imagePath4 from "../../assets/images/ecosystem/ecosystem.png";
-import imagePath5 from "../../assets/images/ecosystem/agriicoop-icon.svg";
-import imagePath8 from "../../assets/images/ecosystem/agriimarket-icon.svg";
-import imagePath9 from "../../assets/images/ecosystem/agriitrace-icon.svg";
-import imagePath10 from "../../assets/images/ecosystem/agriiclub-icon.svg";
-import imagePath7 from "../../assets/images/icp-logo.png";
-import imagePath11 from "../../assets/images/impact.png";
-import imagePath12 from "../../assets/images/transparency.png";
-import imagePath13 from "../../assets/images/rewards.png";
+import imagePath6 from "../assets/images/agriidao-app.png";
+import imagePath1 from "../assets/images/ecosystem/coop.png";
+import imagePath2 from "../assets/images/ecosystem/price.png";
+import imagePath3 from "../assets/images/ecosystem/protocol.png";
+import imagePath4 from "../assets/images/ecosystem/ecosystem.png";
+import imagePath5 from "../assets/images/ecosystem/agriicoop-icon.svg";
+import imagePath8 from "../assets/images/ecosystem/agriimarket-icon.svg";
+import imagePath9 from "../assets/images/ecosystem/agriitrace-icon.svg";
+import imagePath10 from "../assets/images/ecosystem/agriiclub-icon.svg";
+import imagePath7 from "../assets/images/icp-logo.png";
+import imagePath11 from "../assets/images/impact.png";
+import imagePath12 from "../assets/images/transparency.png";
+import imagePath13 from "../assets/images/rewards.png";
 import { Button } from "react-bootstrap";
 
 const DesktopLandingPage = () => {

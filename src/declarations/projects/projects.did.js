@@ -28,8 +28,8 @@ export const idlFactory = ({ IDL }) => {
     'task3' : IDL.Opt(IDL.Text),
     'isStart' : IDL.Bool,
     'approvedBy' : IDL.Opt(IDL.Principal),
-    'dueDate' : Time,
-    'description' : IDL.Text,
+    'dueDate' : IDL.Opt(Time),
+    'description' : IDL.Opt(IDL.Text),
     'projectId' : IDL.Text,
     'timestamp' : Time,
     'budget' : IDL.Float64,
@@ -47,6 +47,7 @@ export const idlFactory = ({ IDL }) => {
     'image' : IDL.Opt(IDL.Text),
     'location' : IDL.Text,
   });
+  const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const ProjectFunder = IDL.Record({
     'id' : IDL.Text,
     'userId' : IDL.Principal,
@@ -77,6 +78,7 @@ export const idlFactory = ({ IDL }) => {
     'timestamp' : Time,
   });
   const ProjectType = IDL.Variant({
+    'NotSpecified' : IDL.Null,
     'SolarMiniGrid' : IDL.Null,
     'Farm' : IDL.Null,
     'Warehouse' : IDL.Null,
@@ -209,7 +211,7 @@ export const idlFactory = ({ IDL }) => {
     'addFinancialsExpense' : IDL.Func([ProjectExpenseRequest], [], []),
     'addFinancialsIncome' : IDL.Func([ProjectIncomeRequest], [], []),
     'addMilestone' : IDL.Func([Milestone], [], []),
-    'addProject' : IDL.Func([ProjectRequest], [], []),
+    'addProject' : IDL.Func([ProjectRequest], [Result], []),
     'addProjectFunder' : IDL.Func([ProjectFunder], [], []),
     'addProjectOwner' : IDL.Func([ProjectOwner], [], []),
     'addProjectProposal' : IDL.Func([ProjectProposalRequest], [], []),

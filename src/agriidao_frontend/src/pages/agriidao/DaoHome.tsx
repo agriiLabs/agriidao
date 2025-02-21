@@ -7,7 +7,7 @@ import imagePath4 from "../../assets/images/markets-home.png";
 import imagePath5 from "../../assets/images/bg5.png";
 import { User } from "../../../../declarations/user/user.did";
 import ProfileClick from "../profile/component/ProfileClick";
-import DesktopLandingPage from "../desktop/Home";
+import DesktopLandingPage from "../DesktopHome";
 
 interface ExtendedUser extends User {
   isLoggedIn: boolean;

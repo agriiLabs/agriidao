@@ -22,7 +22,8 @@ const AddUserSocial = () => {
     useEffect(() => {
         getSocialMedia();
       }, [temporaryVal]);
-    
+      console.log("temporaryVal", temporaryVal);
+
       //get social Media name
       const getSocialMedia = async () => {
         if (!settingsActor) {

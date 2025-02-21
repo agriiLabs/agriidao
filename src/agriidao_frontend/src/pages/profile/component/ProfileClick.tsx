@@ -7,7 +7,6 @@ import imagePath2 from "../../../assets/images/default-user-profile.png";
 
 const ProfileClick : React.FC = () => {
     const { user } = useSelector((state: RootState) => state.app);
-    const [userX, setUserX] = useState(false);
     const navigate = useNavigate();
 
     const handleProfileClick = () => {
@@ -15,10 +14,8 @@ const ProfileClick : React.FC = () => {
           if (!user){
             navigate("/login");
           } else if (!user?.username) {
-            // Redirect to update username page if the user is logged in but no username is set
             navigate("/update-username");
           } else {
-            // Redirect to profile page if the user is logged in and has a username
             navigate("/profile");
           }
         };

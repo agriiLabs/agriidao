@@ -243,7 +243,7 @@ const Profile = () => {
               />
             </div>
           </div>
-          {/* <div className="divider mb-0"></div>
+          <div className="divider mb-0"></div>
           <div className="content ">
             {profileExists ? (
               <Link
@@ -260,7 +260,7 @@ const Profile = () => {
                 Complete Profile
               </Link>
             )}
-          </div> */}
+          </div>
         </div>
 
       { agent && (

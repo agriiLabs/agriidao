@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../utils/Types";
 import CampaignRewards from "./component/CampaignRewards";
 import CampaignRules from "./component/CampaignRules";
@@ -43,7 +43,7 @@ const CampaignDetail = () => {
     if (res.ok) {
       setCampaign(res.ok);
     } else {
-      console.error(res.err); //not sure if this is correct
+      console.error(res.err); 
     }
   };
 
@@ -234,27 +234,6 @@ const CampaignDetail = () => {
                     <br />
                   </div>
                   
-                  
-                  {/* <div className="accordion col-6">
-                    <a
-                      onClick={handleTaskRules}
-                      data-menu="menu-rules"
-                      className="btn accordion-btn opacity-70"
-                    >
-                      Read The Rules
-                    </a>
-                  </div>
-                  <div className="accordion col-6">
-                    <button
-                      onClick={handleTaskRewards}
-                      data-menu="menu-rewards"
-                      className="btn accordion-btn opacity-70"
-                    >
-                      Task Rewards
-                    </button>
-                  </div>
-                  <div className="divider divider-margins w-100 mt-2 mb-2"></div> */}
-
                   <div className="col-12">
                     {userSocialExists ? (
                       <>

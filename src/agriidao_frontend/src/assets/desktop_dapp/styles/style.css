@@ -199,6 +199,15 @@ p {
           transform: rotate(90deg);
   right: 17px;
 }
+.page-wrapper .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active > a {
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+  color: #fff !important;
+}
+
+.page-wrapper .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active .sidebar-submenu {
+  display: block !important;
+}
 .page-wrapper .sidebar-wrapper .sidebar-menu .sidebar-dropdown:hover > a:after, .page-wrapper .sidebar-wrapper .sidebar-menu .sidebar-dropdown.active > a:after {
   color: #2f55d4;
 }
@@ -528,7 +537,6 @@ footer .footer-list li a:hover {
 footer .footer-list li:last-child {
   margin-bottom: 0;
 }
-
 .avatar.avatar-coin, .avatar.avatar-sm-sm {
   height: 36px;
   width: 36px;

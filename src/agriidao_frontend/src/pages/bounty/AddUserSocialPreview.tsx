@@ -15,7 +15,6 @@ const AddUserSocialPreview = () => {
   const [saving, setSaving] = useState(false);
   const [socialMedia, setSocialMedia] = useState<AcCategory | null>(null);
 
-   // go back
    const handleBack = () => {
     navigate(`/reward-summary/`);
   };
@@ -24,7 +23,6 @@ const AddUserSocialPreview = () => {
     getSocialMedia();
   }, [userSocialMediaRequest?.socialMediaId]);
 
-  //get social Media name
   const getSocialMedia = async () => {
     if (!settingsActor) {
       console.error("settingsActor is null");
@@ -42,7 +40,7 @@ const AddUserSocialPreview = () => {
     }
   };
 
-  let socialName = socialMedia?.name; // set social media name
+  let socialName = socialMedia?.name; 
 
   const handleSave = async () => {
     if (!userSocialMediaRequest || !bountyActor) {

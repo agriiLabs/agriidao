@@ -2,3 +2,9 @@
 @import "./assets/styles/style.css";
 @import "./assets/styles/gijgo.min.css";
 @import "./assets/fonts/css/fontawesome-all.min.css";
+@import "./assets/desktop_dapp/styles/bootstrap.min.css";
+@import "./assets/desktop_dapp/styles/style.css";
+@import "./assets/desktop_dapp/styles/icons.min.css";
+@import '@mdi/font/css/materialdesignicons.min.css';
+
+
