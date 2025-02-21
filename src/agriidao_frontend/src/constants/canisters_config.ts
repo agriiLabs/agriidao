@@ -35,6 +35,7 @@ export const projectsCanisterId = "xncbs-uqaaa-aaaag-at3mq-cai"
 // Tokens 
 export const USDCCanisterId = "pynoo-qqaaa-aaaag-atzuq-cai"
 export const ckUSDCe6s = 1000000
+export const ckUSDCFees = 10_000
 
 
 
@@ -42,4 +43,3 @@ type Env = "ic" | "local"
 export const network: Env = "ic"
 
 export const host = network === "ic" ? "https://icp0.io" : "http://localhost:4943"
-// export const host = network === "local" ? "http://localhost:4943" : "https://icp0.io"  

@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import getCoopActor from "./components/CoopActor";
 import {
   Coop,
+  MintingFees,
   MintUnitsArgs,
   PlatformFees,
 } from "../../../../declarations/coop_manager/coop_manager.did";
@@ -12,9 +13,11 @@ import { IcrcWallet } from "@dfinity/oisy-wallet-signer/icrc-wallet";
 import { WALLET_URL } from "../../constants/wallets";
 import { toast } from "react-toastify";
 import { Principal } from "@dfinity/principal";
-import { ckUSDCe6s, USDCCanisterId } from "../../constants/canisters_config";
+import { ckUSDCe6s, ckUSDCFees, USDCCanisterId } from "../../constants/canisters_config";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { IcrcTransferError } from "@dfinity/ledger-icrc";
+import { set } from "zod";
 
 const CoopUnitsPreview = () => {
   const location = useLocation();
@@ -26,22 +29,19 @@ const CoopUnitsPreview = () => {
   const [fees, setFees] = useState<PlatformFees[]>([]);
   const [saving, setSaving] = useState(false);
   const [unitPrice, setUnitPrice] = useState(0);
-const [managementFee, setManagementFee] = useState(0);
-const [subTotal, setSubTotal] = useState(0);
-const [coopFee, setCoopFee] = useState(0);
-const [platformFee, setPlatformFee] = useState(0);
-const [total, setTotal] = useState(0);
+  const [managementFee, setManagementFee] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [coopFee, setCoopFee] = useState(0);
+  const [platformFee, setPlatformFee] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [coopFeesDetails, setCoopFeesDetails] = useState<MintingFees | null>(null);
 
   useEffect(() => {
-    if (id) {
+    if (id && units) {
       getCoopDetails();
     }
-  }, [id]);
-  console.log("id", id);
+  }, [id, units]);
 
-  // useEffect(() => {
-  //   getFees();
-  // });
 
   const getCoopDetails = async () => {
     try {
@@ -52,42 +52,23 @@ const [total, setTotal] = useState(0);
 
       const coopActor = await getCoopActor(id);
       const coopDetails = await coopActor.getDetails();
+      const coopFees = await coopActor.getFeesDetails(units);
+      const unitPriceValue = Number(coopDetails.unitPrice) || 0;
+      const managementFeeValue = Number(coopDetails.managementFee) || 0;
 
-      if (coopDetails) {
-        setCoop(coopDetails);
-      }
+      setUnitPrice(unitPriceValue / ckUSDCe6s);
+      setManagementFee(managementFeeValue);
+      setSubTotal(Number(coopFees.subTotal) / ckUSDCe6s);
+      setCoopFeesDetails(coopFees);
+      setCoopFee(Number(coopFees.coopFee) / ckUSDCe6s);
+      setPlatformFee(Number(coopFees.platformFee) / ckUSDCe6s);
+      setTotal(Number(coopFees.totalPrice) / ckUSDCe6s);
     } catch (error) {
       console.error("Error fetching co-op details:", error);
     }
   };
 
-  // const getFees = async () => {
-  //   const coopActor = await getCoopActor(id);
-  //   const fees = await coopActor.getFeeHistory();
-  //   setFees(fees);
-  // };
 
-  useEffect(() => {
-    if (!coop) return;
-  
-    const unitPriceValue = Number(coop.unitPrice) || 0;
-    const managementFeeValue = Number(coop.managementFee) || 0;
-  
-    setUnitPrice(unitPriceValue / 100_000_000);
-    setManagementFee(managementFeeValue);
-  
-    const subTotalValue = (units * unitPriceValue) / 100_000_000;
-    const coopFeeValue = (subTotalValue * managementFeeValue) / 100_000_000;
-    const platformFeeValue = subTotalValue * 0.01;
-    const totalValue = subTotalValue + coopFeeValue + platformFeeValue;
-  
-    setSubTotal(subTotalValue);
-    setCoopFee(coopFeeValue);
-    setPlatformFee(platformFeeValue);
-    setTotal(totalValue);
-  
-  }, [coop, units]);
-  
   const handleConfirm = async () => {
     setSaving(true);
     try {
@@ -111,7 +92,8 @@ const [total, setTotal] = useState(0);
       if (!user) {
         return;
       }
-      console.log("Approving, waiting for approval");
+
+      const amount_to_mint = BigInt(total * ckUSDCe6s + ckUSDCFees);
       let res = await wallet?.approve({
         owner: account.owner,
         params: {
@@ -121,17 +103,16 @@ const [total, setTotal] = useState(0);
             owner: Principal.fromText(id),
             subaccount: [],
           },
-          amount: BigInt(total * ckUSDCe6s),
+          amount: amount_to_mint,
         },
         ledgerCanisterId: USDCCanisterId,
       });
-      console.log("approval res", res);
       if (res) {
         let mintArgs: MintUnitsArgs = {
           unitAmount: units,
           tokenAmount: BigInt(total * ckUSDCe6s),
           blockheight: res,
-          userId: user.id,
+          userId: Principal.fromText(account.owner),
         };
 
         const coopActor = await getCoopActor(id);
@@ -141,9 +122,12 @@ const [total, setTotal] = useState(0);
         toastSuccess("Units minted successfully");
         navigate("/coop");
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error("Error approving", error);
       setSaving(false);
-      console.log("Error minting units:", error);
+      if (error instanceof IcrcTransferError) {
+        console.error(error.errorType);
+      }
     }
   };
 

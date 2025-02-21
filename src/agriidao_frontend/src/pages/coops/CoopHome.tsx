@@ -12,7 +12,7 @@ import {
 import imagePath1 from "../../assets/images/bg0.png";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import getCoopActor from "./components/CoopActor";
-import DaoPill from "./components/DaoPill";
+// import DaoPill from "./components/DaoPill";
 
 const CoopHome = () => {
   const { coopIndexerActor, identity } = useAuth();
@@ -217,7 +217,7 @@ const CoopHome = () => {
                     {coop.name ?? "Unnamed Co-op"}
                   </p>
                   <p className="font-11 opacity-60">
-                    {!coop.isCommunity && <DaoPill />}
+                    {/* {!coop.isCommunity && <DaoPill />} */}
                   </p>
                 </div>
                 <div className="align-self-center ms-auto text-end">

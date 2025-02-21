@@ -86,11 +86,7 @@ export interface Response {
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, userActor, identity, logout } = useAuth();
-  
   type Result = { ok: User } | { err: string };
-
-  
-  
 
   useEffect(() => {
     if (isAuthenticated && identity && userActor) {

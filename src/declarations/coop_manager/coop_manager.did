@@ -23,6 +23,14 @@ type PlatformFees =
    timestamp: Time;
    transactionFee: nat;
  };
+type MintingFees = 
+ record {
+   coopFee: nat;
+   managementFee: nat;
+   platformFee: nat;
+   subTotal: nat;
+   totalPrice: nat;
+ };
 type MintUnitsArgs = 
  record {
    blockheight: nat;
@@ -45,6 +53,7 @@ type CoopManager =
    getAllMembers: () -> (vec CoopMember);
    getDetails: () -> (Coop) query;
    getFeeHistory: () -> (vec PlatformFees);
+   getFeesDetails: (nat) -> (MintingFees) query;
    getMemberById: (CoopMemberId) -> (CoopMember);
    getMemberVersionById: (CoopMemberId) -> (vec CoopMember);
    getMemberbyUserId: (principal) -> (CoopMember);

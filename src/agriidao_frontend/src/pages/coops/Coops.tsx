@@ -5,7 +5,7 @@ import { CoopRecord } from "../../../../declarations/coop_indexer/coop_indexer.d
 import { Link, NavLink } from "react-router-dom";
 import imagePath2 from "../../assets/images/default-user-profile.png";
 import getCoopActor from "./components/CoopActor";
-import DAOPill from "./components/DaoPill";
+// import DAOPill from "./components/DaoPill";
 
 const Coops = () => {
   const { coopIndexerActor } = useAuth();
@@ -145,7 +145,7 @@ const Coops = () => {
                   </div>
                   <div className="align-self-center">
                     <p className="mb-n1 font-18">{coop.name}</p>
-                    <p className="font-11 opacity-60">{!coop.isCommunity && <DAOPill />}</p>
+                    {/* <p className="font-11 opacity-60">{!coop.isCommunity && <DAOPill />}</p> */}
                   </div>
                   <div className="align-self-center ms-auto text-end">
                     <p className="mb-n1 font-18">
