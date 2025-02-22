@@ -138,7 +138,7 @@ const DCoopUnits = () => {
   };
 
   const formattedUnitPrice = parseFloat(
-    (Number(unitPrice) / 100_000_000).toFixed(2)
+    (Number(unitPrice) / ckUSDCe6s).toFixed(2)
   );
 
   const handleQuantityChange = (newUnits: number) => {

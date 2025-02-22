@@ -93,9 +93,9 @@ const CoopDetail = () => {
   }
 
   const managementFee = coop?.managementFee ?? 0; 
-  const formattedFee = parseFloat((Number(managementFee) / 100_000_000 * 100).toFixed(2));
+  const formattedFee = parseFloat((Number(managementFee) / ckUSDCe6s * 100).toFixed(2));
   const unitPrice = coop?.unitPrice ?? 0;
-  const formattedUnitPrice = parseFloat((Number(unitPrice) / 100_000_000).toFixed(2));
+  const formattedUnitPrice = parseFloat((Number(unitPrice) / ckUSDCe6s).toFixed(2));
 
   return (
     <> 

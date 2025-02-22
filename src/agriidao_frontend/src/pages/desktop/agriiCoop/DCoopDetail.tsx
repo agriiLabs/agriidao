@@ -38,7 +38,7 @@ const DCoopDetail = () => {
       const unitPriceValue = Number(coopDetails.unitPrice) || 0;
       const managementFeeValue = Number(coopDetails.managementFee) || 0;
 
-      setUnitPrice(unitPriceValue / 100_000_000);
+      setUnitPrice(unitPriceValue / ckUSDCe6s);
       setManagementFee(managementFeeValue / ckUSDCe6s);
 
       if (!coopDetails) {

@@ -7,6 +7,7 @@ import {
 } from "../../../../declarations/projects/projects.did";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import imagePath2 from "../../assets/images/default-user-profile.png";
+import { ckUSDCe6s } from "../../constants/canisters_config";
 
 const Projects = () => {
   const { projectsActor } = useAuth();
@@ -113,7 +114,7 @@ const Projects = () => {
             {projects &&
               projects.map((project, index) => {
                 const funding = parseFloat(
-                  (Number(project.fundingGoal) / 100_000_000).toFixed(2)
+                  (Number(project.fundingGoal) / ckUSDCe6s).toFixed(2)
                 );
 
                 return (
