@@ -34,13 +34,11 @@ const DCoops = () => {
     if (res) {
       setCoops(res);
     }
-    console.log("dao coops", res);
   };
 
   const getCoopMembers = async () => {
     let res = await coopIndexerActor?.getAllMemberships();
     if (res) {
-      console.log("coop members", res);
       const membershipCounts: { [key: string]: number } = {};
       res.forEach((membership) => {
         const coopId = membership.coopId.toText();
@@ -48,7 +46,6 @@ const DCoops = () => {
       });
 
       setComMembersCount(membershipCounts);
-      console.log("coop members count", membershipCounts);
     }
   };
 
@@ -118,7 +115,7 @@ const DCoops = () => {
                       </th>
                       <td align="left" width="40%">
                         <Link
-                          to={`/coop-detail/${coop.canisterId.toText()}`}
+                          to={`/d/coop-detail/${coop.canisterId.toText()}`}
                           className="d-flex align-items-center"
                         >
                           {/* {position.user.profile_pic ? (

@@ -152,7 +152,7 @@ const CoopDetail = () => {
                     <p className="font-14">Members</p>
                   </div>
                   <div className="ms-auto">
-                    {/* <p className="font-14">{membersCount[id ?? ""] ?? 0}</p> */}
+                    <p className="font-14">{membersCount[id ?? ""] ?? 0}</p>
                   </div>
                 </div>
               </div>

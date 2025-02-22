@@ -77,6 +77,8 @@ import DCampaignDetail from "./pages/desktop/bounty/DCampaignDetail";
 import DCoops from "./pages/desktop/agriiCoop/DCoops";
 import DProfileCreate from "./pages/desktop/profile/DProfileCreate";
 import DProfileDetail from "./pages/desktop/profile/DProfileDetail";
+import DCoopDetail from "./pages/desktop/agriiCoop/DCoopDetail";
+import DCoopUnits from "./pages/desktop/agriiCoop/DCoopUnits";
 
 export interface Response {
   err?: any;
@@ -228,12 +230,12 @@ const App = () => {
             <Route path="/d/campaigns" element={<DCampaigns />} />
             <Route path="/d/campaigns/campaign-detail/:id" element={<DCampaignDetail />} />
             <Route path="/d/coops" element={<DCoops />} />
+            <Route path="/d/coop-detail/:id" element={<DCoopDetail />} />
+            <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
             <Route element={<ProtectedRoutes />}>  
+              {/* <Route path="/d/dashboard" element={<Dashboard />} /> */}
               
-              
-              
-              {/* <Route path="/club/profile" element={<UserProfile />} /> */}
-              
+                  
               <Route path="/get-started" element={<GetStarted />} />
             </Route>
           </Route>

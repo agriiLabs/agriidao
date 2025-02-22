@@ -12,6 +12,7 @@ import imagePath11 from "../assets/images/impact.png";
 import imagePath12 from "../assets/images/transparency.png";
 import imagePath13 from "../assets/images/rewards.png";
 import { Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 const DesktopLandingPage = () => {
   const appHeight = 600;
@@ -35,12 +36,18 @@ const DesktopLandingPage = () => {
                 </p>
                 <div className="row d-flex justify-content-center">
                   <div className="d-flex gap-3">
-                    <Button className="mt-4 text-dark bg-white border-dark">
+                    <NavLink
+                      to="/d/coops"
+                      className="mt-4 text-dark btn bg-white border-dark"
+                    >
                       Start a Co-op
-                    </Button>
-                    <Button className="mt-4 text-dark bg-white border-dark">
+                    </NavLink>
+                    <NavLink
+                      to="/d/coops"
+                      className="mt-4 text-dark btn bg-white border-dark"
+                    >
                       Fund Co-ops
-                    </Button>
+                    </NavLink>
                   </div>
                 </div>
               </div>
@@ -132,9 +139,12 @@ const DesktopLandingPage = () => {
                   Your co-op remains controlled by members, ensuring fair
                   decision-making and efficient operations.
                 </p>
-                <Button className="mt-4 text-dark bg-light border-dark">
+                <NavLink
+                  to="/d/coops"
+                  className="mt-4 text-dark btn bg-white border-dark"
+                >
                   Start a Co-op
-                </Button>
+                </NavLink>
               </div>
             </div>
 
@@ -149,9 +159,12 @@ const DesktopLandingPage = () => {
                   and buying decisions. Members gain reliable data to plan
                   production and maximize profitability.
                 </p>
-                <Button className="mt-4 text-dark bg-light border-dark">
+                <NavLink
+                  to="/d/markets"
+                  className="mt-4 text-dark btn bg-white border-dark"
+                >
                   Check Market Prices
-                </Button>
+                </NavLink>
               </div>
             </div>
 
@@ -325,9 +338,12 @@ const DesktopLandingPage = () => {
           </div>
           <div className="row justify-content-center">
             <div className="col-12 text-center">
-              <Button className="mt-4 text-dark bg-light border-dark">
-                Fund a Co-op
-              </Button>
+              <NavLink
+                to="/d/coops"
+                className="mt-4 text-dark btn bg-white border-dark"
+              >
+                Fund Co-ops
+              </NavLink>
             </div>
           </div>
         </div>
