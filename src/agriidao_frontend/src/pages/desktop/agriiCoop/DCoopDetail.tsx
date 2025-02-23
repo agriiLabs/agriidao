@@ -115,7 +115,7 @@ const DCoopDetail = () => {
                   </dd>
                   <dt className="col-sm-6">Total Contributions</dt>
                   <dd className="col-sm-6 text-end">
-                    {allocatedUnits * (Number(coop?.unitPrice) ?? 0)} USDC
+                    {(allocatedUnits * (Number(coop?.unitPrice) ?? 0))/ckUSDCe6s} USDC
                   </dd>
                   <dt className="col-sm-6">Members</dt>
                   <dd className="col-sm-6 text-end">

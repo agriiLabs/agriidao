@@ -79,6 +79,14 @@ const DCoops = () => {
         <div>
           <h5 className="mb-0">Co-ops</h5>
         </div>
+        <div className="mb-0 position-relative">
+          <NavLink
+            to={`/d/start-coop/`}
+            className="btn btn-outline-dark col-sm-12"
+          >
+            Start a Co-op
+          </NavLink>
+        </div>
       </div>
 
       <div className="col-xl-12 mt-4">

@@ -35,7 +35,6 @@ const DUserSocial: FC<Props> = ({
   useEffect(() => {
     getSocialMedia();
   }, [temporaryVal]);
-  console.log("temporaryVal", temporaryVal);
 
   const getSocialMedia = async () => {
     if (!settingsActor) {

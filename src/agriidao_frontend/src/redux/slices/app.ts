@@ -19,7 +19,7 @@ import {
   Project,
   ProjectRequest,
 } from "../../../../declarations/projects/projects.did";
-import { CoopRecord } from "../../../../declarations/coop_indexer/coop_indexer.did";
+import { CoopRecord, CoopRequest } from "../../../../declarations/coop_indexer/coop_indexer.did";
 import { Country } from "../../../../declarations/settings/settings.did";
 
 export interface GlobalState {
@@ -36,6 +36,7 @@ export interface GlobalState {
   projectRequest: ProjectRequest | null;
   coopRecord: CoopRecord[] | null;
   country: Country | null;
+  coopRequest: CoopRequest | null;
 }
 
 const initialState: GlobalState = {
@@ -52,6 +53,7 @@ const initialState: GlobalState = {
   projectRequest: null,
   coopRecord: null,
   country: null,
+  coopRequest: null,
 };
 
 export const appSlice = createSlice({
@@ -118,6 +120,9 @@ export const appSlice = createSlice({
     setCountry: (state, action: PayloadAction<Country | null>) => {
       state.country = action.payload;
     },
+    setCoopRequest: (state, action: PayloadAction<CoopRequest | null>) => {
+      state.coopRequest = action.payload;
+    },
   },
 });
 
@@ -135,6 +140,7 @@ export const {
   setProjectRequest,
   setCoopRecord,
   setCountry,
+  setCoopRequest,
 } = appSlice.actions;
 
 export default appSlice.reducer;

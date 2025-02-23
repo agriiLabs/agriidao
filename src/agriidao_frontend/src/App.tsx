@@ -79,6 +79,9 @@ import DProfileCreate from "./pages/desktop/profile/DProfileCreate";
 import DProfileDetail from "./pages/desktop/profile/DProfileDetail";
 import DCoopDetail from "./pages/desktop/agriiCoop/DCoopDetail";
 import DCoopUnits from "./pages/desktop/agriiCoop/DCoopUnits";
+import DCoopCreate from "./pages/desktop/agriiCoop/DCoopCreate";
+import DCoopCreatePreview from "./pages/desktop/agriiCoop/DCoopCreatePreview";
+import Dashboard from "./pages/desktop/Dashboard";
 
 export interface Response {
   err?: any;
@@ -88,6 +91,8 @@ export interface Response {
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, userActor, identity, logout } = useAuth();
+  const [currentStep, setCurrentStep] = useState(1);
+
   type Result = { ok: User } | { err: string };
 
   useEffect(() => {
@@ -95,8 +100,7 @@ const App = () => {
       (async () => {
         const _user = await userActor.getUserByCaller();
           if (_user && "ok" in _user) {
-            // Type guard to check if the 'ok' property exists
-            dispatch(setUser(_user.ok)); // Set the user object to the redux global state            
+            dispatch(setUser(_user.ok));             
           } else {
             const user: User = {
               id: identity.getPrincipal(),
@@ -222,20 +226,21 @@ const App = () => {
             <Route index element={<DesktopLandingPage />} />
             <Route path="/home-dapp" element={<TestHome />} />
             <Route path="/d/markets" element={<DMarketPrices />} />
-            <Route path="/d/profile" element={<DProfile />} />
-            <Route path="/d/profile-create" element={<DProfileCreate />} />
-            <Route path="/d/profile-detail/" element={<DProfileDetail />} />
             <Route path="/d/leaderboard" element={<DLeaderboard />} />
-            <Route path="/d/rewards" element={<MyRewards />} />
             <Route path="/d/campaigns" element={<DCampaigns />} />
             <Route path="/d/campaigns/campaign-detail/:id" element={<DCampaignDetail />} />
             <Route path="/d/coops" element={<DCoops />} />
-            <Route path="/d/coop-detail/:id" element={<DCoopDetail />} />
-            <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
+            <Route path="/d/coop-detail/:id" element={<DCoopDetail />} />    
             <Route element={<ProtectedRoutes />}>  
-              {/* <Route path="/d/dashboard" element={<Dashboard />} /> */}
-              
-                  
+              <Route path="/d/dashboard" element={<Dashboard />} />
+              <Route path="/d/profile" element={<DProfile />} />
+              <Route path="/d/profile-create" element={<DProfileCreate />} />
+              <Route path="/d/profile-detail/" element={<DProfileDetail />} />
+              <Route path="/d/rewards" element={<MyRewards />} />
+              <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
+              <Route path="/d/start-coop" element={<DCoopCreate />} />
+              <Route path="/d/start-coop/preview" element={<DCoopCreatePreview />} />
+
               <Route path="/get-started" element={<GetStarted />} />
             </Route>
           </Route>

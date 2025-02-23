@@ -77,10 +77,10 @@ const DCampaignSub: FC<Props> = ({ campaignSub }) => {
   return (
     <tr>
       <td className="p-3">
-        <span className="ms-2">{task?.task}</span>
+        <span>{task?.task}</span>
       </td>
-      <td className="text-center p-3">{getStatus(campaignSub.status)}</td>
-      <td className="text-center p-3">
+      <td className="p-3">{getStatus(campaignSub.status)}</td>
+      <td className="p-3">
         {formatNanoDate(Number(campaignSub.timeStamp))}
       </td>
     </tr>

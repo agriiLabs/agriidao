@@ -21,19 +21,24 @@ const SideBar = () => {
         <ul className="sidebar-menu">
           <li className={`sidebar-dropdown ${location.pathname === "/d/dashboard" ? "active" : ""}`}>
             <NavLink to="/d/dashboard" className="nav-item">
-              <i className="ti ti-home me-2"></i>Yoma AI
+              <i className="mdi mdi-view-dashboard me-2"></i>Dashboard
+            </NavLink>
+          </li>
+          <li className={`sidebar-dropdown ${location.pathname === "/d/yoma" ? "active" : ""}`}>
+            <NavLink to="/d/yoma" className="nav-item">
+              <i className="mdi mdi-robot me-2"></i>Yoma AI
             </NavLink>
           </li>
 
           <li className={`sidebar-dropdown ${location.pathname === "/d/coops" ? "active" : ""}`}>
             <NavLink to="/d/coops" className="nav-item">
-              <i className="ti ti-user me-2"></i>Co-ops
+              <i className="mdi mdi-account-group me-2"></i>Co-ops
             </NavLink>
           </li>
 
           <li className={`sidebar-dropdown ${location.pathname === "/d/markets" ? "active" : ""}`}>
             <NavLink to="/d/markets" className="nav-item">
-              <i className="mdi mdi-cart me-2"></i>Market Prices
+              <i className="mdi mdi-chart-line me-2"></i>Market Prices
             </NavLink>
           </li>
 

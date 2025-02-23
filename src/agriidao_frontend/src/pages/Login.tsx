@@ -1,5 +1,5 @@
 import imagePath from "../assets/images/agriidao-logo.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/Context";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -8,15 +8,32 @@ const Login = () => {
   const { login, logout, isAuthenticated } = useAuth();
   const query = new URLSearchParams(useLocation().search);
   const referralCode = query.get('referralCode');
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/d/profile");
-    }
-  }, [isAuthenticated, navigate, logout]);
+    const checkDeviceAndRedirect = () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      setIsDesktop(!isMobile);
+  
+      if (isAuthenticated) {
+        if (!isMobile) {
+          navigate("/d/profile"); 
+        } else {
+          navigate("/profile"); 
+        }
+      }
+    };
+  
+    checkDeviceAndRedirect();
+  
+    const resizeListener = () => checkDeviceAndRedirect();
+    window.addEventListener("resize", resizeListener);
+  
+    return () => window.removeEventListener("resize", resizeListener);
+  }, [isAuthenticated, navigate]);
+  
 
   useEffect(() => {
-    // Store the referral code in localStorage for later retrieval after authentication
     if (referralCode) {
       localStorage.setItem('referralCode', referralCode);
     }
@@ -48,11 +65,7 @@ const Login = () => {
                     </button>
                   </div>
 
-                  <div className="text-center w-75 m-auto">
-                    {/* {isAuthenticated === false && (
-                      <div>You are not authorised to access this DApp.</div>
-                    )} */}
-
+                  <div className="text-center w-75 m-auto">                    
                     {isAuthenticated === null && (
                       <h3>Checking authorization</h3>
                     )}
@@ -76,14 +89,14 @@ const Login = () => {
                     Identity. An Internet ID is a secure and private way to
                     access web3 applications. 
                     
-                    <br/><br/>It is a decentralised identity
+                    <br/><br/>It is a decentralized identity
                     controlled by you, allowing you to sign in to web3
                     applications and interact with smart contracts. This ensures
                     your privacy and protects your data, providing a seamless
                     and secure login experience. 
                     
                     <br/><br/>Welcome to a new era of secure
-                    and decentralised access!
+                    and decentralized access!
                   </p>
                   <div className="text-center m-auto">
                     <button
