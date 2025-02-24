@@ -21,7 +21,7 @@ const SideBar = () => {
         <ul className="sidebar-menu">
           <li className={`sidebar-dropdown ${location.pathname === "/d/dashboard" ? "active" : ""}`}>
             <NavLink to="/d/dashboard" className="nav-item">
-              <i className="mdi mdi-view-dashboard me-2"></i>Dashboard
+              <i className="mdi mdi-view-dashboard me-2"></i>My Portfolio
             </NavLink>
           </li>
           <li className={`sidebar-dropdown ${location.pathname === "/d/yoma" ? "active" : ""}`}>
@@ -30,10 +30,24 @@ const SideBar = () => {
             </NavLink>
           </li>
 
-          <li className={`sidebar-dropdown ${location.pathname === "/d/coops" ? "active" : ""}`}>
-            <NavLink to="/d/coops" className="nav-item">
+          <li className={`sidebar-dropdown ${activeSubmenu === "co-ops" ? "active" : ""}`}>
+            <a href="#" onClick={() => toggleSubmenu("co-ops")}>
               <i className="mdi mdi-account-group me-2"></i>Co-ops
-            </NavLink>
+            </a>
+            <div className={`sidebar-submenu ${activeSubmenu === "social-rewards" ? "show" : ""}`}>
+              <ul>
+                <li>
+                  <NavLink to="/d/coops" className="sub-menu-item">
+                    Co-ops
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/d/projects" className="sub-menu-item">
+                    Projects
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
           </li>
 
           <li className={`sidebar-dropdown ${location.pathname === "/d/markets" ? "active" : ""}`}>
@@ -42,6 +56,7 @@ const SideBar = () => {
             </NavLink>
           </li>
 
+          
           <li className={`sidebar-dropdown ${activeSubmenu === "social-rewards" ? "active" : ""}`}>
             <a href="#" onClick={() => toggleSubmenu("social-rewards")}>
               <i className="mdi mdi-trophy me-2"></i>Social Rewards
@@ -67,7 +82,6 @@ const SideBar = () => {
             </div>
           </li>
 
-          {/* My Profile */}
           <li className={`sidebar-dropdown ${location.pathname === "/d/profile" ? "active" : ""}`}>
             <NavLink to="/d/profile" className="nav-item">
               <i className="mdi mdi-account me-2"></i>My Profile
