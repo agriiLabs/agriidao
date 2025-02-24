@@ -85,7 +85,6 @@ const MemberActivity = () => {
           );
 
         const unitPrice = coop?.unitPrice ?? 0;
-        // const tokenPrice = coop?.tokenPrice ?? 0; :TODO: //dynamically retreieve token price from the market
         const tokenPrice = 1;
         const transactionsWithUsdValue = transactions?.map((tx) => {
           const usdValue =

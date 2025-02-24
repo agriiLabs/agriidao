@@ -5,7 +5,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CoopRequest } from "../../../../../declarations/coop_indexer/coop_indexer.did";
-import { uploadFile } from "../../../hooks/storage/functions";
 import { useDispatch } from "react-redux";
 import { setCoopRequest } from "../../../redux/slices/app";
 import DCoopCreatePreview from "./DCoopCreatePreview";

@@ -1,8 +1,18 @@
 type Time = int;
-type Result = 
+type Result_2 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result_1 = 
  variant {
    err: text;
    ok: principal;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: CanisterStatusResult;
  };
 type MembershipRecordId = text;
 type MembershipRecord = 
@@ -13,21 +23,37 @@ type MembershipRecord =
    timestamp: Time;
    userId: principal;
  };
+type LogVisibility = 
+ variant {
+   allowed_viewers: vec principal;
+   controllers;
+   public;
+ };
+type DefiniteCanisterSettings = 
+ record {
+   compute_allocation: nat;
+   controllers: vec principal;
+   freezing_threshold: nat;
+   log_visibility: LogVisibility;
+   memory_allocation: nat;
+   reserved_cycles_limit: nat;
+   wasm_memory_limit: nat;
+ };
 type CoopRequest = 
  record {
-   availableUnit: int;
+   availableUnit: nat;
    description: text;
    isCommunity: bool;
    lockPeriod: int;
-   managementFee: float64;
-   maxValue: float64;
+   managementFee: nat;
+   maxValue: nat;
    name: text;
    payoutFrequency: int;
    summary: text;
    ticker: text;
-   totalUnit: int;
+   totalUnit: nat;
    unitImage: opt text;
-   unitPrice: float64;
+   unitPrice: nat;
  };
 type CoopRecord = 
  record {
@@ -36,15 +62,43 @@ type CoopRecord =
    isCommunity: bool;
    name: text;
  };
+type CanisterStatusResult = 
+ record {
+   cycles: nat;
+   idle_cycles_burned_per_day: nat;
+   memory_size: nat;
+   module_hash: opt blob;
+   query_stats:
+    record {
+      num_calls_total: nat;
+      num_instructions_total: nat;
+      request_payload_bytes_total: nat;
+      response_payload_bytes_total: nat;
+    };
+   reserved_cycles: nat;
+   settings: DefiniteCanisterSettings;
+   status: variant {
+             running;
+             stopped;
+             stopping;
+           };
+ };
+type AddControllerArgs = 
+ record {
+   canister: principal;
+   controller: principal;
+ };
 service : {
+  addContoller: (AddControllerArgs) -> (Result_2);
   addMembershipRecord: (MembershipRecord) -> (bool);
-  createCoOpCanister: (CoopRequest) -> (Result);
+  createCoOpCanister: (CoopRequest) -> (Result_1);
   getAllMemberships: () -> (vec MembershipRecord);
   getCommunityCoops: () -> (vec CoopRecord);
+  getCoopCanisterStatus: (principal) -> (Result);
   getCreatedCanisters: () -> (vec CoopRecord) query;
   getDaoCoops: () -> (vec CoopRecord);
   getMembership: (MembershipRecordId) -> (MembershipRecord);
-  getMembershipByCaller: (principal) -> (vec MembershipRecord);
+  getMembershipByCaller: () -> (vec MembershipRecord);
   getMembershipsByCoopId: (principal) -> (vec MembershipRecord) query;
   updateMembershipRecord: (MembershipRecordId) -> (MembershipRecord);
 }

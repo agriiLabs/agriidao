@@ -62,10 +62,10 @@ const DProjectDetail = () => {
             return;
         }
         try {
-            const res = await coopIndexerActor?.getCoopById(project.coop);
-            if (res) {
-                setCoop(res.name);
-            }
+            // const res = await coopIndexerActor?.getCoopById(project.coop);
+            // if (res) {
+            //     setCoop(res.name);
+            // }
         } catch (error) {
             console.error("Error fetching coop:", error);
         }
