@@ -67,7 +67,6 @@ import AddProject from "./pages/projects/AddProject";
 import AddProjectPreview from "./pages/projects/AddProjectPreview";
 import StartProject from "./pages/projects/StartProject";
 import DesktopLandingPage from "./pages/DesktopHome";
-import TestHome from "./pages/desktop/TestHome";
 import DMarketPrices from "./pages/desktop/agriiPrice/DMarketPrices";
 import DProfile from "./pages/desktop/profile/DProfile";
 import DLeaderboard from "./pages/desktop/bounty/DLeaderboard";
@@ -81,7 +80,7 @@ import DCoopDetail from "./pages/desktop/agriiCoop/DCoopDetail";
 import DCoopUnits from "./pages/desktop/agriiCoop/DCoopUnits";
 import DCoopCreate from "./pages/desktop/agriiCoop/DCoopCreate";
 import DCoopCreatePreview from "./pages/desktop/agriiCoop/DCoopCreatePreview";
-import Dashboard from "./pages/desktop/Dashboard";
+import Dashboard from "./pages/desktop/DPortfolio";
 import DProjects from "./pages/desktop/projects/DProjects";
 import DProjectDetail from "./pages/desktop/projects/DProjectDetail";
 import DProjectCreate from "./pages/desktop/projects/DProjectCreate";
@@ -228,7 +227,6 @@ const App = () => {
 
         <Route element={<Layout />}>
             <Route index element={<DesktopLandingPage />} />
-            <Route path="/home-dapp" element={<TestHome />} />
             <Route path="/d/markets" element={<DMarketPrices />} />
             <Route path="/d/leaderboard" element={<DLeaderboard />} />
             <Route path="/d/campaigns" element={<DCampaigns />} />
