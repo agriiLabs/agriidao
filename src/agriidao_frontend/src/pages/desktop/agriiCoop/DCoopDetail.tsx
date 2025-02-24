@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../../utils/Types";
 import { Coop } from "../../../../../declarations/coop_manager/coop_manager.did";
 import { Principal } from "@dfinity/principal";
-import imagePath2 from "../../assets/images/default-user-profile.png";
+import imagePath2 from "../../../assets/images/default-user-profile.png";
 import getCoopActor from "../../coops/components/CoopActor";
 import { ckUSDCe6s } from "../../../constants/canisters_config";
 
@@ -104,8 +104,15 @@ const DCoopDetail = () => {
         <div className="col-xl-4">
           <div className="col-xl-12 mt-4">
             <div className="card rounded shadow border-0 p-4">
-              <div className="d-flex justify-content-between ">
-                <h5 className="mb-0">{coop?.name}</h5>
+              <div className="d-flex">
+                <img
+                  src={imagePath2}
+                  width="35"
+                  className="rounded-circle mt- shadow-xl preload-img"
+                  alt="Default Co-op Image"
+                  style={{ marginRight: "15px" }}
+                />
+                <h5 className="mb-0 mt-1">{coop?.name}</h5>
               </div>
               <div className="mt-4">
                 <dl className="row">
@@ -115,23 +122,62 @@ const DCoopDetail = () => {
                   </dd>
                   <dt className="col-sm-6">Total Contributions</dt>
                   <dd className="col-sm-6 text-end">
-                    {(allocatedUnits * (Number(coop?.unitPrice) ?? 0))/ckUSDCe6s} USDC
+                    {(allocatedUnits * (Number(coop?.unitPrice) ?? 0)) /
+                      ckUSDCe6s}{" "}
+                    USDC
                   </dd>
                   <dt className="col-sm-6">Members</dt>
                   <dd className="col-sm-6 text-end">
                     {membersCount[id ?? ""] ?? 0}
+                  </dd>
+                  <dt className="col-sm-4">Canister ID</dt>
+                  <dd className="col-sm-8 text-end">
+                    {coop?.id ? coop?.id.toString() : "-"}
                   </dd>
                 </dl>
                 <div
                   className="mt-4"
                   dangerouslySetInnerHTML={{ __html: coop?.summary || "" }}
                 ></div>
+
                 <div className="mt-4">
                   <NavLink
-                    to={`/d/coop-units/${id}`}
+                    to={`/d/coop-projects/${id}`}
                     className="btn btn-outline-dark col-sm-12"
                   >
-                    Get {coop?.ticker} Units
+                    Summary
+                  </NavLink>
+                </div>
+                <div className="mt-2">
+                  <NavLink
+                    to={`/d/coop-projects/${id}`}
+                    className="btn btn-outline-dark col-sm-12"
+                  >
+                    Projects
+                  </NavLink>
+                </div>
+                <div className="mt-2">
+                  <NavLink
+                    to={`/d/coop-projects/${id}`}
+                    className="btn btn-outline-dark col-sm-12"
+                  >
+                    Treasury
+                  </NavLink>
+                </div>
+                <div className="mt-2">
+                  <NavLink
+                    to={`/d/coop-projects/${id}`}
+                    className="btn btn-outline-dark col-sm-12"
+                  >
+                    Proposals
+                  </NavLink>
+                </div>
+                <div className="mt-2">
+                  <NavLink
+                    to={`/d/coop-projects/${id}`}
+                    className="btn btn-outline-dark col-sm-12"
+                  >
+                    Members
                   </NavLink>
                 </div>
               </div>

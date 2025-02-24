@@ -10,23 +10,29 @@ const DProfileClick: React.FC = () => {
 
   const handleProfileClick = () => {
     if (!user) {
-      navigate("/login");
+      navigate("/d/login");
     } else if (!user?.username) {
-      navigate("/update-username");
+      navigate("/d/update-username");
     } else {
-      navigate("/profile");
+      navigate("/d/profile");
     }
   };
 
   return (
-    <button onClick={handleProfileClick} className="header-icon header-icon-4">
+    <button
+      onClick={handleProfileClick}
+      className="btn btn-soft-light p-0"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
       <div>
         <img
           className="avatar avatar-ex-small rounded"
           src={imagePath2}
           data-src={"#"}
-          width="25"
-          height="25"
+          width="15"
+          height="15"
           alt={"Default user profile pic"}
         />
       </div>
