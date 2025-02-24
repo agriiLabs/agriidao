@@ -3,6 +3,7 @@ import { useAuth } from "../../../hooks/Context";
 import {
   Project,
   ProjectOwner,
+  ProjectProjections,
 } from "../../../../../declarations/projects/projects.did";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import imagePath2 from "../../../assets/images/default-user-profile.png";
@@ -14,6 +15,7 @@ const DProjects = () => {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [ownerExists, setOwnerExists] = useState(false);
+  const [projectProjections, setProjectProjections] = useState<{ [key: string]: ProjectProjections[] } | null>(null);
 
   useEffect(() => {
     if (projectsActor) {
@@ -45,6 +47,41 @@ const DProjects = () => {
   };
 
   useEffect(() => {
+    if (projects) {
+      getProjectProjections();
+    }
+  }, [projects]);       
+
+
+  const getProjectProjections = async () => {
+    if (!projects || projects.length === 0) {
+        console.error("No projects available");
+        return;
+    }
+
+    try {
+        const projectionsMap: { [key: string]: ProjectProjections[] } = {}; 
+
+        for (const project of projects) {
+            const res = await projectsActor?.getProjectProjectionsByProjectId(project.id);
+            if (res) {
+                projectionsMap[project.id] = Array.isArray(res) ? res : [res];
+            }
+        }
+
+        setProjectProjections(projectionsMap);
+    } catch (error) {
+        console.error("Error fetching project projections:", error);
+    }
+};
+
+
+
+console.log("projects", projects);
+console.log("projectProjections", projectProjections);
+
+
+  useEffect(() => {
     if (owner) {
       setOwnerExists(true);
     }
@@ -72,7 +109,7 @@ const DProjects = () => {
     <>
       <div className="d-flex align-items-center justify-content-between">
         <div>
-          <h5 className="mb-0">Co-ops</h5>
+          <h5 className="mb-0">Projects</h5>
         </div>
         <div className="mb-0 position-relative">
           <NavLink
@@ -149,7 +186,7 @@ const DProjects = () => {
                           : "Unknown"}
                       </td>
                       <td className=" p-4">
-                        {parseFloat(Number(project).toString())}
+                        {Number(projectProjections && projectProjections[project.id]?.[0]?.royaltySplit).toString()}
                         {} USDC
                       </td>
                       

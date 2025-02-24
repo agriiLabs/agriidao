@@ -7,12 +7,10 @@ import {
 } from "../../../../declarations/projects/projects.did";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import imagePath2 from "../../assets/images/default-user-profile.png";
-import { ckUSDCe6s } from "../../constants/canisters_config";
 
 const Projects = () => {
   const { projectsActor } = useAuth();
   const navigate = useNavigate();
-
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [ownerExists, setOwnerExists] = useState(false);
@@ -38,8 +36,8 @@ const Projects = () => {
     }
     try {
       const res = await projectsActor.getProjectOwner();
-      if ("ok" in res) {
-        setOwner(res.ok as ProjectOwner);
+      if (res) {
+        setOwner(res);
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
@@ -51,7 +49,6 @@ const Projects = () => {
       setOwnerExists(true);
     }
   }, [owner]);
-
   const handleStartProject = async () => {
     if (!projectsActor) {
       console.error("projectsActor is null");
@@ -59,11 +56,10 @@ const Projects = () => {
     }
 
     try {
-      const res = await projectsActor.projectOwnerCheck();
-      if (res) {
+      if (owner) {
         navigate(`/start-project/`);
       } else {
-      navigate(`/add-project-owner`);
+        navigate(`/add-project-owner`);
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
@@ -114,7 +110,7 @@ const Projects = () => {
             {projects &&
               projects.map((project, index) => {
                 const funding = parseFloat(
-                  (Number(project.fundingGoal) / ckUSDCe6s).toFixed(2)
+                  Number(project.fundingGoal).toFixed(2)
                 );
 
                 return (

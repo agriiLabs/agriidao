@@ -90,6 +90,7 @@ const DCoopCreate = () => {
       } catch (error) {
         console.error("Error saving Coop details:", error);
       }
+      console.log(data);
   };
 
   //   const uploadAsset = async () => {

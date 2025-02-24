@@ -37,7 +37,6 @@ const DProjectDetail = () => {
     useEffect(() => {
         if (project) { 
             getProjectProjections();
-            getCoop();
         }
     }, [project]); 
     
@@ -56,20 +55,7 @@ const DProjectDetail = () => {
         }
     };
 
-    const getCoop = async () => {
-        if (!project) {
-            console.error("Project is null");
-            return;
-        }
-        try {
-            // const res = await coopIndexerActor?.getCoopById(project.coop);
-            // if (res) {
-            //     setCoop(res.name);
-            // }
-        } catch (error) {
-            console.error("Error fetching coop:", error);
-        }
-    };
+    
     
   return (
      <>

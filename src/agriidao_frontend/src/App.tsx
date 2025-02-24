@@ -84,6 +84,8 @@ import DCoopCreatePreview from "./pages/desktop/agriiCoop/DCoopCreatePreview";
 import Dashboard from "./pages/desktop/Dashboard";
 import DProjects from "./pages/desktop/projects/DProjects";
 import DProjectDetail from "./pages/desktop/projects/DProjectDetail";
+import DProjectCreate from "./pages/desktop/projects/DProjectCreate";
+import DProjectCreatePreview from "./pages/desktop/projects/DProjectCreatePreview";
 
 export interface Response {
   err?: any;
@@ -235,6 +237,7 @@ const App = () => {
             <Route path="/d/coop-detail/:id" element={<DCoopDetail />} /> 
             <Route path="/d/projects" element={<DProjects />} />  
             <Route path="/d/project-detail/:id" element={<DProjectDetail />} />
+            
             <Route element={<ProtectedRoutes />}>  
               <Route path="/d/dashboard" element={<Dashboard />} />
               <Route path="/d/profile" element={<DProfile />} />
@@ -244,6 +247,8 @@ const App = () => {
               <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
               <Route path="/d/start-coop" element={<DCoopCreate />} />
               <Route path="/d/start-coop/preview" element={<DCoopCreatePreview />} />
+              <Route path="/d/start-project" element={<DProjectCreate />} />
+              <Route path="/d/start-project/preview" element={<DProjectCreatePreview />} />
               
               {/* <Route path="/get-started" element={<GetStarted />} /> */}
             </Route>
