@@ -11,13 +11,21 @@ import {
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "../coops/components/CoopActor";
 
+type CoopBalance = {
+  coop: {
+    id: string;
+    name: string;
+  }
+  balance: number;
+};
+
 const Dashboard = () => {
   const { coopIndexerActor, identity } = useAuth();
   const navigate = useNavigate();
   const [memberCoops, setMemberCoops] = useState<MembershipRecord[] | null>(
     null
   );
-  const [coopBalances, setCoopBalances] = useState<{ [key: string]: any }>({});
+  const [coopBalances, setCoopBalances] = useState<CoopBalance[]>([]);
   const [coopDetails, setCoopDetails] = useState<Record<string, Coop>>({});
 
   useEffect(() => {
@@ -84,7 +92,7 @@ const Dashboard = () => {
   let userId = identity?.getPrincipal();
 
   const getCoopMemberDetails = async () => {
-    const balances: { [key: string]: number } = {};
+    let balances : CoopBalance[] = [];
 
     for (const coop of memberCoops ?? []) {
       try {
@@ -94,16 +102,26 @@ const Dashboard = () => {
           const coopBalance = await coopActor.getMemberbyUserId(userId);
           console.log(`Balance for ${coop.coopId}:`, coopBalance);
 
-          balances[coop.coopId.toText()] = coopBalance
-            ? Number(coopBalance)
-            : 0;
+          balances.push({
+            coop: {
+              id: coop.coopId.toText(),
+              name: coopDetails[coop.coopId.toText()]?.name ?? "Unknown Co-op",
+            },
+            balance: Number(coopBalance.balance),
+          });
         }
       } catch (error) {
         console.warn(
           `Failed to fetch balance for co-op ${coop.coopId}:`,
           error
         );
-        balances[coop.coopId.toText()] = 0;
+        balances.push({
+          coop: {
+            id: coop.coopId.toText(),
+            name: coopDetails[coop.coopId.toText()]?.name ?? "Unknown Co-op",
+          },
+          balance: 0,
+        });
       }
     }
     console.log("Final Balances:", balances);
@@ -111,13 +129,12 @@ const Dashboard = () => {
   };
 
   const totalBalance = () => {
-    return Object.keys(coopBalances)
-      .reduce((sum, coopId) => {
-        const balance = Number(coopBalances[coopId]) || 0;
-        const unitPrice = Number(coopDetails[coopId]?.unitPrice) || 0;
-        return sum + balance * unitPrice;
-      }, 0)
-      .toFixed(2);
+    return coopBalances.reduce((sum, coopBalance) => {
+      const coopDetail = coopDetails[coopBalance.coop.id];
+      const balance = BigInt(coopBalance.balance);
+      const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
+      return sum + balance * unitPrice;
+    }, BigInt(0)).toString();
   };
 
   useEffect(() => {
@@ -204,7 +221,9 @@ const Dashboard = () => {
                     memberCoops.map((coop) => {
                       const coopDetail = coopDetails?.[coop.coopId.toText()];
                       const balance = BigInt(
-                        coopBalances?.[coop.coopId.toText()] ?? 0
+                        coopBalances.find(
+                          (coopBalance) => coopBalance.coop.id === coop.coopId.toText()
+                        )?.balance ?? 0
                       );
                       const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
                       const total = balance * unitPrice;
