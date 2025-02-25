@@ -18,7 +18,7 @@ const Dashboard = () => {
     null
   );
   const [coopBalances, setCoopBalances] = useState<{ [key: string]: any }>({});
-  const [coopDetails, setCoopDetails] = useState<Coop[] | null>(null);
+  const [coopDetails, setCoopDetails] = useState<Record<string, Coop>>({});
 
   useEffect(() => {
     if (coopIndexerActor) {
@@ -47,17 +47,18 @@ const Dashboard = () => {
         return;
       }
 
-      const detailsList = [];
+      const detailsList: Record<string, Coop> = {};
       for (const coop of memberCoops) {
         try {
           const coopActor = await getCoopActor(coop.coopId.toText());
           const coopDetails = await coopActor.getDetails();
 
           if (coopDetails) {
-            detailsList.push({
-              coopId: coop.coopId.toText(),
-              ...coopDetails,
-            });
+            console.log(
+              `Co-op Details for ${coop.coopId.toText()}:`,
+              coopDetails
+            );
+            detailsList[coop.coopId.toText()] = coopDetails;
           }
         } catch (error) {
           console.error(
@@ -105,28 +106,19 @@ const Dashboard = () => {
         balances[coop.coopId.toText()] = 0;
       }
     }
-
+    console.log("Final Balances:", balances);
     setCoopBalances(balances);
   };
 
-  const totalBalance = useMemo(() => {
-    if (!coopBalances || Object.keys(coopBalances).length === 0) return "0";
-
-    let totalUsdValue = 0;
-
-    for (const coopId in coopBalances) {
-      const userBalance = coopBalances[coopId] || 0;
-      const coopDetail = coopDetails?.find(
-        (detail: Coop) => detail.id.toText() === coopId
-      );
-
-      const unitPrice = coopDetail ? Number(coopDetail.unitPrice) || 0 : 0;
-
-      totalUsdValue += userBalance * unitPrice;
-    }
-
-    return totalUsdValue.toFixed(2);
-  }, [coopBalances, coopDetails]);
+  const totalBalance = () => {
+    return Object.keys(coopBalances)
+      .reduce((sum, coopId) => {
+        const balance = Number(coopBalances[coopId]) || 0;
+        const unitPrice = Number(coopDetails[coopId]?.unitPrice) || 0;
+        return sum + balance * unitPrice;
+      }, 0)
+      .toFixed(2);
+  };
 
   useEffect(() => {
     if (memberCoops && memberCoops.length > 0) {
@@ -159,7 +151,7 @@ const Dashboard = () => {
             <div className="card rounded shadow border-0 p-4">
               <div className="d-flex justify-content-between mb-0 row">
                 <h5 className="mb-0 col-sm-6">My Balance</h5>
-                <h5 className="mb-0 col-sm-6 text-end">{totalBalance}</h5>
+                <h5 className="mb-0 col-sm-6 text-end">{totalBalance()}</h5>
               </div>
               <div className="mt-4">
                 <dl className="row">
@@ -183,7 +175,7 @@ const Dashboard = () => {
               </div>
               <div className="mt-2">
                 <NavLink
-                  to={`/d/coop-projects/`}
+                  to={`/d/projects/manager/`}
                   className="btn btn-outline-dark col-sm-12"
                 >
                   Project Manager
@@ -210,28 +202,20 @@ const Dashboard = () => {
                 <tbody>
                   {memberCoops && memberCoops.length > 0 ? (
                     memberCoops.map((coop) => {
-                      const coopDetail = coopDetails
-                        ? coopDetails.find(
-                            (detail) =>
-                              detail.id.toText() === coop.coopId.toText()
-                          )
-                        : null;
+                      const coopDetail = coopDetails?.[coop.coopId.toText()];
+                      const balance = BigInt(
+                        coopBalances?.[coop.coopId.toText()] ?? 0
+                      );
+                      const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
+                      const total = balance * unitPrice;
 
                       return (
                         <tr key={coop.coopId.toText()}>
                           <td className="p-3">
                             {coopDetail?.name ?? "Unknown Co-op"}
                           </td>
-                          <td className="p-3">
-                            {coopBalances[coop.coopId.toText()] ?? "0"}
-                          </td>
-                          <td className="p-3">
-                            {(
-                              Number(coopBalances[coop.coopId.toText()] ?? 0) *
-                              Number(coopDetail?.unitPrice ?? 0)
-                            ).toFixed(2)}{" "}
-                            USDC
-                          </td>
+                          <td className="p-3">{balance.toString()}</td>
+                          <td className="p-3">{total.toString()} USDC</td>
                         </tr>
                       );
                     })
