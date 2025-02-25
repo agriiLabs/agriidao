@@ -85,6 +85,7 @@ import DProjects from "./pages/desktop/projects/DProjects";
 import DProjectDetail from "./pages/desktop/projects/DProjectDetail";
 import DProjectCreate from "./pages/desktop/projects/DProjectCreate";
 import DProjectCreatePreview from "./pages/desktop/projects/DProjectCreatePreview";
+import DProjectManager from "./pages/desktop/projects/DProjectManager";
 
 export interface Response {
   err?: any;
@@ -247,6 +248,7 @@ const App = () => {
               <Route path="/d/start-coop/preview" element={<DCoopCreatePreview />} />
               <Route path="/d/start-project" element={<DProjectCreate />} />
               <Route path="/d/start-project/preview" element={<DProjectCreatePreview />} />
+              <Route path="/d/projects/manager" element={<DProjectManager />} />
               
               {/* <Route path="/get-started" element={<GetStarted />} /> */}
             </Route>

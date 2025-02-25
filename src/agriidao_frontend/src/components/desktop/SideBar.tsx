@@ -87,6 +87,26 @@ const SideBar = () => {
               <i className="mdi mdi-account me-2"></i>My Profile
             </NavLink>
           </li>
+
+          <li className={`sidebar-dropdown ${activeSubmenu === "manager" ? "active" : ""}`}>
+            <a href="#" onClick={() => toggleSubmenu("manager")}>
+              <i className="mdi mdi-account-tie me-2"></i>Manager
+            </a>
+            <div className={`sidebar-submenu ${activeSubmenu === "manager" ? "show" : ""}`}>
+              <ul>
+                <li>
+                  <NavLink to="/d/coops/manager" className="sub-menu-item">
+                    Co-op Manager
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/d/projects/manager" className="sub-menu-item">
+                    Project Manager
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

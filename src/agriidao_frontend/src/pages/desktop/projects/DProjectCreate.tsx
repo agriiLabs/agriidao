@@ -100,7 +100,6 @@ const DProjectCreate = () => {
             throw new Error("User ID is required but is undefined.");
         }
 
-        // Find coop details
         const getCoopDetails = coops?.find(
             (coop) => coop.canisterId.toText() === data.coop
         );
@@ -112,14 +111,12 @@ const DProjectCreate = () => {
 
         const coopPrincipal = Principal.fromText(data.coop); 
 
-        // Find country details
         const country = countries?.find((country) => country.code === data.location);
         if (!country) {
             console.error("No country found");
             return;
         }
 
-        // Create the project request object
         let project: ProjectRequest = {
             owner: user?.id,
             coop: coopPrincipal,
@@ -133,7 +130,6 @@ const DProjectCreate = () => {
             image: [],
         };
 
-        // ✅ Dispatch actions
         dispatch(setProjectRequest(project));
         dispatch(setCoopRecord([getCoopDetails]));
         dispatch(setCountry(country));

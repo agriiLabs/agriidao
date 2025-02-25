@@ -84,6 +84,8 @@ const DProjectCreatePreview = () => {
             <dd className="col-sm-10 text-end">
               <div dangerouslySetInnerHTML={{ __html: projectRequest?.description || "" }} />
             </dd>
+            <dt className="col-sm-6">Funding Goal</dt>
+            <dd className="col-sm-6 text-end">{formattedFundingGoal} USDC</dd>
             <dt className="col-sm-6">Project Duration</dt>
             <dd className="col-sm-6 text-end">{formattedDuration} Months</dd>
             <dt className="col-sm-6">Location</dt>
