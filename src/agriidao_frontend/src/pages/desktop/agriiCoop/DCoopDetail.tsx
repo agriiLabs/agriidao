@@ -24,7 +24,7 @@ const DCoopDetail = () => {
     if (id) {
       getCoopDetails();
     }
-  }, [id]);
+  }, [id]);  
 
   const getCoopDetails = async () => {
     try {

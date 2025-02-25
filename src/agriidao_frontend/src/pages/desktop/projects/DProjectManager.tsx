@@ -37,12 +37,23 @@ const DProjectManager = () => {
   };
   console.log("owner", owner);
 
-  // const getProjects = async () => {
-  //     let res = await projectsActor?getProjectsByUserId();
-  //     if (res) {
-  //         setProjects(res);
-  //     }
-  // };
+  const getProjects = async () => {
+    //   let res = await projectsActor?getProjectsByOwner();
+    if (owner?.userId) {
+      let res = await projectsActor?.getProjectsByOwner(owner.userId);
+      if (res) {
+        setProjects(res);
+      }
+    }
+  };
+
+    useEffect(() => {
+        if (owner) {
+        getProjects();
+        }
+    }, [owner]);
+
+    console.log("projects", projects);
 
   return (
     <>
@@ -78,7 +89,7 @@ const DProjectManager = () => {
                   <dd className="col-sm-7 text-end">{owner?.name}</dd>
                   <dt className="col-sm-6">Type</dt>
                   <dd className="col-sm-6 text-end">
-                    {owner?.entityType?.toString()}
+                  {owner?.entityType ? Object.keys(owner.entityType)[0] : "Unknown"}
                   </dd>
                   <dt className="col-sm-6">Manager Since</dt>
                   <dd className="col-sm-6 text-end">

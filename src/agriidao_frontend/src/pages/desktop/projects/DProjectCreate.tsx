@@ -134,7 +134,7 @@ const DProjectCreate = () => {
         dispatch(setCoopRecord([getCoopDetails]));
         dispatch(setCountry(country));
 
-        navigate("/d/start-project/preview");  // ✅ Navigate to the next page
+        navigate("/d/start-project/preview");  
     };
 
   return (

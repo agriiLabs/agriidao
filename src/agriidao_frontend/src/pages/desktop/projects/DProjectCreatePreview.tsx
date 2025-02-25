@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useAuth } from "../../../hooks/Context";
 import {
-  setCoopRecord,
   setProjectRequest,
-  setCountry,
 } from "../../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../utils/Utils";
@@ -41,10 +39,8 @@ const DProjectCreatePreview = () => {
       if (res && "ok" in res) {
         setSaving(false);
         dispatch(setProjectRequest(null));
-        dispatch(setCoopRecord(null));
-        dispatch(setCountry(null));
         toastSuccess("Project successfully added");
-        navigate(`/d/projects`);
+        navigate(`/d/projects/manager`);
       } else {
         throw new Error("Failed to add project");
       }

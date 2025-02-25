@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../../../declarations/user/user.did";
-
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { toastError, toastSuccess } from "../../utils/Utils";
@@ -15,7 +13,6 @@ import {
 } from "../../../../declarations/projects/projects.did";
 import { Principal } from "@dfinity/principal";
 import ProfileClick from "../profile/component/ProfileClick";
-// import { EntityType } from "./types/Types";
 
 type FormData = {
   name: string;

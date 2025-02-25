@@ -33,6 +33,27 @@ const DProjectDetail = () => {
             console.error("Error fetching project details:", error);
         }
     };
+
+    useEffect(() => {
+        if (project) {
+            getCoop();
+        }
+    }, [project]);
+
+    const getCoop = async () => {
+        if (!project) {
+            console.error("Project is null");
+            return;
+        }
+        try {
+            const res = await coopIndexerActor?.getCoopById(project.coop);
+            if (res) {
+                setCoop(res.name);
+            }
+        } catch (error) {
+            console.error("Error fetching coop:", error);
+        }
+    };
     
     useEffect(() => {
         if (project) { 
