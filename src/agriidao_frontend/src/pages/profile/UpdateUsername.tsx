@@ -9,7 +9,7 @@ import { setUser } from "../../redux/slices/app";
 import GenerateReferralCode from "./component/GenerateReferralCode";
 
 
-function UpdateUsername() {
+const UpdateUsername = () => {
   const { userActor } = useAuth();
   const {user} = useSelector((state: RootState) => state.app);
   const [saving, setSaving] = useState(false);
