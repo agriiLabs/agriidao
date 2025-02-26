@@ -7,11 +7,10 @@ import {
   useLocation
 } from "react-router-dom";
 import Layout from "./components/desktop/Layout";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import RewardSummary from "./pages/bounty/RewardSummary";
 import { useAuth } from "./hooks/Context";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { User} from "../../declarations/user/user.did";
 import TotalSubmission from "./pages/bounty/TotalSubmission";
 import TotalPending from "./pages/bounty/TotalPending";
@@ -22,7 +21,6 @@ import CampaignDetail from "./pages/bounty/CampaignDetail";
 import AddUserSocial from "./pages/bounty/AddUserSocial";
 import AddUserSocialPreview from "./pages/bounty/AddUserSocialPreview";
 import CampaignSubmission from "./pages/bounty/CampaignSubmission";
-// import More from "./pages/more/More";
 import CampaignSubmissionPreview from "./pages/bounty/CampaignSubmissionPreview";
 import GetStarted from "./pages/GetStarted";
 import UserProfileUpdate from "./pages/profile/UserProfileUpdate";
@@ -30,7 +28,6 @@ import { useDispatch } from "react-redux";
 import { setProfile, setUser } from "./redux/slices/app";
 import UserProfileCreate from "./pages/profile/UserProfileCreate";
 import Leaderboard from "./pages/bounty/Leaderboard";
-import Stokvels from "./pages/stokvels/Stokvels";
 import UpdateUserSocial from "./pages/bounty/UpdateUserSocial";
 import DaoLayout from "./components/agriidao/DaoLayout";
 import DaoHome from "./pages/agriidao/DaoHome";
@@ -86,6 +83,8 @@ import DProjectDetail from "./pages/desktop/projects/DProjectDetail";
 import DProjectCreate from "./pages/desktop/projects/DProjectCreate";
 import DProjectCreatePreview from "./pages/desktop/projects/DProjectCreatePreview";
 import DProjectManager from "./pages/desktop/projects/DProjectManager";
+import DProjectManagement from "./pages/desktop/projects/DProjectManagement";
+import DProjectForecast from "./pages/desktop/projects/DProjectForecast";
 
 export interface Response {
   err?: any;
@@ -95,7 +94,6 @@ export interface Response {
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, userActor, identity, logout } = useAuth();
-  const [currentStep, setCurrentStep] = useState(1);
 
   type Result = { ok: User } | { err: string };
 
@@ -131,7 +129,6 @@ const App = () => {
             const _user = await userActor.getUserByCaller();
             
             if (_user && "ok" in _user) {
-              // Type guard to check if the 'ok' property exists
               dispatch(setUser(_user.ok));
             } else {
               console.error("Error adding user", _user);
@@ -249,6 +246,9 @@ const App = () => {
               <Route path="/d/start-project" element={<DProjectCreate />} />
               <Route path="/d/start-project/preview" element={<DProjectCreatePreview />} />
               <Route path="/d/projects/manager" element={<DProjectManager />} />
+              <Route path="/d/projects/manager/manage/:id" element={<DProjectManagement />} />
+              <Route path="/d/projects/manager/forecast/:id" element={<DProjectForecast />} />
+
               
               {/* <Route path="/get-started" element={<GetStarted />} /> */}
             </Route>

@@ -5,18 +5,19 @@ import {
   ProjectOwner,
 } from "../../../../../declarations/projects/projects.did";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
+import imagePath2 from "../../../assets/images/projects-default.png";
 import { formatDate } from "../../../utils/Utils";
+import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexer.did";
 
 const DProjectManager = () => {
-  const { projectsActor } = useAuth();
+  const { projectsActor, coopIndexerActor } = useAuth();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
+  const [coop, setCoop] = useState<CoopRecord | null>(null);
 
   useEffect(() => {
     if (projectsActor) {
-      // getProjects();
       getProjectOwner();
     }
   }, [projectsActor]);
@@ -35,10 +36,8 @@ const DProjectManager = () => {
       console.error("Error fetching project owner:", error);
     }
   };
-  console.log("owner", owner);
 
   const getProjects = async () => {
-    //   let res = await projectsActor?getProjectsByOwner();
     if (owner?.userId) {
       let res = await projectsActor?.getProjectsByOwner(owner.userId);
       if (res) {
@@ -47,13 +46,32 @@ const DProjectManager = () => {
     }
   };
 
-    useEffect(() => {
-        if (owner) {
-        getProjects();
-        }
-    }, [owner]);
+  useEffect(() => {
+    if (owner) {
+      getProjects();
+    }
+  }, [owner]);
 
-    console.log("projects", projects);
+  useEffect(() => {
+    if (projects) {
+      getCoop();
+    }
+  }, [projects]);
+
+  const getCoop = async () => {
+    if (!projects) {
+      console.error("Project is null");
+      return;
+    }
+    try {
+      const res = await coopIndexerActor?.getCoopById(projects[0]?.coop);
+      if (res) {
+        setCoop(res);
+      }
+    } catch (error) {
+      console.error("Error fetching coop:", error);
+    }
+  };
 
   return (
     <>
@@ -89,7 +107,9 @@ const DProjectManager = () => {
                   <dd className="col-sm-7 text-end">{owner?.name}</dd>
                   <dt className="col-sm-6">Type</dt>
                   <dd className="col-sm-6 text-end">
-                  {owner?.entityType ? Object.keys(owner.entityType)[0] : "Unknown"}
+                    {owner?.entityType
+                      ? Object.keys(owner.entityType)[0]
+                      : "Unknown"}
                   </dd>
                   <dt className="col-sm-6">Manager Since</dt>
                   <dd className="col-sm-6 text-end">
@@ -108,6 +128,38 @@ const DProjectManager = () => {
                   className="btn btn-outline-dark col-sm-12"
                 >
                   Update Manager Info
+                </NavLink>
+              </div>
+              <div className="mt-2">
+                <NavLink
+                  to={`/d/coop-projects/`}
+                  className="btn btn-outline-dark col-sm-12"
+                >
+                  Basic Info
+                </NavLink>
+              </div>
+              <div className="mt-2">
+                <NavLink
+                  to={`/d/coop-projects/`}
+                  className="btn btn-outline-dark col-sm-12"
+                >
+                  Finacial Forecast
+                </NavLink>
+              </div>
+              <div className="mt-2">
+                <NavLink
+                  to={`/d/coop-projects/`}
+                  className="btn btn-outline-dark col-sm-12"
+                >
+                  Milestones
+                </NavLink>
+              </div>
+              <div className="mt-2">
+                <NavLink
+                  to={`/d/coop-projects/`}
+                  className="btn btn-outline-dark col-sm-12"
+                >
+                  Proposals
                 </NavLink>
               </div>
             </div>
@@ -129,34 +181,47 @@ const DProjectManager = () => {
                     <th className="border-bottom p-3">Status</th>
                   </tr>
                 </thead>
-                {/* <tbody>
-                      {memberCoops && memberCoops.length > 0 ? (
-                        memberCoops.map((coop) => {
-                          const coopDetail = coopDetails?.[coop.coopId.toText()];
-                          const balance = BigInt(
-                            coopBalances?.[coop.coopId.toText()] ?? 0
-                          );
-                          const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
-                          const total = balance * unitPrice;
-    
-                          return (
-                            <tr key={coop.coopId.toText()}>
-                              <td className="p-3">
-                                {coopDetail?.name ?? "Unknown Co-op"}
-                              </td>
-                              <td className="p-3">{balance.toString()}</td>
-                              <td className="p-3">{total.toString()} USDC</td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td colSpan={3} className="text-center p-3">
-                            No holdings found.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody> */}
+                <tbody>
+                  {projects && projects.length > 0 ? (
+                    projects.map((project: Project, index: number) => (
+                      <tr key={index}>
+                        <td align="left" width="40%">
+                          <Link
+                            to={`/d/projects/manager/manage/${project.id}`}
+                            className="d-flex align-items-center"
+                          >
+                            {/* {position.user.profile_pic ? (
+                                        <img className="rounded-xl mr-3" src={position.user.profile_pic} alt="Profile" width="25" height="25" />
+                                    ) : ( */}
+                            <img
+                              src={imagePath2}
+                              width="35"
+                              className="avatar avatar-ex-small rounded"
+                              alt="Default Co-op Image"
+                              style={{ marginRight: "15px" }}
+                            />
+                            <span>{project.name}</span>
+                          </Link>
+                        </td>
+
+                        <td className="p-3">{coop?.name}</td>
+                        <td className="p-3">
+                          {parseFloat(Number(project.fundingGoal).toString())}
+                          {} USDC
+                        </td>
+                        <td className="p-3">
+                          {project?.fundingStatus
+                            ? Object.keys(project.fundingStatus)[0] 
+                            : "Unknown"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3}>No data available</td>
+                    </tr>
+                  )}
+                </tbody>
               </table>
             </div>
           </div>
