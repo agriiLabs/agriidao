@@ -10,6 +10,9 @@ import {
   Coop,
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "../coops/components/CoopActor";
+import imagePath2 from "../../assets/images/co-ops-default.png";
+
+
 
 type CoopBalance = {
   coop: {
@@ -230,7 +233,14 @@ const Dashboard = () => {
 
                       return (
                         <tr key={coop.coopId.toText()}>
-                          <td className="p-3">
+                          <td className="d-flex align-items-center p-3">
+                          <img
+                            src={imagePath2}
+                            width="35"
+                            className="avatar avatar-ex-small rounded"
+                            alt="Default Co-op Image"
+                            style={{ marginRight: "15px" }}
+                          />
                             {coopDetail?.name ?? "Unknown Co-op"}
                           </td>
                           <td className="p-3">{balance.toString()}</td>

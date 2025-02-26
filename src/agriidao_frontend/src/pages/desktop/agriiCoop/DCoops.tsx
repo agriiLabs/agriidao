@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/Context";
 import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexer.did";
 import { Link, NavLink } from "react-router-dom";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
+import imagePath2 from "../../../assets/images/co-ops-default.png";
 import getCoopActor from "../../coops/components/CoopActor";
 
 const DCoops = () => {
@@ -132,7 +132,7 @@ const DCoops = () => {
                           <img
                             src={imagePath2}
                             width="35"
-                            className="rounded-circle mt- shadow-xl preload-img"
+                            className="avatar avatar-ex-small rounded"
                             alt="Default Co-op Image"
                             style={{ marginRight: "15px" }}
                           />

@@ -4,7 +4,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Response } from "../../../utils/Types";
 import { Coop } from "../../../../../declarations/coop_manager/coop_manager.did";
 import { Principal } from "@dfinity/principal";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
+import imagePath2 from "../../../assets/images/co-ops-default.png";
 import getCoopActor from "../../coops/components/CoopActor";
 import { ckUSDCe6s } from "../../../constants/canisters_config";
 
@@ -108,7 +108,7 @@ const DCoopDetail = () => {
                 <img
                   src={imagePath2}
                   width="35"
-                  className="rounded-circle mt- shadow-xl preload-img"
+                  className="avatar avatar-ex-small rounded"
                   alt="Default Co-op Image"
                   style={{ marginRight: "15px" }}
                 />

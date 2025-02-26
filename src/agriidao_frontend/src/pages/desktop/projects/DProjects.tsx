@@ -5,9 +5,8 @@ import {
   ProjectOwner,
   ProjectProjections,
 } from "../../../../../declarations/projects/projects.did";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
-import { ckUSDCe6s } from "../../../constants/canisters_config";
+import { Link, useNavigate } from "react-router-dom";
+import imagePath2 from "../../../assets/images/projects-default.png";
 import DProjectOwner from "../components/DProjectOwner";
 
 const DProjects = () => {
@@ -170,7 +169,7 @@ const DProjects = () => {
                           <img
                             src={imagePath2}
                             width="35"
-                            className="rounded-circle mt- shadow-xl preload-img"
+                            className="avatar avatar-ex-small rounded"
                             alt="Default Co-op Image"
                             style={{ marginRight: "15px" }}
                           />

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from "../../../hooks/Context";
 import { Project, ProjectProjections } from '../../../../../declarations/projects/projects.did';
-import imagePath2 from '../../../assets/images/default-user-profile.png';
+import imagePath2 from '../../../assets/images/projects-default.png';
 import CountryName from "../../../components/agriidao/CountryName";
 
 const DProjectDetail = () => {
@@ -102,7 +102,7 @@ const DProjectDetail = () => {
                 <img
                   src={imagePath2}
                   width="35"
-                  className="rounded-circle mt- shadow-xl preload-img"
+                  className="avatar avatar-ex-small rounded"
                   alt="Default Co-op Image"
                   style={{ marginRight: "15px" }}
                 />
