@@ -22,7 +22,7 @@ type CoopBalance = {
   balance: number;
 };
 
-const Dashboard = () => {
+const DPortfolio = () => {
   const { coopIndexerActor, identity } = useAuth();
   const navigate = useNavigate();
   const [memberCoops, setMemberCoops] = useState<MembershipRecord[] | null>(
@@ -175,13 +175,9 @@ const Dashboard = () => {
               </div>
               <div className="mt-4">
                 <dl className="row">
-                  <dt className="col-sm-5">Available Units</dt>
-                  <dd className="col-sm-7 text-end">0</dd>
-                  <dt className="col-sm-6">Allocated</dt>
+                  <dt className="col-sm-6">Co-op Units</dt>
                   <dd className="col-sm-6 text-end">0</dd>
-                  <dt className="col-sm-6">Co-ops</dt>
-                  <dd className="col-sm-6 text-end">0</dd>
-                  <dt className="col-sm-6">Projects</dt>
+                  <dt className="col-sm-6">Co-op Futures</dt>
                   <dd className="col-sm-6 text-end">0</dd>
                 </dl>
               </div>
@@ -190,7 +186,7 @@ const Dashboard = () => {
                   to={`/d/coop-projects/`}
                   className="btn btn-outline-dark col-sm-12"
                 >
-                  Co-op Manager
+                  Co-op Units
                 </NavLink>
               </div>
               <div className="mt-2">
@@ -198,7 +194,7 @@ const Dashboard = () => {
                   to={`/d/projects/manager/`}
                   className="btn btn-outline-dark col-sm-12"
                 >
-                  Project Manager
+                  Co-op Futures
                 </NavLink>
               </div>
             </div>
@@ -208,7 +204,7 @@ const Dashboard = () => {
           <div className="col-xl-12 mt-4">
             <div className="card rounded shadow border-0 p-4">
               <div className="d-flex justify-content-between mb-4">
-                <h5 className="mb-0">My Holdings</h5>
+                <h5 className="mb-0">My Units</h5>
               </div>
 
               <table className="table table-center bg-white mb-0">
@@ -269,4 +265,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DPortfolio;

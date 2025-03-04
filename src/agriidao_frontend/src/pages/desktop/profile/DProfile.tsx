@@ -1,5 +1,5 @@
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/Context";

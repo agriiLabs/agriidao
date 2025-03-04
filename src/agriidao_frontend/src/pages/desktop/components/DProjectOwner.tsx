@@ -30,12 +30,8 @@ const DProjectOwner: FC<Props> = ({
   setShowProjectOwnerModal,
 }) => {
   const { projectsActor, identity } = useAuth();
-  const { user } = useSelector((state: RootState) => state.app);
-  const [saving, setSaving] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [entityTypes, setEntityTypes] = useState<string[]>([]);
-  const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
 
   const schema = z.object({

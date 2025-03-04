@@ -77,7 +77,6 @@ import DCoopDetail from "./pages/desktop/agriiCoop/DCoopDetail";
 import DCoopUnits from "./pages/desktop/agriiCoop/DCoopUnits";
 import DCoopCreate from "./pages/desktop/agriiCoop/DCoopCreate";
 import DCoopCreatePreview from "./pages/desktop/agriiCoop/DCoopCreatePreview";
-import Dashboard from "./pages/desktop/DPortfolio";
 import DProjects from "./pages/desktop/projects/DProjects";
 import DProjectDetail from "./pages/desktop/projects/DProjectDetail";
 import DProjectCreate from "./pages/desktop/projects/DProjectCreate";
@@ -85,6 +84,11 @@ import DProjectCreatePreview from "./pages/desktop/projects/DProjectCreatePrevie
 import DProjectManager from "./pages/desktop/projects/DProjectManager";
 import DProjectManagement from "./pages/desktop/projects/DProjectManagement";
 import DProjectForecast from "./pages/desktop/projects/DProjectForecast";
+import DProjectMilestone from "./pages/desktop/projects/DProjectMilestone";
+import DProjectMilestoneDetail from "./pages/desktop/projects/DProjectMilestoneDetail";
+import DProjectProposals from "./pages/desktop/projects/DProjectProposals";
+import DPortfolio from "./pages/desktop/DPortfolio";
+import DProjectProposalDetail from "./pages/desktop/projects/DProjectProposalDetail";
 
 export interface Response {
   err?: any;
@@ -235,7 +239,7 @@ const App = () => {
             <Route path="/d/project-detail/:id" element={<DProjectDetail />} />
             
             <Route element={<ProtectedRoutes />}>  
-              <Route path="/d/dashboard" element={<Dashboard />} />
+              <Route path="/d/portfolio" element={<DPortfolio />} />
               <Route path="/d/profile" element={<DProfile />} />
               <Route path="/d/profile-create" element={<DProfileCreate />} />
               <Route path="/d/profile-detail/" element={<DProfileDetail />} />
@@ -248,6 +252,11 @@ const App = () => {
               <Route path="/d/projects/manager" element={<DProjectManager />} />
               <Route path="/d/projects/manager/manage/:id" element={<DProjectManagement />} />
               <Route path="/d/projects/manager/forecast/:id" element={<DProjectForecast />} />
+              <Route path="/d/projects/manager/milestones/:id" element={<DProjectMilestone />} />
+              <Route path="/d/projects/manager/milestone-detail/:id" element={<DProjectMilestoneDetail />} />
+              <Route path="/d/projects/manager/proposals/:id" element={<DProjectProposals />} />
+              <Route path="/d/projects/manager/proposal-detail/:id" element={<DProjectProposalDetail />} />
+
 
               
               {/* <Route path="/get-started" element={<GetStarted />} /> */}

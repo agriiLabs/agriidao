@@ -20,10 +20,11 @@ import {
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
-import type {_SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
+import type {_SERVICE as _commodityService } from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
-import type {_SERVICE as _projectsService} from "../../../declarations/projects/projects.did";
+import type {_SERVICE as _projectsService } from "../../../declarations/projects/projects.did";
+import type { _SERVICE as _proposalsService } from "../../../declarations/proposals/proposals.did";
 // import {canisterId as iiCanId} from "../../../declarations/internet_identity/internet_identity.did";
 
 import {
@@ -42,6 +43,8 @@ import {
   coopLedgerCanisterId,
   projectsCanisterId,
   projectsIdlFactory,
+  proposalsCanisterId,
+  proposalsIdlFactory,
 } from "../constants/canisters_config";
 
 const localhost = "http://localhost:4943";
@@ -57,6 +60,7 @@ type ContextType = {
   coopIndexerActor: ActorSubclass<_coopIndexerService> | null;
   coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
   projectsActor: ActorSubclass<_projectsService> | null;
+  proposalsActor: ActorSubclass<_proposalsService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -73,6 +77,7 @@ const initialContext: ContextType = {
   coopIndexerActor: null,
   coopLedgerActor: null,
   projectsActor: null,
+  proposalsActor: null,
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -124,6 +129,7 @@ export const Context = (options = defaultOptions) => {
     useState<ActorSubclass<_coopLedgerService> | null >(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
   const [projectsActor, setProjectsActor] = useState<ActorSubclass<_projectsService> | null>(null);
+  const [proposalsActor, setProposalsActor] = useState<ActorSubclass<_proposalsService> | null>(null);
 
 
   useEffect(() => {
@@ -245,6 +251,17 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setProjectsActor(_projectsBackend);
+
+    // set proposals actor
+    const _proposalsBackend: ActorSubclass<_proposalsService> =
+    Actor.createActor(
+      proposalsIdlFactory,
+      {
+        agent,
+        canisterId: proposalsCanisterId,
+      }
+    );
+    setProposalsActor(_proposalsBackend);
   };
 
   return {
@@ -256,6 +273,7 @@ export const Context = (options = defaultOptions) => {
     coopIndexerActor,
     coopLedgerActor,
     projectsActor,
+    proposalsActor,
     isAuthenticated,
     login,
     logout,

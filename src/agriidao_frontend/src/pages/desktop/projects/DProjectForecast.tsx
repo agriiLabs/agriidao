@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
 import {
   Project,
@@ -7,11 +7,10 @@ import {
   ProjectIncome,
   ProjectProjections,
 } from "../../../../../declarations/projects/projects.did";
-import imagePath2 from "../../../assets/images/projects-default.png";
-import CountryName from "../../../components/agriidao/CountryName";
 import DAddIncome from "./components/DAddIncome";
 import DAddExpense from "./components/DAddExpense";
 import DRoyalty from "./components/DRoyalty";
+import DPManagementCardProps from "./components/DProjectManagementCard";
 
 const DProjectForecast = () => {
   const { projectsActor, coopIndexerActor } = useAuth();
@@ -19,14 +18,15 @@ const DProjectForecast = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [projectProjections, setProjectProjections] =
     useState<ProjectProjections | null>(null);
-  const [coop, setCoop] = useState<string | null>(null);
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
   const [showRoyaltySplitModal, setShowRoyaltySplitModal] = useState(false);
   const [incomeProjections, setIncomeProjections] = useState<
-    ProjectIncome[] | null>(null);
+    ProjectIncome[] | null
+  >(null);
   const [expenseProjections, setExpenseProjections] = useState<
-    ProjectExpense[] | null>(null);
+    ProjectExpense[] | null
+  >(null);
 
   useEffect(() => {
     if (id) {
@@ -46,27 +46,6 @@ const DProjectForecast = () => {
       }
     } catch (error) {
       console.error("Error fetching project details:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (project) {
-      getCoop();
-    }
-  }, [project]);
-
-  const getCoop = async () => {
-    if (!project) {
-      console.error("Project is null");
-      return;
-    }
-    try {
-      const res = await coopIndexerActor?.getCoopById(project.coop);
-      if (res) {
-        setCoop(res.name);
-      }
-    } catch (error) {
-      console.error("Error fetching coop:", error);
     }
   };
 
@@ -92,7 +71,7 @@ const DProjectForecast = () => {
       console.error("Error fetching project projections:", error);
     }
   };
-
+  console.log("projectProjections", projectProjections);
   useEffect(() => {
     if (project) {
       getIncomeProjections();
@@ -116,6 +95,7 @@ const DProjectForecast = () => {
       console.error("Error fetching project:", error);
     }
   };
+  console.log("incomeProjections", incomeProjections);
 
   const getExpenseProjections = async () => {
     if (!project) {
@@ -132,8 +112,8 @@ const DProjectForecast = () => {
     } catch (error) {
       console.error("Error fetching project:", error);
     }
-  }
-
+  };
+  console.log("expenseProjections", expenseProjections);
 
   const handleAddIncome = () => {
     setShowAddIncomeModal(true);
@@ -181,79 +161,9 @@ const DProjectForecast = () => {
 
       <div className="row">
         <div className="col-xl-4">
-          <div className="col-xl-12 mt-4">
-            <div className="card rounded shadow border-0 p-4">
-              <div className="d-flex">
-                <img
-                  src={imagePath2}
-                  width="35"
-                  className="avatar avatar-ex-small rounded"
-                  alt="Default Co-op Image"
-                  style={{ marginRight: "15px" }}
-                />
-                <h5 className="mb-0 mt-1">{project?.name}</h5>
-              </div>
-              <div className="mt-4">
-                <dl className="row">
-                  <dt className="col-sm-4">Co-op</dt>
-                  <dd className="col-sm-8 text-end">{coop}</dd>
-                  <dt className="col-sm-6">Funding Goal</dt>
-                  <dd className="col-sm-6 text-end">
-                    {Number(project?.fundingGoal) ?? 0} USDC
-                  </dd>
-                  <dt className="col-sm-6">Location</dt>
-                  <dd className="col-sm-6 text-end">
-                    <CountryName id={project?.location || ""} />
-                  </dd>
-                  <dt className="col-sm-4">Duration</dt>
-                  <dd className="col-sm-8 text-end">
-                    {Number(project?.duration)
-                      ? Number(project?.duration)
-                      : "-"}{" "}
-                    Days
-                  </dd>
-                </dl>
-                <div
-                  className="mt-4"
-                  dangerouslySetInnerHTML={{ __html: project?.summary || "" }}
-                ></div>
-
-                <div className="mt-3">
-                  <NavLink
-                    to={`/d/coop-projects/`}
-                    className="btn btn-outline-dark col-sm-12"
-                  >
-                    Basic Info
-                  </NavLink>
-                </div>
-                <div className="mt-2">
-                  <NavLink
-                    to={`/d/coop-projects/`}
-                    className="btn btn-outline-dark col-sm-12"
-                  >
-                    Finacial Forecast
-                  </NavLink>
-                </div>
-                <div className="mt-2">
-                  <NavLink
-                    to={`/d/coop-projects/`}
-                    className="btn btn-outline-dark col-sm-12"
-                  >
-                    Milestones
-                  </NavLink>
-                </div>
-                <div className="mt-2">
-                  <NavLink
-                    to={`/d/coop-projects/`}
-                    className="btn btn-outline-dark col-sm-12"
-                  >
-                    Proposals
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-          </div>
+          <DPManagementCardProps project={project} />
         </div>
+
         <div className="col-xl-8">
           <div className="col-xl-12 mt-4">
             <div className="card rounded shadow border-0 p-4">
@@ -313,7 +223,6 @@ const DProjectForecast = () => {
                     <td colSpan={3}>No data available</td>
                   )}
                 </tbody>
-                
               </table>
             </div>
           </div>
@@ -332,9 +241,19 @@ const DProjectForecast = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <td colSpan={3}>No data available</td>
+                {expenseProjections && expenseProjections.length > 0 ? (
+                    expenseProjections.map((expense, index) => (
+                      <tr key={index}>
+                        <td className="p-3">{expense.item}</td>
+                        <td className="p-3">{Number(expense.amount)}</td>
+                        <td className="p-3">{Number(expense.quantity)}</td>
+                        <td className="p-3">{Number(expense.total)} USDC</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <td colSpan={3}>No data available</td>
+                  )}
                 </tbody>
-                  
               </table>
             </div>
           </div>

@@ -124,44 +124,13 @@ const DProjectManager = () => {
               </div>
               <div className="mt-3">
                 <NavLink
-                  to={`/d/coop-projects/`}
+                  to={`/d/projects/manager/update/${owner?.userId}`}
                   className="btn btn-outline-dark col-sm-12"
                 >
                   Update Manager Info
                 </NavLink>
               </div>
-              <div className="mt-2">
-                <NavLink
-                  to={`/d/coop-projects/`}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Basic Info
-                </NavLink>
-              </div>
-              <div className="mt-2">
-                <NavLink
-                  to={`/d/coop-projects/`}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Finacial Forecast
-                </NavLink>
-              </div>
-              <div className="mt-2">
-                <NavLink
-                  to={`/d/coop-projects/`}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Milestones
-                </NavLink>
-              </div>
-              <div className="mt-2">
-                <NavLink
-                  to={`/d/coop-projects/`}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Proposals
-                </NavLink>
-              </div>
+            
             </div>
           </div>
         </div>

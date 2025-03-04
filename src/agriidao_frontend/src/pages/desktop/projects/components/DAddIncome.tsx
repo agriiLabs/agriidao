@@ -1,12 +1,11 @@
 import { FC, useState } from "react";
 import { useAuth } from "../../../../hooks/Context";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ProjectIncome,
   ProjectIncomeRequest,
 } from "../../../../../../declarations/projects/projects.did";
 import { setProjectIncomeRequest } from "../../../../redux/slices/app";

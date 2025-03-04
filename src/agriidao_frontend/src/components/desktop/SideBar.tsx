@@ -19,8 +19,8 @@ const SideBar = () => {
           </a>
         </div>
         <ul className="sidebar-menu">
-          <li className={`sidebar-dropdown ${location.pathname === "/d/dashboard" ? "active" : ""}`}>
-            <NavLink to="/d/dashboard" className="nav-item">
+          <li className={`sidebar-dropdown ${location.pathname === "/d/portfolio" ? "active" : ""}`}>
+            <NavLink to="/d/portfolio" className="nav-item">
               <i className="mdi mdi-view-dashboard me-2"></i>My Portfolio
             </NavLink>
           </li>

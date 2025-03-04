@@ -116,7 +116,7 @@ const DCoopDetail = () => {
               </div>
               <div className="mt-4">
                 <dl className="row">
-                  <dt className="col-sm-4">Ticker</dt>
+                  <dt className="col-sm-4">Code</dt>
                   <dd className="col-sm-8 text-end">
                     {coop?.ticker ? coop?.ticker : "-"}
                   </dd>
