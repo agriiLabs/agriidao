@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/Context";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { Response } from "../../../utils/Types";
+import { NavLink, useParams } from "react-router-dom";
 import { Coop } from "../../../../../declarations/coop_manager/coop_manager.did";
 import { Principal } from "@dfinity/principal";
-import imagePath2 from "../../../assets/images/co-ops-default.png";
 import getCoopActor from "../../coops/components/CoopActor";
 import { ckUSDCe6s } from "../../../constants/canisters_config";
+import DCoopCardProps from "./components/DCoopCard";
 
 const DCoopDetail = () => {
   const { coopIndexerActor } = useAuth();
   const { id } = useParams();
-  const navigate = useNavigate();
   const [coop, setCoop] = useState<Coop | null>(null);
   const [allocatedUnits, setAllocatedUnits] = useState<number>(0);
   const [membersCount, setMembersCount] = useState<{ [key: string]: number }>(
@@ -22,6 +20,7 @@ const DCoopDetail = () => {
 
   useEffect(() => {
     if (id) {
+      console.log("Fetching coop details for ID:", id);
       getCoopDetails();
     }
   }, [id]);  
@@ -32,25 +31,28 @@ const DCoopDetail = () => {
         console.error("Coop ID is undefined");
         return;
       }
-
+  
       const coopActor = await getCoopActor(id);
       const coopDetails = await coopActor.getDetails();
+      const coopMembers = await coopActor.getAllMembers();
       const unitPriceValue = Number(coopDetails.unitPrice) || 0;
       const managementFeeValue = Number(coopDetails.managementFee) || 0;
-
+  
       setUnitPrice(unitPriceValue / ckUSDCe6s);
       setManagementFee(managementFeeValue / ckUSDCe6s);
-
+  
       if (!coopDetails) {
         console.error("No details found for this Co-op ID:", id);
         return;
       }
-
-      setCoop(coopDetails);
+  
+      console.log("Setting Co-op details:", coopDetails);
+      setCoop({ ...coopDetails }); // 🔥 Ensure React detects the change
     } catch (error) {
       console.error("Error fetching co-op details:", error);
     }
   };
+  
 
   useEffect(() => {
     if (!coop) return;
@@ -102,7 +104,8 @@ const DCoopDetail = () => {
 
       <div className="row">
         <div className="col-xl-4">
-          <div className="col-xl-12 mt-4">
+        <DCoopCardProps coop={coop} />
+          {/* <div className="col-xl-12 mt-4">
             <div className="card rounded shadow border-0 p-4">
               <div className="d-flex">
                 <img
@@ -182,7 +185,7 @@ const DCoopDetail = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-xl-8">
           <div className="col-xl-12 mt-4">
@@ -237,16 +240,6 @@ const DCoopDetail = () => {
       <div className="col-xl-8 mt-4">
         <div className="card border-0"></div>
       </div>
-      {/* {showRewardModal && (
-        <DCampaignSubmission
-          {...{ showRewardModal, setShowRewardModal, campaign }}
-        />
-      )}
-      {showUserSocialModal && (
-        <DUserSocial
-          {...{ showUserSocialModal, setShowUserSocialModal, userSocial }}
-        />
-      )} */}
     </>
   );
 };

@@ -123,7 +123,7 @@ const DCoops = () => {
                       </th>
                       <td align="left" width="40%">
                         <Link
-                          to={`/d/coop-detail/${coop.canisterId.toText()}`}
+                          to={`/d/coop/overview/${coop.canisterId.toText()}`}
                           className="d-flex align-items-center"
                         >
                           {/* {position.user.profile_pic ? (
