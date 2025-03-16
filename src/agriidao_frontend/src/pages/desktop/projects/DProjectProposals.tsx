@@ -6,13 +6,24 @@ import DPManagementCardProps from "./components/DProjectManagementCard";
 import { Proposal } from "../../../../../declarations/proposals/proposals.did";
 import DAddProjectProposal from "./components/DAddProjectProposal";
 import CountdownTimer from "./components/DCountdownTimer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 const DProjectProposals = () => {
   const { projectsActor, proposalsActor } = useAuth();
   const { id } = useParams();
+  const { projectOwner } = useSelector((state: RootState) => state.app);
   const [project, setProject] = useState<Project | null>(null);
   const [proposals, setProposals] = useState<Proposal[] | null>(null);
   const [showAddProposalModal, setShowAddProposalModal] = useState(false);
+  const [proposalVotes, setProposalVotes] = useState<{ [key: string]: any[] }>({});
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    if (projectOwner) {
+      setIsOwner(true);
+    }
+  }, [projectOwner]);
 
   useEffect(() => {
     if (id) {
@@ -76,10 +87,18 @@ const DProjectProposals = () => {
             return { proposalId: proposal.id, votes: res };
           })
         );
-        console.log("votes", votes);
-        } catch (error) {
+        const votesMap = votes.reduce((acc, { proposalId, votes }) => {
+          acc[proposalId] = votes || [];
+          return acc;
+        }, {} as { [key: string]: any[] });
+    
+        setProposalVotes(votesMap);
+        console.log("Votes per proposal:", votesMap);
+      } catch (error) {
         console.error("Error fetching votes:", error);
-        }
+      }
+
+
     };
 
   const formattedProposer = (proposer: string) => {
@@ -91,6 +110,7 @@ const DProjectProposals = () => {
     return `${fisrtPart}...${lastPart}`;
     };
     
+    
   const handleAddProposal = () => {
     setShowAddProposalModal(true);
   };
@@ -99,16 +119,24 @@ const DProjectProposals = () => {
     <>
       <div className="d-flex align-items-center justify-content-between">
         <div>
-          <h5 className="mb-0">Project Management</h5>
+          <h5 className="mb-0">Proposals</h5>
         </div>
         <div className="mb-0 position-relative">
+          {isOwner ? (
         <button
           onClick={handleAddProposal}
           id="nav-bottom"
           className="btn btn-outline-dark"
         >
             Submit Proposal
-          </button>
+          </button> ) : (
+            <NavLink
+            to={`/d/coop-units/${id}`}
+            className="btn btn-outline-dark col-sm-6 me-4"
+          >
+            Fund
+          </NavLink>
+          )}
         </div>
       </div>
 
@@ -138,7 +166,7 @@ const DProjectProposals = () => {
                       <tr key={index}>
                         <td align="left" width="40%">
                           <Link
-                            to={`/d/projects/manager/proposal-detail/${proposal.id}`}
+                            to={`/d/projects/proposal-detail/${proposal.id}`}
                             className="d-flex align-items-center "
                             style={{ paddingTop: "9px" }}
                           >
@@ -146,9 +174,9 @@ const DProjectProposals = () => {
                           </Link>
                         </td>
                         <td className="p-3">{formattedProposer(proposal.proposer.toText())}</td>
-                        <td className="p-3">{proposal?.isAccept}</td>
+                        <td className="p-3">{proposalVotes[proposal.id]?.length || 0}</td>
                         <td className="p-3">
-                        <CountdownTimer voteEnd={proposal.voteEnd} />
+                        <CountdownTimer proposalId={proposal.id} voteEnd={proposal.voteEnd} />
                         </td>
                       </tr>
                     ))

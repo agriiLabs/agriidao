@@ -9,18 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
-import {
-  WalletAddress,
-  WalletAddressRequest,
-} from "../../../../declarations/user/user.did";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
-import ConnectWallet from "./ConnectWallet";
-
-// declare global {
-//   interface Window {
-//     ethereum: any;
-//   }
-// }
 
 export interface Response {
   err?: any;
@@ -28,7 +17,7 @@ export interface Response {
 }
 
 const Profile = () => {
-  const { isAuthenticated, userActor, bountyActor } = useAuth();
+  const { isAuthenticated, bountyActor } = useAuth();
   const { user, profile } = useSelector((state: RootState) => state.app);
   const [profileExists, setProfileExists] = useState(false);
   const navigate = useNavigate();
@@ -61,6 +50,8 @@ const Profile = () => {
       }
     }
   }, [isAuthenticated, user]);
+
+  console.log("user", user);
 
   useEffect(() => {
     if (bountyActor) {
@@ -102,44 +93,8 @@ const Profile = () => {
   };
 
   const toggleReveal = () => {
-    setIsRevealed((prev) => !prev); // Toggle reveal state
+    setIsRevealed((prev) => !prev); 
   };
-
-  // eth wallet address
-  // useEffect(() => {
-  //   if (address) {
-  //     saveWalletAddress(address);
-  //   }
-  // }, [address]);
-
-  // const saveWalletAddress = async (_address: string) => {
-  //   const body: WalletAddressRequest = {
-  //     address: _address,
-  //     chain: {
-  //       ETH: null,
-  //     },
-  //   };
-
-  //   await userActor?.addWalletAddress(body);
-  // };
-
-  // const getWalletAddressByCaller = async () => {
-  //   if (!userActor) {
-  //     console.error("userActor is null");
-  //     return;
-  //   }
-  //   userActor.getWalletAddressByCaller().then((result: Response) => {
-  //     if ("ok" in result) {
-  //       setWalletAddress(result.ok.address);
-  //     } else {
-  //       console.error("Error getting wallet address", result);
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getWalletAddressByCaller();
-  // }, [userActor, user]);
 
   return (
     <>

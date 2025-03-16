@@ -14,33 +14,54 @@ const DProjectOwnwePreview = ({ setCurrentStep }: { setCurrentStep: (step: numbe
     const [saving, setSaving] = useState(false);
 
     const handleSave = async () => {
-        if (!projectsActor) {
-            console.error("projectsActor is null");
-            return;
+      if (!projectsActor) {
+        console.error("projectsActor is null");
+        return;
+      }
+      
+      setSaving(true);
+      try {
+        if (!projectOwner) {
+          console.error("Project owner is null, cannot proceed.");
+          setSaving(false);
+          return;
         }
-        setSaving(true);
-        try {
-            if (!projectOwner) {
-                console.error("Project owner is null, cannot proceed.");
-                setSaving(false);
-                return;
+    
+        const res = await projectsActor.addProjectOwner(projectOwner);
+        console.log("Project owner creation response:", res);
+    
+        if (res && "ok" in res) {
+          // ✅ Wait and fetch updated owner details
+          console.log("Fetching updated owner info...");
+          let updatedOwner = null;
+          for (let i = 0; i < 5; i++) { // Try 5 times
+            updatedOwner = await projectsActor.getProjectOwner();
+            if (updatedOwner && "ok" in updatedOwner) {
+              console.log("New owner detected, closing modal...");
+              break;
             }
-            const res = await projectsActor.addProjectOwner(projectOwner);
-            console.log("Project owner creation response:", res);   
-            if (res && "ok" in res) {
-                setSaving(false);
-                dispatch(setProjectRequest(null));
-                toastSuccess("Project owner successfully added");
-                navigate(`/d/projects/manager`);
-            } else {
-                throw new Error("Failed to add project owner");
-            }
-        } catch (error) {
-            setSaving(false);
-            toastError("Error adding project owner");
-            console.error("Error adding project owner:", error);
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 sec
+          }
+    
+          setSaving(false);
+          dispatch(setProjectRequest(null));
+          toastSuccess("Project owner successfully added");
+    
+          if (updatedOwner && "ok" in updatedOwner) {
+            navigate(`/d/projects/manager`);
+          } else {
+            console.warn("Owner not found after save, staying on modal.");
+          }
+        } else {
+          throw new Error("Failed to add project owner");
         }
+      } catch (error) {
+        setSaving(false);
+        toastError("Error adding project owner");
+        console.error("Error adding project owner:", error);
+      }
     };
+    
     
   return (
     <div>

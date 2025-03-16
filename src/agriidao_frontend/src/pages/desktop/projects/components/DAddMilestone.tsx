@@ -11,7 +11,7 @@ import {
 } from "../../../../../../declarations/projects/projects.did";
 import { Modal } from "react-bootstrap";
 import { setMilestoneRequest } from "../../../../redux/slices/app";
-import DAddMilestonePreview from "./DaddMilestonePreview";
+import DAddMilestonePreview from "./DAddMilestonePreview";
 
 type Props = {
   showMilestoneModal: boolean;

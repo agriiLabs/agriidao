@@ -141,7 +141,7 @@ const DProjectCreate = () => {
     <>
     <div className="d-flex align-items-center justify-content-between">
       <div>
-        <h5 className="mb-0">Start A Co-op</h5>
+        <h5 className="mb-0">Start A Project</h5>
       </div>
     </div>
 

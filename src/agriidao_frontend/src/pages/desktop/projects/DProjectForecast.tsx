@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
 import {
   Project,
@@ -11,10 +11,14 @@ import DAddIncome from "./components/DAddIncome";
 import DAddExpense from "./components/DAddExpense";
 import DRoyalty from "./components/DRoyalty";
 import DPManagementCardProps from "./components/DProjectManagementCard";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 const DProjectForecast = () => {
   const { projectsActor, coopIndexerActor } = useAuth();
   const { id } = useParams();
+  const { projectOwner } = useSelector((state: RootState) => state.app);
+  const [isOwner, setIsOwner] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [projectProjections, setProjectProjections] =
     useState<ProjectProjections | null>(null);
@@ -27,6 +31,12 @@ const DProjectForecast = () => {
   const [expenseProjections, setExpenseProjections] = useState<
     ProjectExpense[] | null
   >(null);
+
+  useEffect(() => {
+    if (projectOwner) {
+      setIsOwner(true);
+    }
+  }, [projectOwner]);
 
   useEffect(() => {
     if (id) {
@@ -71,7 +81,7 @@ const DProjectForecast = () => {
       console.error("Error fetching project projections:", error);
     }
   };
-  console.log("projectProjections", projectProjections);
+
   useEffect(() => {
     if (project) {
       getIncomeProjections();
@@ -133,29 +143,40 @@ const DProjectForecast = () => {
         <div>
           <h5 className="mb-0">Financial Forecast</h5>
         </div>
-        <div className="d-flex ms-auto gap-2">
-          <button
-            onClick={handleAddIncome}
-            id="nav-bottom"
-            className="btn btn-outline-dark"
-          >
-            Add Income
-          </button>
+        <div className="mb-0 position-relative">
+          {isOwner ? (
+            <div className="d-flex ms-auto gap-2">
+              <button
+                onClick={handleAddIncome}
+                id="nav-bottom"
+                className="btn btn-outline-dark"
+              >
+                Add Income
+              </button>
 
-          <button
-            onClick={handleAddExpense}
-            id="nav-bottom"
-            className="btn btn-outline-dark"
-          >
-            Add Expense
-          </button>
-          <button
-            onClick={handleRoyaltySplit}
-            id="nav-bottom"
-            className="btn btn-outline-dark"
-          >
-            Royalty Split
-          </button>
+              <button
+                onClick={handleAddExpense}
+                id="nav-bottom"
+                className="btn btn-outline-dark"
+              >
+                Add Expense
+              </button>
+              <button
+                onClick={handleRoyaltySplit}
+                id="nav-bottom"
+                className="btn btn-outline-dark"
+              >
+                Royalty Split
+              </button>
+            </div>
+          ) : (
+            <NavLink
+              to={`/d/coop-units/${id}`}
+              className="btn btn-outline-dark col-sm-12"
+            >
+              Fund
+            </NavLink>
+          )}
         </div>
       </div>
 
@@ -241,7 +262,7 @@ const DProjectForecast = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {expenseProjections && expenseProjections.length > 0 ? (
+                  {expenseProjections && expenseProjections.length > 0 ? (
                     expenseProjections.map((expense, index) => (
                       <tr key={index}>
                         <td className="p-3">{expense.item}</td>

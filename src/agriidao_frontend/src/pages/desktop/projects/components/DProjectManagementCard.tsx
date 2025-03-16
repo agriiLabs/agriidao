@@ -12,7 +12,7 @@ const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => 
     const { coopIndexerActor } = useAuth();
     const [coop, setCoop] = useState<string | null>(null);
     
-  
+  console.log("project", project);
   useEffect(() => {
       if (project) {
         getCoop();
@@ -73,15 +73,15 @@ const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => 
 
           <div className="mt-3">
             <NavLink
-              to={`/d/projects/manager/manage/${project?.id}`}
+              to={`/d/projects/overview/${project?.id}`}
               className="btn btn-outline-dark col-sm-12"
             >
-              Basic Info
+              Overview
             </NavLink>
           </div>
           <div className="mt-2">
             <NavLink
-              to={`/d/projects/manager/forecast/${project?.id}`}
+              to={`/d/projects/forecast/${project?.id}`}
               className="btn btn-outline-dark col-sm-12"
             >
               Financial Forecast
@@ -89,7 +89,7 @@ const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => 
           </div>
           <div className="mt-2">
             <NavLink
-              to={`/d/projects/manager/milestones/${project?.id}`}
+              to={`/d/projects/milestones/${project?.id}`}
               className="btn btn-outline-dark col-sm-12"
             >
               Milestones
@@ -97,10 +97,26 @@ const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => 
           </div>
           <div className="mt-2">
             <NavLink
-              to={`/d/projects/manager/proposals/${project?.id}`}
+              to={`/d/projects/treasury/${project?.id}`}
+              className="btn btn-outline-dark col-sm-12"
+            >
+              Treasury
+            </NavLink>
+          </div>
+          <div className="mt-2">
+            <NavLink
+              to={`/d/projects/proposals/${project?.id}`}
               className="btn btn-outline-dark col-sm-12"
             >
               Proposals
+            </NavLink>
+          </div>
+          <div className="mt-2">
+            <NavLink
+              to={`/d/projects/backers/${project?.id}`}
+              className="btn btn-outline-dark col-sm-12"
+            >
+              Backers
             </NavLink>
           </div>
         </div>

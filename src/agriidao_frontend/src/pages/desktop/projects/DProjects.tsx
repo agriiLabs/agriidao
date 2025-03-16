@@ -8,10 +8,14 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import imagePath2 from "../../../assets/images/projects-default.png";
 import DProjectOwner from "../components/DProjectOwner";
+import { useDispatch } from "react-redux";
+import { setProjectOwner } from "../../../redux/slices/app";
+
 
 const DProjects = () => {
   const { projectsActor } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [ownerExists, setOwnerExists] = useState(false);
@@ -43,12 +47,12 @@ const DProjects = () => {
       const res = await projectsActor.getProjectOwner();
       if (res) {
         setOwner(res);
+        dispatch(setProjectOwner(res));
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
     }
   };
-  console.log("owner", owner);
 
   useEffect(() => {
     if (projects) {
@@ -79,9 +83,6 @@ const DProjects = () => {
       console.error("Error fetching project projections:", error);
     }
   };
-
-  console.log("projects", projects);
-  console.log("projectProjections", projectProjections);
 
   useEffect(() => {
     if (owner) {
@@ -160,7 +161,7 @@ const DProjects = () => {
                       </th>
                       <td align="left" width="40%">
                         <Link
-                          to={`/d/project-detail/${project.id}`}
+                          to={`/d/projects/overview/${project.id}`}
                           className="d-flex align-items-center"
                         >
                           {/* {position.user.profile_pic ? (

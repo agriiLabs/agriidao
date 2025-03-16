@@ -8,13 +8,20 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import imagePath2 from "../../../assets/images/projects-default.png";
 import { formatDate } from "../../../utils/Utils";
 import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexer.did";
+import { useDispatch } from "react-redux";
+import { setProjectOwner } from "../../../redux/slices/app";
+
 
 const DProjectManager = () => {
   const { projectsActor, coopIndexerActor } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [coop, setCoop] = useState<CoopRecord | null>(null);
+  const [projectCount, setProjectCount] = useState(0);
+ 
+
 
   useEffect(() => {
     if (projectsActor) {
@@ -31,11 +38,19 @@ const DProjectManager = () => {
       const res = await projectsActor.getProjectOwner();
       if (res) {
         setOwner(res);
+        dispatch(setProjectOwner(res));
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
     }
   };
+  console.log("owner", owner);
+
+  useEffect(() => {
+    if (owner) {
+      getProjects();
+    }
+  }, [owner]);
 
   const getProjects = async () => {
     if (owner?.userId) {
@@ -43,14 +58,12 @@ const DProjectManager = () => {
       if (res) {
         setProjects(res);
       }
+
+      if (res) {
+        setProjectCount(res.length);
+      }
     }
   };
-
-  useEffect(() => {
-    if (owner) {
-      getProjects();
-    }
-  }, [owner]);
 
   useEffect(() => {
     if (projects) {
@@ -80,16 +93,12 @@ const DProjectManager = () => {
           <h5 className="mb-0">My Projects</h5>
         </div>
         <div className="mb-0 position-relative">
-          <select
-            className="form-select form-control"
-            id="campaignFilter"
-            value=""
+          <NavLink
+            to={`/d/start-project/`}
+            className="btn btn-outline-dark col-sm-12"
           >
-            <option value="all">All</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
-          </select>
+            Start a Project
+          </NavLink>
         </div>
       </div>
 
@@ -119,7 +128,7 @@ const DProjectManager = () => {
                       : ""}{" "}
                   </dd>
                   <dt className="col-sm-6">Projects</dt>
-                  <dd className="col-sm-6 text-end">0</dd>
+                  <dd className="col-sm-6 text-end">{projectCount}</dd>
                 </dl>
               </div>
               <div className="mt-3">
@@ -156,7 +165,7 @@ const DProjectManager = () => {
                       <tr key={index}>
                         <td align="left" width="40%">
                           <Link
-                            to={`/d/projects/manager/manage/${project.id}`}
+                            to={`/d/projects/overview/${project.id}`}
                             className="d-flex align-items-center"
                           >
                             {/* {position.user.profile_pic ? (

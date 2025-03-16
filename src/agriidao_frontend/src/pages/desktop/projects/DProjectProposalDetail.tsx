@@ -25,9 +25,6 @@ const DProjectProposalDetail = () => {
   const noPercentage =
     totalVotes > 0 ? ((noVotes / totalVotes) * 100).toFixed(2) : 0;
 
-  //   const yesVotes = 84;
-  //   const noVotes = 100 - yesVotes;
-
   useEffect(() => {
     if (id) {
       getProposal();
@@ -194,7 +191,6 @@ const DProjectProposalDetail = () => {
                   Project Proposals
                 </NavLink>
               </div>
-              
             </div>
           </div>
         </div>
@@ -224,7 +220,7 @@ const DProjectProposalDetail = () => {
                 <div className="d-flex ms-auto gap-2">
                   <h5 className="mb-0">Voting Ends</h5>
                   {proposal?.voteEnd && (
-                    <CountdownTimer voteEnd={proposal.voteEnd} />
+                    <CountdownTimer voteEnd={proposal.voteEnd} proposalId={proposal.id} />
                   )}
                 </div>
               </div>
