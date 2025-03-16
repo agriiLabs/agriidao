@@ -2,7 +2,7 @@ import imagePath6 from "../assets/images/agriidao-app.png";
 import imagePath1 from "../assets/images/ecosystem/coop.png";
 import imagePath2 from "../assets/images/ecosystem/price.png";
 import imagePath3 from "../assets/images/ecosystem/protocol.png";
-import imagePath4 from "../assets/images/ecosystem/ecosystem.png";
+import imagePath4 from "../assets/images/agriicoop.jpeg";
 import imagePath5 from "../assets/images/ecosystem/agriicoop-icon.svg";
 import imagePath8 from "../assets/images/ecosystem/agriimarket-icon.svg";
 import imagePath9 from "../assets/images/ecosystem/agriitrace-icon.svg";
@@ -19,17 +19,17 @@ const DesktopLandingPage = () => {
 
   return (
     <div>
-      <section id="home" className="bg-half d-table w-100 overflow-hidden">
+      <section id="home" className="bg-half bg-dark d-table w-100 overflow-hidden">
         <div className="container position-relative">
           <div className="row align-items-center">
             <div className="col-lg-7 col-md-7">
               <div className="title-heading">
-                <h1 className="heading fw-bold mb-3">
+                <h1 className="heading text-white fw-bold mb-3">
                   Start, Scale & Fund
                   <br />
                   Food Co-ops On-Chain
                 </h1>
-                <p className="para-desc text-muted">
+                <p className="para-desc text-white">
                   Build decentralized food co-ops, access funding, and trade
                   fairly with agriiDAO.
                   <br />
@@ -37,14 +37,14 @@ const DesktopLandingPage = () => {
                 <div className="row d-flex justify-content-center">
                   <div className="d-flex gap-3">
                     <NavLink
-                      to="/d/coops"
-                      className="mt-4 text-dark btn bg-white border-dark"
+                      to="https://forms.gle/LazxXwDGrSnQ51sE8" target="_blank"
+                      className="mt-4 text-white btn bg-dark border-white"
                     >
                       Start a Co-op
                     </NavLink>
                     <NavLink
-                      to="/d/coops"
-                      className="mt-4 text-dark btn bg-white border-dark"
+                      to="https://forms.gle/LazxXwDGrSnQ51sE8" target="_blank"
+                      className="mt-4 text-white btn bg-dark border-white"
                     >
                       Fund Co-ops
                     </NavLink>
@@ -107,7 +107,7 @@ const DesktopLandingPage = () => {
           </div>
         </div>
       </section>
-      <section id="overview" className="section bg-light">
+      <section id="overview" className="section ">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 text-center">
@@ -140,7 +140,7 @@ const DesktopLandingPage = () => {
                   decision-making and efficient operations.
                 </p>
                 <NavLink
-                  to="/d/coops"
+                  to="https://forms.gle/LazxXwDGrSnQ51sE8" target="_blank" 
                   className="mt-4 text-dark btn bg-white border-dark"
                 >
                   Start a Co-op
@@ -188,7 +188,7 @@ const DesktopLandingPage = () => {
         </div>
       </section>
 
-      <section id="process" className="section bg-light">
+      <section id="process" className="section pt-2">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 text-center">
@@ -199,14 +199,14 @@ const DesktopLandingPage = () => {
           </div>
           <div className="row align-items-center">
             <div className="col-md-6">
-              <img src={imagePath4} className="img-fluid rounded" alt="" />
+              <img src={imagePath4} className="img-fluid mx-auto d-block rounded shadow" alt="agriiCoop detail  page" />
             </div>
 
             <div className="col-md-6 mt-4 mt-sm-0 pt-2 pt-sm-0">
               <div className="section-title ml-lg-5">
                 <h5 className="title mb-4">
-                  Let’s say a group of farmers in Africa wants to create a
-                  fair-trade coffee co-op.
+                  Let’s say an agribusiness in Africa wants to create a
+                  zero-waste food co-op.
                 </h5>
                 <p className="text-muted font-16 d-flex align-items-center">
                   <img
@@ -215,9 +215,8 @@ const DesktopLandingPage = () => {
                     alt=""
                     style={{ height: "2em", width: "auto" }}
                   ></img>
-                  The African coffee farmers use agriiCOOP to create a
-                  decentralized cooperative, set governance rules, and onboard
-                  members for transparent decision-making.
+                  Morena launches a sustainable
+                  freeze-dried foods co-op using agriiCOOP.
                 </p>
                 <p className="text-muted font-16 d-flex align-items-center">
                   <img
@@ -226,9 +225,7 @@ const DesktopLandingPage = () => {
                     alt=""
                     style={{ height: "2em", width: "auto" }}
                   ></img>{" "}
-                  They use agriiPrice to access real-time, verified market data,
-                  ensuring they sell their coffee at fair and competitive
-                  prices.
+                  Jess funds production in exchange for tokenized RWAs representing future outputs.
                 </p>
                 <p className="text-muted font-16 d-flex align-items-center">
                   <img
@@ -237,55 +234,39 @@ const DesktopLandingPage = () => {
                     alt=""
                     style={{ height: "2em", width: "auto" }}
                   ></img>{" "}
-                  By integrating agriiTrace, they record every step of the
-                  supply chain on-chain, providing buyers with verifiable proof
-                  of ethical sourcing.
+                  Once production is complete, Jess can take delivery, trade, 
+                  store, or donate her portion.
                 </p>
-                <p className="text-muted font-16 d-flex align-items-center">
-                  <img
-                    src={imagePath10}
-                    className="img-fluid rounded me-3"
-                    alt=""
-                    style={{ height: "2em", width: "auto" }}
-                  ></img>{" "}
-                  Finally, they list their coffee on agriiMarket, connecting
-                  directly with global buyers, increasing profits, and
-                  eliminating middlemen.
-                </p>
-
-                <Button className="mt-3 text-dark bg-light border-dark">
-                  Explore agriiProtocol
-                </Button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="back-a-coop" className="section bg-light">
+      <section id="back-a-coop" className="section bg-light pt-5">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 text-center">
               <div className="section-title mb-4 pb-2">
-                <h4 className="title mb-4">Why Back Food Co-ops?</h4>
+                <h4 className="title mb-4 text-dark">Why Back Food Co-ops?</h4>
               </div>
             </div>
           </div>
 
           <div className="row mb-3 pb-4 mt-4">
-            <div className="col-md-4 col-12">
+            <div className="col-md-4 col-12 ">
               <div className="features text-center">
                 <div>
                   <img
                     src={imagePath11}
-                    className="avatar avatar-small"
+                    className="avatar avatar-small mt-4"
                     alt="farming input unit"
                   />
                 </div>
 
-                <div className="content mt-4">
+                <div className="content mt-4 pb-5">
                   <h5>Real-World Impact</h5>
-                  <p className="text-muted font-16 mb-0">
+                  <p className="text-muted font-16">
                     Support decentralized food co-ops that create jobs,
                     strengthen supply chains, and drive economic <br />
                     growth in real communities.
@@ -294,22 +275,22 @@ const DesktopLandingPage = () => {
               </div>
             </div>
 
-            <div className="col-md-4 col-12 mt-5 mt-sm-0">
+            <div className="col-md-4 col-12">
               <div className="features text-center">
                 <div>
                   <img
                     src={imagePath12}
-                    className="avatar avatar-small"
+                    className="avatar avatar-small mt-4"
                     alt="off-taker unit"
                   />
                 </div>
 
-                <div className="content mt-4">
+                <div className="content mt-4 pb-5">
                   <h5>On-Chain Transparency</h5>
                   <p className="text-muted font-16 mb-0">
                     All funds, trades, and governance decisions are recorded
-                    on-chain, allowing investors and co-op members to track
-                    financial flows and verify fair pricing in real time.
+                    on-chain, allowing co-op members to track financial flows
+                    and verify data in real time.
                   </p>
                 </div>
               </div>
@@ -320,12 +301,12 @@ const DesktopLandingPage = () => {
                 <div>
                   <img
                     src={imagePath13}
-                    className="avatar avatar-small"
+                    className="avatar avatar-small mt-4"
                     alt="agribusiness women unit"
                   />
                 </div>
 
-                <div className="content mt-4">
+                <div className="content mt-4 pb-5">
                   <h5>Real-World Rewards</h5>
                   <p className="text-muted font-16 mb-0">
                     Co-op members receive tokenized real-world assets (RWAs)
@@ -339,7 +320,7 @@ const DesktopLandingPage = () => {
           <div className="row justify-content-center">
             <div className="col-12 text-center">
               <NavLink
-                to="/d/coops"
+                to="https://forms.gle/LazxXwDGrSnQ51sE8" target="_blank"
                 className="mt-4 text-dark btn bg-white border-dark"
               >
                 Fund Co-ops
@@ -348,6 +329,8 @@ const DesktopLandingPage = () => {
           </div>
         </div>
       </section>
+
+     
     </div>
   );
 };
