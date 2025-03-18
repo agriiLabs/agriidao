@@ -13,6 +13,7 @@ import imagePath12 from "../assets/images/transparency.png";
 import imagePath13 from "../assets/images/rewards.png";
 import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import FAQAccordion from "../components/agriidao/FAQAccordion";
 
 const DesktopLandingPage = () => {
   const appHeight = 600;
@@ -179,9 +180,12 @@ const DesktopLandingPage = () => {
                   track contributions, oversee operations, and maintain trust in
                   a fully verifiable on-chain system.
                 </p>
-                <Button className="mt-4 text-dark bg-light border-dark">
+                <NavLink 
+                  to="https://pa7lj-sqaaa-aaaag-at6la-cai.icp0.io/" 
+                  target="_blank"
+                  className="mt-4 text-dark btn bg-white border-dark">
                   Explore agriiProtocol
-                </Button>
+                </NavLink>
               </div>
             </div>
           </div>
@@ -329,8 +333,6 @@ const DesktopLandingPage = () => {
           </div>
         </div>
       </section>
-
-     
     </div>
   );
 };
