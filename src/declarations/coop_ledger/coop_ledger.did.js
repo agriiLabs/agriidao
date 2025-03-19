@@ -8,9 +8,9 @@ export const idlFactory = ({ IDL }) => {
     'timestamp' : Time,
     'txType' : IDL.Text,
     'coopId' : IDL.Principal,
-    'amount' : IDL.Float64,
+    'amount' : IDL.Nat,
   });
-  return IDL.Service({
+  const CoopLedger = IDL.Service({
     'addTransaction' : IDL.Func([CoopTransaction], [], []),
     'getAllTransactions' : IDL.Func([], [IDL.Vec(CoopTransaction)], []),
     'getTransactionByTxId' : IDL.Func([IDL.Text], [CoopTransaction], []),
@@ -30,5 +30,6 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
   });
+  return CoopLedger;
 };
 export const init = ({ IDL }) => { return []; };

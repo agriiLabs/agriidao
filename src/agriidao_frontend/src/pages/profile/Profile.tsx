@@ -4,18 +4,22 @@ import imagePath2 from "../../assets/images/ecosystem/agriiprice-icon.svg";
 import imagePath3 from "../../assets/images/ecosystem/agriimarket-icon.svg";
 import imagePath4 from "../../assets/images/ecosystem/agriitrace-icon.svg";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { formatDate, toastSuccess } from "../../utils/Utils";
+import { formatDate, toastError, toastSuccess } from "../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
 import {
+  Profile as ProfileType,
   WalletAddress,
   WalletAddressRequest,
 } from "../../../../declarations/user/user.did";
 import { BountyPoint } from "../../../../declarations/bounty/bounty.did";
 import ConnectWallet from "./ConnectWallet";
-
+import { ProfilePicModal } from "./component/UpdateProfile";
+import { CiEdit } from "react-icons/ci";
+import { deleteAsset, uploadFile } from "../../hooks/storage-config/functions";
+import { setProfile } from "../../redux/slices/app";
 // declare global {
 //   interface Window {
 //     ethereum: any;
@@ -28,7 +32,8 @@ export interface Response {
 }
 
 const Profile = () => {
-  const { isAuthenticated, userActor, bountyActor } = useAuth();
+  const dispatch = useDispatch();
+  const { isAuthenticated, userActor, storageActor, bountyActor } = useAuth();
   const { user, profile } = useSelector((state: RootState) => state.app);
   const [profileExists, setProfileExists] = useState(false);
   const navigate = useNavigate();
@@ -36,6 +41,8 @@ const Profile = () => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
   const [bountyPoint, setBountyPoint] = useState<BountyPoint | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const userTypeChips = {
     member: "Member",
@@ -77,7 +84,7 @@ const Profile = () => {
     if ("ok" in res) {
       setBountyPoint(res.ok);
     } else {
-      console.error("Error retrieving bounty points");
+      console.log("Error retrieving bounty points : ", res.err);
     }
   };
 
@@ -102,44 +109,51 @@ const Profile = () => {
   };
 
   const toggleReveal = () => {
-    setIsRevealed((prev) => !prev); // Toggle reveal state
+    setIsRevealed((prev) => !prev);
   };
 
-  // eth wallet address
-  // useEffect(() => {
-  //   if (address) {
-  //     saveWalletAddress(address);
-  //   }
-  // }, [address]);
 
-  // const saveWalletAddress = async (_address: string) => {
-  //   const body: WalletAddressRequest = {
-  //     address: _address,
-  //     chain: {
-  //       ETH: null,
-  //     },
-  //   };
+  const uploadAsset = async (file: File) => {
+    if (!storageActor) return;
+    const file_path = location.pathname;
+    try {
+      const assetUrl = await uploadFile(file, file_path, storageActor);
+      return assetUrl;
+    } catch (error) {
+      console.error("Error uploading file:", file.name, error);
+    }
+  };
 
-  //   await userActor?.addWalletAddress(body);
-  // };
+  const handleImageUpdate = async (file: File) => {
+    try {
+      if (!storageActor || !profile) {
+        console.error("storageActor or profile is null");
+        return;
+      }
+      setUpdatingProfile(true);
+        const oldImage = profile.profilePic[0];
+        if (oldImage) {
+          await deleteAsset(oldImage, storageActor);
+        }
+        const imageUrl = await uploadAsset(file);
+        if (imageUrl) {
+          let updatedProfile: ProfileType = {
+            ...profile,
+            profilePic: [imageUrl],
+          }
+          await userActor?.updateProfile(updatedProfile);
+           dispatch(setProfile(updatedProfile));
+          toastSuccess("Profile pic updated successfully");
+        }
+    } catch (error) {
+      console.error("Error updating profile pic", error);
+      toastError("Error updating profile pic");
+    } finally {
+      setUpdatingProfile(false);
+      setIsModalOpen(false);
+    }
+  };
 
-  // const getWalletAddressByCaller = async () => {
-  //   if (!userActor) {
-  //     console.error("userActor is null");
-  //     return;
-  //   }
-  //   userActor.getWalletAddressByCaller().then((result: Response) => {
-  //     if ("ok" in result) {
-  //       setWalletAddress(result.ok.address);
-  //     } else {
-  //       console.error("Error getting wallet address", result);
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   getWalletAddressByCaller();
-  // }, [userActor, user]);
 
   return (
     <>
@@ -157,9 +171,10 @@ const Profile = () => {
       </div>
 
       <div className="page-content header-clear-medium">
-        <div className="card card-style">
+        <div className="">
           <div className="d-flex content mb-1">
-            <div className="flex-grow-1">
+            <div className="flex-grow-1"
+            >
               <div>
                 <h1 className="font-700">{user?.username}</h1>
                 <p className="mb-1">
@@ -225,22 +240,31 @@ const Profile = () => {
                       </div>
                     ) : null;
                   })}
-
-                  {/* <ConnectWallet /> */}
-
-                {/* <w3m-button /> */}
               </div>
             </div>
 
-            <div>
+            <div className="position-relative d-inline-block">
+              {isModalOpen && <ProfilePicModal
+                imagePath={imagePath}
+                onClose={() => setIsModalOpen(false)}
+                loading={updatingProfile}
+                onImageUpdate={handleImageUpdate}
+              />}
               <img
                 className="rounded-xl me-3"
-                src={imagePath}
+                src={profile?.profilePic[0] || imagePath}
                 data-src={"#"}
                 width="65"
                 height="65"
                 alt={"Default user profile pic"}
               />
+              <button
+                className="btn btn-sm  position-absolute bottom-0 end-0 me-1 mb-1"
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <CiEdit size={18} />
+              </button>
             </div>
           </div>
           <div className="divider mb-0"></div>
@@ -263,28 +287,28 @@ const Profile = () => {
           </div>
         </div>
 
-      { agent && (
-        <div className="card card-style">
-          <div className="content">
-            
+        {agent && (
+          <div className="card card-style">
+            <div className="content">
+
               <NavLink
-              to={`/market-agents/${user?.id}`}
-              id="nav-bottom"
-              className="font-15 color-dark d-flex "
-            >
-              <div className="align-self-center ">
-                <p className="font-15 mb-0">My Markets</p>  
-              </div>
-              <i className="fa fa-angle-right ms-auto text-end mt-2" />                
-             
-             
-              
-            </NavLink>
-            
-            
-          </div> 
-        </div>
-        )} 
+                to={`/market-agents/${user?.id}`}
+                id="nav-bottom"
+                className="font-15 color-dark d-flex "
+              >
+                <div className="align-self-center ">
+                  <p className="font-15 mb-0">My Markets</p>
+                </div>
+                <i className="fa fa-angle-right ms-auto text-end mt-2" />
+
+
+
+              </NavLink>
+
+
+            </div>
+          </div>
+        )}
 
         {bountyPoint && (
           <div className="card card-style">

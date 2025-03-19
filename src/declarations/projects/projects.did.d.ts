@@ -17,16 +17,31 @@ export interface Milestone {
   'task1' : string,
   'task2' : [] | [string],
   'task3' : [] | [string],
-  'isStart' : boolean,
+  'timeframe' : bigint,
   'approvedBy' : [] | [Principal],
-  'dueDate' : [] | [Time],
-  'description' : [] | [string],
+  'name' : string,
+  'createdBy' : Principal,
+  'milestoneStatus' : MilestoneStatus,
+  'description' : string,
   'projectId' : string,
   'timestamp' : Time,
-  'budget' : number,
+  'budget' : bigint,
   'isComplete' : boolean,
 }
 export type MilestoneId = string;
+export interface MilestoneRequest {
+  'task1' : string,
+  'task2' : [] | [string],
+  'task3' : [] | [string],
+  'timeframe' : bigint,
+  'name' : string,
+  'description' : string,
+  'projectId' : string,
+  'budget' : bigint,
+}
+export type MilestoneStatus = { 'Completed' : null } |
+  { 'NotStarted' : null } |
+  { 'Inprogress' : null };
 export interface Project {
   'id' : string,
   'duration' : bigint,
@@ -63,17 +78,13 @@ export interface ProjectExpense {
 }
 export type ProjectExpenseId = string;
 export interface ProjectExpenseRequest {
-  'total' : bigint,
   'item' : string,
-  'createdBy' : Principal,
   'projectFinancialsId' : [] | [string],
   'projectProjectionsId' : [] | [string],
-  'timestamp' : Time,
   'quantity' : bigint,
   'amount' : bigint,
 }
 export interface ProjectFinancials {
-  'isStart' : boolean,
   'expenses' : bigint,
   'royaltySplit' : bigint,
   'income' : bigint,
@@ -104,12 +115,9 @@ export interface ProjectIncome {
 }
 export type ProjectIncomeId = string;
 export interface ProjectIncomeRequest {
-  'total' : bigint,
   'item' : string,
-  'createdBy' : Principal,
   'projectFinancialsId' : [] | [string],
   'projectProjectionsId' : [] | [string],
-  'timestamp' : Time,
   'quantity' : bigint,
   'amount' : bigint,
 }
@@ -120,7 +128,6 @@ export interface ProjectOwner {
   'entityType' : EntityType,
 }
 export interface ProjectProjections {
-  'isStart' : boolean,
   'expenses' : bigint,
   'royaltySplit' : bigint,
   'income' : bigint,
@@ -128,26 +135,6 @@ export interface ProjectProjections {
   'timestamp' : Time,
   'profit' : bigint,
   'royaltyPercentage' : bigint,
-}
-export interface ProjectProposal {
-  'id' : string,
-  'coop' : Principal,
-  'userId' : Principal,
-  'voteStart' : [] | [Time],
-  'isAccept' : boolean,
-  'voteDuration' : bigint,
-  'projectId' : string,
-  'timestamp' : Time,
-}
-export type ProjectProposalId = string;
-export interface ProjectProposalRequest {
-  'coop' : Principal,
-  'userId' : Principal,
-  'voteStart' : [] | [Time],
-  'isAccept' : boolean,
-  'voteDuration' : bigint,
-  'projectId' : string,
-  'timestamp' : Time,
 }
 export interface ProjectRequest {
   'duration' : bigint,
@@ -163,7 +150,6 @@ export interface ProjectRequest {
 }
 export interface ProjectTerm {
   'duration' : bigint,
-  'isStart' : boolean,
   'projectType' : ProjectType,
   'createdBy' : Principal,
   'projectId' : string,
@@ -172,8 +158,7 @@ export interface ProjectTerm {
   'payoutFrequency' : bigint,
 }
 export type ProjectTermId = string;
-export type ProjectType = { 'NotSpecified' : null } |
-  { 'SolarMiniGrid' : null } |
+export type ProjectType = { 'SolarMiniGrid' : null } |
   { 'Farm' : null } |
   { 'Warehouse' : null } |
   { 'Proccessing' : null } |
@@ -182,40 +167,16 @@ export type ProjectType = { 'NotSpecified' : null } |
   { 'Offtaking' : null } |
   { 'GreenHouse' : null } |
   { 'ResearchAndDevelopment' : null };
-export type ProposalStatus = { 'Approved' : null } |
-  { 'Rejected' : null } |
-  { 'Pending' : null };
-export type Result = { 'ok' : null } |
-  { 'err' : string };
-export type Time = bigint;
-export interface Treasury {
-  'balance' : number,
-  'totalIn' : number,
-  'totalOut' : number,
-  'projectId' : string,
-  'totalFunders' : bigint,
-  'timestamp' : Time,
-}
-export type UserId = Principal;
-export interface Vote {
-  'userId' : Principal,
-  'isAccept' : boolean,
-  'projectProposalId' : string,
-  'timestamp' : Time,
-}
-export interface _SERVICE {
+export interface Projects {
   'addFinancialsExpense' : ActorMethod<[ProjectExpenseRequest], undefined>,
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
-  'addMilestone' : ActorMethod<[Milestone], undefined>,
-  'addProject' : ActorMethod<[ProjectRequest], Result>,
+  'addMilestone' : ActorMethod<[MilestoneRequest], undefined>,
+  'addProject' : ActorMethod<[ProjectRequest], undefined>,
   'addProjectFunder' : ActorMethod<[ProjectFunder], undefined>,
   'addProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
-  'addProjectProposal' : ActorMethod<[ProjectProposalRequest], undefined>,
   'addProjectTerm' : ActorMethod<[ProjectTerm], undefined>,
-  'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], undefined>,
-  'addProjectionIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
-  'addVote' : ActorMethod<[Vote], undefined>,
-  'getAllProjectOwners' : ActorMethod<[], Array<ProjectOwner>>,
+  'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], Result_2>,
+  'addProjectionIncome' : ActorMethod<[ProjectIncomeRequest], Result_1>,
   'getAllProjects' : ActorMethod<[], Array<Project>>,
   'getEntityTypes' : ActorMethod<[], Array<string>>,
   'getFinancialsExpenseById' : ActorMethod<[ProjectExpenseId], ProjectExpense>,
@@ -246,11 +207,6 @@ export interface _SERVICE {
     [ProjectId],
     ProjectProjections
   >,
-  'getProjectProposalById' : ActorMethod<[ProjectProposalId], ProjectProposal>,
-  'getProjectProposalsByProjectId' : ActorMethod<
-    [ProjectId],
-    Array<ProjectProposal>
-  >,
   'getProjectTermById' : ActorMethod<[ProjectTermId], ProjectTerm>,
   'getProjectTermsByProjectId' : ActorMethod<[ProjectId], Array<ProjectTerm>>,
   'getProjectionExpenseById' : ActorMethod<[ProjectExpenseId], ProjectExpense>,
@@ -263,24 +219,41 @@ export interface _SERVICE {
     [ProjectId],
     Array<ProjectIncome>
   >,
-  'getProjectsByUserId' : ActorMethod<[UserId], Array<Project>>,
-  'getStartProject' : ActorMethod<[ProjectId], Project>,
+  'getProjectsByCoop' : ActorMethod<[string], Array<Project>>,
+  'getProjectsByOwner' : ActorMethod<[UserId], Array<Project>>,
   'getTreasuryByProjectId' : ActorMethod<[ProjectId], Treasury>,
-  'getVoteById' : ActorMethod<[string], Vote>,
-  'getVotesByUserId' : ActorMethod<[Principal], Array<Vote>>,
-  'projectOwnerCheck' : ActorMethod<[], boolean>,
   'updateFinancialsExpense' : ActorMethod<[ProjectExpense], undefined>,
   'updateFinancialsIncome' : ActorMethod<[ProjectIncome], undefined>,
   'updateMilestone' : ActorMethod<[Milestone], undefined>,
   'updateProject' : ActorMethod<[Project], undefined>,
   'updateProjectFinancials' : ActorMethod<[ProjectFinancials], undefined>,
   'updateProjectFunder' : ActorMethod<[ProjectFunder], undefined>,
+  'updateProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
   'updateProjectProjections' : ActorMethod<[ProjectProjections], undefined>,
-  'updateProjectProposal' : ActorMethod<[ProjectProposal], undefined>,
   'updateProjectTerm' : ActorMethod<[ProjectTerm], undefined>,
   'updateProjectionExpense' : ActorMethod<[ProjectExpense], undefined>,
-  'updateProjectionIncome' : ActorMethod<[ProjectIncome], undefined>,
+  'updateProjectionIncome' : ActorMethod<[ProjectIncome], Result>,
   'updateTreasury' : ActorMethod<[Treasury], undefined>,
 }
+export type ProposalStatus = { 'Approved' : null } |
+  { 'Rejected' : null } |
+  { 'Pending' : null };
+export type Result = { 'ok' : null } |
+  { 'err' : string };
+export type Result_1 = { 'ok' : ProjectIncome } |
+  { 'err' : string };
+export type Result_2 = { 'ok' : ProjectExpense } |
+  { 'err' : string };
+export type Time = bigint;
+export interface Treasury {
+  'balance' : number,
+  'totalIn' : number,
+  'totalOut' : number,
+  'projectId' : string,
+  'totalFunders' : bigint,
+  'timestamp' : Time,
+}
+export type UserId = Principal;
+export interface _SERVICE extends Projects {}
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

@@ -91,8 +91,8 @@ const MemberCoop = () => {
           const usdValue =
             tx.txType.toLowerCase() === "mint" ||
             tx.txType.toLowerCase() === "burn"
-              ? tx.amount * Number(unitPrice)
-              : tx.amount * (tokenPrice ?? 0);
+              ? Number(tx.amount) * Number(unitPrice)
+              : Number(tx.amount) * (tokenPrice ?? 0);
 
           return {
             ...tx,

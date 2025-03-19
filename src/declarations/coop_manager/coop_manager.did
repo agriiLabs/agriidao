@@ -55,7 +55,6 @@ type CoopManager =
    getFeeHistory: () -> (vec PlatformFees);
    getFeesDetails: (nat) -> (MintingFees) query;
    getMemberById: (CoopMemberId) -> (CoopMember);
-   getMemberVersionById: (CoopMemberId) -> (vec CoopMember);
    getMemberbyUserId: (principal) -> (CoopMember);
    getTransactionById: (TransactionId) -> (Transaction);
    getTransactions: () -> (vec Transaction);

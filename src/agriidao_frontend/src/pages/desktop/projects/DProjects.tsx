@@ -77,9 +77,6 @@ const DProjects = () => {
 
 
 
-console.log("projects", projects);
-console.log("projectProjections", projectProjections);
-
 
   useEffect(() => {
     if (owner) {

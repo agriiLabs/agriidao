@@ -20,6 +20,7 @@ export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
 export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
 export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
 export const projectsCanisterId = "xncbs-uqaaa-aaaag-at3mq-cai"
+export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 
 //local
 

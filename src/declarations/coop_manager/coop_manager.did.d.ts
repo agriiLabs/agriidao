@@ -44,7 +44,6 @@ export interface CoopManager {
   'getFeeHistory' : ActorMethod<[], Array<PlatformFees>>,
   'getFeesDetails' : ActorMethod<[bigint], MintingFees>,
   'getMemberById' : ActorMethod<[CoopMemberId], CoopMember>,
-  'getMemberVersionById' : ActorMethod<[CoopMemberId], Array<CoopMember>>,
   'getMemberbyUserId' : ActorMethod<[Principal], CoopMember>,
   'getTransactionById' : ActorMethod<[TransactionId], Transaction>,
   'getTransactions' : ActorMethod<[], Array<Transaction>>,

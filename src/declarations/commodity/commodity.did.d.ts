@@ -33,10 +33,6 @@ export interface CommodityActor {
   >,
   'deleteMarketPrice' : ActorMethod<[MarketPrice], undefined>,
   'getAllLatestCommodities' : ActorMethod<[], Array<Commodity>>,
-  'getAllLatestCommoditiesByCategoryName' : ActorMethod<
-    [string],
-    Array<Commodity>
-  >,
   'getAllLatestMarketCommoditiesByMarketId' : ActorMethod<
     [string],
     Array<MarketLocationCommodity>
@@ -58,22 +54,12 @@ export interface CommodityActor {
     [string],
     Array<MarketLocationAgent>
   >,
-  'getAllMarketLocationVersions' : ActorMethod<[string], Array<MarketLocation>>,
   'getAllMarketLocationsLatest' : ActorMethod<[], Array<MarketLocation>>,
   'getCommodityByCategory' : ActorMethod<[string], Array<Commodity>>,
   'getCommodityLatest' : ActorMethod<[string], Result_4>,
-  'getCommodityVersions' : ActorMethod<[string], Array<Commodity>>,
-  'getLatestMarketLocationAgentVersions' : ActorMethod<
-    [string],
-    Array<MarketLocationAgent>
-  >,
   'getLatestMarketLocationAgentbyId' : ActorMethod<[string], Result_3>,
   'getLatestMarketPriceById' : ActorMethod<[string], Result_2>,
   'getLatestMarketPriceByMarketLocationId' : ActorMethod<
-    [string],
-    Array<MarketPrice>
-  >,
-  'getLatestMarketPriceVersionsById' : ActorMethod<
     [string],
     Array<MarketPrice>
   >,
@@ -91,15 +77,7 @@ export interface CommodityActor {
     Array<MarketLocationCommodity>
   >,
   'getMarketLocationCommodityById' : ActorMethod<[string], Result_1>,
-  'getMarketLocationCommodityVersions' : ActorMethod<
-    [string],
-    Array<MarketLocationCommodity>
-  >,
   'getMarketLocationLatest' : ActorMethod<[string], Result>,
-  'getMarketLocationsByCountryName' : ActorMethod<
-    [string],
-    Array<MarketLocation>
-  >,
   'getMarketPriceByMarketCommodityId' : ActorMethod<
     [string],
     Array<MarketPrice>
