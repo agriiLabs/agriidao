@@ -20,6 +20,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { toastSuccess } from "../../../utils/Utils";
 import { IcrcTransferError } from "@dfinity/ledger-icrc";
+import imagePath2 from "../../../assets/images/co-ops-default.png";
+
 
 type FormData = {
   units: string;
@@ -201,8 +203,8 @@ const DCoopUnits = () => {
                   <td>
                     <div className="d-flex align-items-center ps-2">
                       <img
-                        src=""
-                        className="img-fluid avatar avatar-small rounded shadow "
+                        src={imagePath2}
+                        className="avatar avatar-ex-small rounded"
                         style={{ height: "auto;" }}
                         alt=""
                       />

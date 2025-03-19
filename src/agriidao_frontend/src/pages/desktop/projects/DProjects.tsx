@@ -5,17 +5,24 @@ import {
   ProjectOwner,
   ProjectProjections,
 } from "../../../../../declarations/projects/projects.did";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
-import { ckUSDCe6s } from "../../../constants/canisters_config";
+import { Link, useNavigate } from "react-router-dom";
+import imagePath2 from "../../../assets/images/projects-default.png";
+import DProjectOwner from "../components/DProjectOwner";
+import { useDispatch } from "react-redux";
+import { setProjectOwner } from "../../../redux/slices/app";
+
 
 const DProjects = () => {
   const { projectsActor } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [ownerExists, setOwnerExists] = useState(false);
-  const [projectProjections, setProjectProjections] = useState<{ [key: string]: ProjectProjections[] } | null>(null);
+  const [projectProjections, setProjectProjections] = useState<{
+    [key: string]: ProjectProjections[];
+  } | null>(null);
+  const [showProjectOwnerModal, setShowProjectOwnerModal] = useState(false);
 
   useEffect(() => {
     if (projectsActor) {
@@ -38,8 +45,9 @@ const DProjects = () => {
     }
     try {
       const res = await projectsActor.getProjectOwner();
-      if ("ok" in res) {
-        setOwner(res.ok as ProjectOwner);
+      if (res) {
+        setOwner(res);
+        dispatch(setProjectOwner(res));
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
@@ -50,33 +58,31 @@ const DProjects = () => {
     if (projects) {
       getProjectProjections();
     }
-  }, [projects]);       
-
+  }, [projects]);
 
   const getProjectProjections = async () => {
     if (!projects || projects.length === 0) {
-        console.error("No projects available");
-        return;
+      console.error("No projects available");
+      return;
     }
 
     try {
-        const projectionsMap: { [key: string]: ProjectProjections[] } = {}; 
+      const projectionsMap: { [key: string]: ProjectProjections[] } = {};
 
-        for (const project of projects) {
-            const res = await projectsActor?.getProjectProjectionsByProjectId(project.id);
-            if (res) {
-                projectionsMap[project.id] = Array.isArray(res) ? res : [res];
-            }
+      for (const project of projects) {
+        const res = await projectsActor?.getProjectProjectionsByProjectId(
+          project.id
+        );
+        if (res) {
+          projectionsMap[project.id] = Array.isArray(res) ? res : [res];
         }
+      }
 
-        setProjectProjections(projectionsMap);
+      setProjectProjections(projectionsMap);
     } catch (error) {
-        console.error("Error fetching project projections:", error);
+      console.error("Error fetching project projections:", error);
     }
-};
-
-
-
+  };
 
   useEffect(() => {
     if (owner) {
@@ -91,11 +97,10 @@ const DProjects = () => {
     }
 
     try {
-      const res = await projectsActor.projectOwnerCheck();
-      if (res) {
+      if (owner) {
         navigate(`/d/start-project/`);
       } else {
-        navigate(`/d/add-project-owner`);
+        setShowProjectOwnerModal(true);
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
@@ -109,12 +114,13 @@ const DProjects = () => {
           <h5 className="mb-0">Projects</h5>
         </div>
         <div className="mb-0 position-relative">
-          <NavLink
-            to={`/d/start-project/`}
+          <button
+            onClick={handleStartProject}
+            id="nav-bottom"
             className="btn btn-outline-dark col-sm-12"
           >
-            Start a Project
-          </NavLink>
+            Start Project
+          </button>
         </div>
       </div>
 
@@ -143,7 +149,6 @@ const DProjects = () => {
                   <th className="border-bottom p-3" style={{ width: "150px;" }}>
                     Projected Benefits
                   </th>
-                  
                 </tr>
               </thead>
 
@@ -156,7 +161,7 @@ const DProjects = () => {
                       </th>
                       <td align="left" width="40%">
                         <Link
-                          to={`/d/project-detail/${project.id}`}
+                          to={`/d/projects/overview/${project.id}`}
                           className="d-flex align-items-center"
                         >
                           {/* {position.user.profile_pic ? (
@@ -165,7 +170,7 @@ const DProjects = () => {
                           <img
                             src={imagePath2}
                             width="35"
-                            className="rounded-circle mt- shadow-xl preload-img"
+                            className="avatar avatar-ex-small rounded"
                             alt="Default Co-op Image"
                             style={{ marginRight: "15px" }}
                           />
@@ -183,10 +188,13 @@ const DProjects = () => {
                           : "Unknown"}
                       </td>
                       <td className=" p-4">
-                        {Number(projectProjections && projectProjections[project.id]?.[0]?.royaltySplit).toString()}
+                        {Number(
+                          projectProjections &&
+                            projectProjections[project.id]?.[0]?.royaltySplit
+                        ).toString()}
                         {} USDC
                       </td>
-                      
+
                       {/* <td className=" p-4">
                       {coopBalances
                         ? coopBalances[
@@ -207,6 +215,15 @@ const DProjects = () => {
           </div>
         </div>
       </div>
+      {showProjectOwnerModal && (
+        <DProjectOwner {
+          ...{
+            showProjectOwnerModal,
+            setShowProjectOwnerModal,
+          }
+        }
+        />
+      )}
     </>
   );
 };

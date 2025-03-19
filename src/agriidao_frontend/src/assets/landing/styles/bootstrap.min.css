@@ -51,7 +51,7 @@
   --bs-warning-rgb: 241, 116, 37;
   --bs-danger-rgb: 228, 63, 82;
   --bs-light-rgb: 248, 249, 250;
-  --bs-dark-rgb: 33, 37, 41;
+  --bs-dark-rgb: 25, 37, 47;
   --bs-footer-rgb: 32, 41, 66;
   --bs-muted-rgb: 132, 146, 166;
   --bs-white-rgb: 255, 255, 255;
@@ -12035,7 +12035,7 @@ label {
   color: #f8f9fa !important;
 }
 .bg-dark {
-  background-color: #212529 !important;
+  background-color: #1a252f !important;
 }
 .bg-soft-dark {
   background-color: rgba(33, 37, 41, 0.1) !important;

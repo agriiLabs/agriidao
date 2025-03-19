@@ -5,18 +5,26 @@ import {
   ProjectOwner,
 } from "../../../../../declarations/projects/projects.did";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import imagePath2 from "../../../assets/images/default-user-profile.png";
+import imagePath2 from "../../../assets/images/projects-default.png";
 import { formatDate } from "../../../utils/Utils";
+import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexer.did";
+import { useDispatch } from "react-redux";
+import { setProjectOwner } from "../../../redux/slices/app";
+
 
 const DProjectManager = () => {
-  const { projectsActor } = useAuth();
+  const { projectsActor, coopIndexerActor } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
+  const [coop, setCoop] = useState<CoopRecord | null>(null);
+  const [projectCount, setProjectCount] = useState(0);
+ 
+
 
   useEffect(() => {
     if (projectsActor) {
-      // getProjects();
       getProjectOwner();
     }
   }, [projectsActor]);
@@ -30,6 +38,7 @@ const DProjectManager = () => {
       const res = await projectsActor.getProjectOwner();
       if (res) {
         setOwner(res);
+        dispatch(setProjectOwner(res));
       }
     } catch (error) {
       console.error("Error fetching project owner:", error);
@@ -37,12 +46,45 @@ const DProjectManager = () => {
   };
   console.log("owner", owner);
 
-  // const getProjects = async () => {
-  //     let res = await projectsActor?getProjectsByUserId();
-  //     if (res) {
-  //         setProjects(res);
-  //     }
-  // };
+  useEffect(() => {
+    if (owner) {
+      getProjects();
+    }
+  }, [owner]);
+
+  const getProjects = async () => {
+    if (owner?.userId) {
+      let res = await projectsActor?.getProjectsByOwner(owner.userId);
+      if (res) {
+        setProjects(res);
+      }
+
+      if (res) {
+        setProjectCount(res.length);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (projects) {
+      getCoop();
+    }
+  }, [projects]);
+
+  const getCoop = async () => {
+    if (!projects) {
+      console.error("Project is null");
+      return;
+    }
+    try {
+      const res = await coopIndexerActor?.getCoopById(projects[0]?.coop);
+      if (res) {
+        setCoop(res);
+      }
+    } catch (error) {
+      console.error("Error fetching coop:", error);
+    }
+  };
 
   return (
     <>
@@ -51,16 +93,12 @@ const DProjectManager = () => {
           <h5 className="mb-0">My Projects</h5>
         </div>
         <div className="mb-0 position-relative">
-          <select
-            className="form-select form-control"
-            id="campaignFilter"
-            value=""
+          <NavLink
+            to={`/d/start-project/`}
+            className="btn btn-outline-dark col-sm-12"
           >
-            <option value="all">All</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
-          </select>
+            Start a Project
+          </NavLink>
         </div>
       </div>
 
@@ -78,7 +116,9 @@ const DProjectManager = () => {
                   <dd className="col-sm-7 text-end">{owner?.name}</dd>
                   <dt className="col-sm-6">Type</dt>
                   <dd className="col-sm-6 text-end">
-                    {owner?.entityType?.toString()}
+                    {owner?.entityType
+                      ? Object.keys(owner.entityType)[0]
+                      : "Unknown"}
                   </dd>
                   <dt className="col-sm-6">Manager Since</dt>
                   <dd className="col-sm-6 text-end">
@@ -88,17 +128,18 @@ const DProjectManager = () => {
                       : ""}{" "}
                   </dd>
                   <dt className="col-sm-6">Projects</dt>
-                  <dd className="col-sm-6 text-end">0</dd>
+                  <dd className="col-sm-6 text-end">{projectCount}</dd>
                 </dl>
               </div>
               <div className="mt-3">
                 <NavLink
-                  to={`/d/coop-projects/`}
+                  to={`/d/projects/manager/update/${owner?.userId}`}
                   className="btn btn-outline-dark col-sm-12"
                 >
                   Update Manager Info
                 </NavLink>
               </div>
+            
             </div>
           </div>
         </div>
@@ -118,34 +159,47 @@ const DProjectManager = () => {
                     <th className="border-bottom p-3">Status</th>
                   </tr>
                 </thead>
-                {/* <tbody>
-                      {memberCoops && memberCoops.length > 0 ? (
-                        memberCoops.map((coop) => {
-                          const coopDetail = coopDetails?.[coop.coopId.toText()];
-                          const balance = BigInt(
-                            coopBalances?.[coop.coopId.toText()] ?? 0
-                          );
-                          const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
-                          const total = balance * unitPrice;
-    
-                          return (
-                            <tr key={coop.coopId.toText()}>
-                              <td className="p-3">
-                                {coopDetail?.name ?? "Unknown Co-op"}
-                              </td>
-                              <td className="p-3">{balance.toString()}</td>
-                              <td className="p-3">{total.toString()} USDC</td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <tr>
-                          <td colSpan={3} className="text-center p-3">
-                            No holdings found.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody> */}
+                <tbody>
+                  {projects && projects.length > 0 ? (
+                    projects.map((project: Project, index: number) => (
+                      <tr key={index}>
+                        <td align="left" width="40%">
+                          <Link
+                            to={`/d/projects/overview/${project.id}`}
+                            className="d-flex align-items-center"
+                          >
+                            {/* {position.user.profile_pic ? (
+                                        <img className="rounded-xl mr-3" src={position.user.profile_pic} alt="Profile" width="25" height="25" />
+                                    ) : ( */}
+                            <img
+                              src={imagePath2}
+                              width="35"
+                              className="avatar avatar-ex-small rounded"
+                              alt="Default Co-op Image"
+                              style={{ marginRight: "15px" }}
+                            />
+                            <span>{project.name}</span>
+                          </Link>
+                        </td>
+
+                        <td className="p-3">{coop?.name}</td>
+                        <td className="p-3">
+                          {parseFloat(Number(project.fundingGoal).toString())}
+                          {} USDC
+                        </td>
+                        <td className="p-3">
+                          {project?.fundingStatus
+                            ? Object.keys(project.fundingStatus)[0] 
+                            : "Unknown"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3}>No data available</td>
+                    </tr>
+                  )}
+                </tbody>
               </table>
             </div>
           </div>

@@ -23,7 +23,8 @@ import type { _SERVICE as _settingsService } from "../../../declarations/setting
 import type { _SERVICE as _commodityService } from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
-import type { _SERVICE as _projectsService } from "../../../declarations/projects/projects.did";
+import type {_SERVICE as _projectsService } from "../../../declarations/projects/projects.did";
+import type { _SERVICE as _proposalsService } from "../../../declarations/proposals/proposals.did";
 import { _SERVICE as _SCALER_SERVICE } from '../../../declarations/scaler/scaler.did';
 import { _SERVICE as STORAGE_SERVICE } from '../../../declarations/storage/storage.did';
 import { idlFactory as scalerIdl } from "../../../declarations/scaler";
@@ -47,6 +48,8 @@ import {
   projectsCanisterId,
   projectsIdlFactory,
   storageScalerCanId,
+  proposalsCanisterId,
+  proposalsIdlFactory,
 } from "../constants/canisters_config";
 
 const localhost = "http://localhost:4943";
@@ -63,6 +66,7 @@ type ContextType = {
   coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
   projectsActor: ActorSubclass<_projectsService> | null;
   storageActor: ActorSubclass<STORAGE_SERVICE> | null;
+  proposalsActor: ActorSubclass<_proposalsService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -80,6 +84,7 @@ const initialContext: ContextType = {
   coopLedgerActor: null,
   projectsActor: null,
   storageActor: null,
+  proposalsActor: null,
   isAuthenticated: false,
   login: async () => {
     throw new Error("login function must be overridden");
@@ -133,6 +138,7 @@ export const Context = (options = defaultOptions) => {
   const [projectsActor, setProjectsActor] = useState<ActorSubclass<_projectsService> | null>(null);
   const [scaler, setScaler] = useState<ActorSubclass<_SCALER_SERVICE> | null>(null);
   const [storageActor, setStorage] = useState<ActorSubclass<STORAGE_SERVICE> | null>(null);
+  const [proposalsActor, setProposalsActor] = useState<ActorSubclass<_proposalsService> | null>(null);
 
 
   useEffect(() => {
@@ -289,6 +295,17 @@ export const Context = (options = defaultOptions) => {
         }
       );
     setProjectsActor(_projectsBackend);
+
+    // set proposals actor
+    const _proposalsBackend: ActorSubclass<_proposalsService> =
+    Actor.createActor(
+      proposalsIdlFactory,
+      {
+        agent,
+        canisterId: proposalsCanisterId,
+      }
+    );
+    setProposalsActor(_proposalsBackend);
   };
 
   return {
@@ -300,6 +317,7 @@ export const Context = (options = defaultOptions) => {
     coopIndexerActor,
     coopLedgerActor,
     projectsActor,
+    proposalsActor,
     isAuthenticated,
     storageActor, 
     login,

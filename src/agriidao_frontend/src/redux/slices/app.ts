@@ -18,9 +18,20 @@ import {
 import {
   Project,
   ProjectRequest,
+  ProjectOwner,
+  ProjectIncomeRequest,
+  ProjectExpenseRequest,
+  MilestoneRequest,
 } from "../../../../declarations/projects/projects.did";
-import { CoopRecord, CoopRequest } from "../../../../declarations/coop_indexer/coop_indexer.did";
+import {
+  CoopRecord,
+  CoopRequest,
+} from "../../../../declarations/coop_indexer/coop_indexer.did";
 import { Country } from "../../../../declarations/settings/settings.did";
+import {
+  Proposal,
+  ProposalRequest,
+} from "../../../../declarations/proposals/proposals.did";
 
 export interface GlobalState {
   selectedCampaign: Campaign | null;
@@ -37,6 +48,12 @@ export interface GlobalState {
   coopRecord: CoopRecord[] | null;
   country: Country | null;
   coopRequest: CoopRequest | null;
+  projectOwner: ProjectOwner | null;
+  projectIncomeRequest: ProjectIncomeRequest | null;
+  projectExpenseRequest: ProjectExpenseRequest | null;
+  milestoneRequest: MilestoneRequest | null;
+  proposalRequest: ProposalRequest | null;
+  _project: Project | null;
 }
 
 const initialState: GlobalState = {
@@ -54,6 +71,12 @@ const initialState: GlobalState = {
   coopRecord: null,
   country: null,
   coopRequest: null,
+  projectOwner: null,
+  projectIncomeRequest: null,
+  projectExpenseRequest: null,
+  milestoneRequest: null,
+  proposalRequest: null,
+  _project: null,
 };
 
 export const appSlice = createSlice({
@@ -123,6 +146,36 @@ export const appSlice = createSlice({
     setCoopRequest: (state, action: PayloadAction<CoopRequest | null>) => {
       state.coopRequest = action.payload;
     },
+    setProjectOwner: (state, action: PayloadAction<ProjectOwner | null>) => {
+      state.projectOwner = action.payload;
+    },
+    setProjectIncomeRequest: (
+      state,
+      action: PayloadAction<ProjectIncomeRequest | null>
+    ) => {
+      state.projectIncomeRequest = action.payload;
+    },
+    setProjectExpenseRequest: (
+      state,
+      action: PayloadAction<ProjectExpenseRequest | null>
+    ) => {
+      state.projectExpenseRequest = action.payload;
+    },
+    setMilestoneRequest: (
+      state,
+      action: PayloadAction<MilestoneRequest | null>
+    ) => {
+      state.milestoneRequest = action.payload;
+    },
+    setProposalRequest: (
+      state,
+      action: PayloadAction<ProposalRequest | null>
+    ) => {
+      state.proposalRequest = action.payload;
+    },
+    _setProject: (state, action: PayloadAction<Project | null>) => {
+      state._project = action.payload;
+    }
   },
 });
 
@@ -141,6 +194,12 @@ export const {
   setCoopRecord,
   setCountry,
   setCoopRequest,
+  setProjectOwner,
+  setProjectIncomeRequest,
+  setProjectExpenseRequest,
+  setMilestoneRequest,
+  setProposalRequest,
+  _setProject,
 } = appSlice.actions;
 
 export default appSlice.reducer;

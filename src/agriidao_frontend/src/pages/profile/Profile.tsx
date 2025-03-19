@@ -69,6 +69,8 @@ const Profile = () => {
     }
   }, [isAuthenticated, user]);
 
+  console.log("user", user);
+
   useEffect(() => {
     if (bountyActor) {
       getBountyPoints();
@@ -192,7 +194,6 @@ const Profile = () => {
                       >
                         {isRevealed ? (
                           <>
-                            {/* Hide Icon */}
                             <i
                               className="fa fa-eye-slash"
                               aria-hidden="true"
@@ -200,7 +201,6 @@ const Profile = () => {
                           </>
                         ) : (
                           <>
-                            {/* Reveal Icon */}
                             <i className="fa fa-eye" aria-hidden="true"></i>
                           </>
                         )}

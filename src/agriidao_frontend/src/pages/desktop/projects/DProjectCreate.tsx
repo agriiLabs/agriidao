@@ -134,14 +134,14 @@ const DProjectCreate = () => {
         dispatch(setCoopRecord([getCoopDetails]));
         dispatch(setCountry(country));
 
-        navigate("/d/start-project/preview");  // ✅ Navigate to the next page
+        navigate("/d/start-project/preview");  
     };
 
   return (
     <>
     <div className="d-flex align-items-center justify-content-between">
       <div>
-        <h5 className="mb-0">Start A Co-op</h5>
+        <h5 className="mb-0">Start A Project</h5>
       </div>
     </div>
 
