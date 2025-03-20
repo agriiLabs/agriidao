@@ -50,10 +50,9 @@ import {
   storageScalerCanId,
   proposalsCanisterId,
   proposalsIdlFactory,
+  host,
 } from "../constants/canisters_config";
 
-const localhost = "http://localhost:4943";
-const host = "https://icp0.io";
 const iiCanId = "ahw5u-keaaa-aaaaa-qaaha-cai";
 
 type ContextType = {
@@ -205,7 +204,7 @@ export const Context = (options = defaultOptions) => {
     setIdentity(_identity);
 
     const agent = new HttpAgent({
-      host: network === "ic" ? host : localhost,
+      host,
       identity: _identity,
     });
 
