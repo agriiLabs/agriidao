@@ -1,10 +1,3 @@
-type Vote = 
- record {
-   isAccept: bool;
-   projectProposalId: text;
-   timestamp: Time;
-   userId: principal;
- };
 type UserId = principal;
 type Treasury = 
  record {
@@ -16,6 +9,16 @@ type Treasury =
    totalOut: float64;
  };
 type Time = int;
+type Result_2 = 
+ variant {
+   err: text;
+   ok: ProjectExpense;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: ProjectIncome;
+ };
 type Result = 
  variant {
    err: text;
@@ -27,12 +30,59 @@ type ProposalStatus =
    Pending;
    Rejected;
  };
+type Projects = 
+ service {
+   addFinancialsExpense: (ProjectExpenseRequest) -> ();
+   addFinancialsIncome: (ProjectIncomeRequest) -> ();
+   addMilestone: (MilestoneRequest) -> ();
+   addProject: (ProjectRequest) -> ();
+   addProjectFunder: (ProjectFunder) -> ();
+   addProjectOwner: (ProjectOwner) -> ();
+   addProjectTerm: (ProjectTerm) -> ();
+   addProjectionExpense: (ProjectExpenseRequest) -> (Result_2);
+   addProjectionIncome: (ProjectIncomeRequest) -> (Result_1);
+   getAllProjects: () -> (vec Project);
+   getEntityTypes: () -> (vec text) query;
+   getFinancialsExpenseById: (ProjectExpenseId) -> (ProjectExpense);
+   getFinancialsExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
+   getFinancialsIncomeById: (ProjectIncomeId) -> (ProjectIncome);
+   getFinancialsIncomesByProjectId: (ProjectId) -> (vec ProjectIncome);
+   getMilestoneById: (MilestoneId) -> (Milestone);
+   getMilestonesByProjectId: (ProjectId) -> (vec Milestone);
+   getProjectById: (ProjectId) -> (Project);
+   getProjectFinancialsByProjectId: (ProjectId) -> (ProjectFinancials);
+   getProjectFunderById: (ProjectFunderId) -> (ProjectFunder);
+   getProjectFundersByProjectId: (ProjectId) -> (vec ProjectFunder);
+   getProjectFundersByUserId: (principal) -> (vec ProjectFunder);
+   getProjectOwner: () -> (ProjectOwner);
+   getProjectProjectionsByProjectId: (ProjectId) -> (ProjectProjections);
+   getProjectTermById: (ProjectTermId) -> (ProjectTerm);
+   getProjectTermsByProjectId: (ProjectId) -> (vec ProjectTerm);
+   getProjectionExpenseById: (ProjectExpenseId) -> (ProjectExpense);
+   getProjectionExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
+   getProjectionIncomeById: (ProjectIncomeId) -> (ProjectIncome);
+   getProjectionIncomesByProjectId: (ProjectId) -> (vec ProjectIncome);
+   getProjectsByCoop: (text) -> (vec Project) query;
+   getProjectsByOwner: (UserId) -> (vec Project);
+   getTreasuryByProjectId: (ProjectId) -> (Treasury);
+   updateFinancialsExpense: (ProjectExpense) -> ();
+   updateFinancialsIncome: (ProjectIncome) -> ();
+   updateMilestone: (Milestone) -> ();
+   updateProject: (Project) -> ();
+   updateProjectFinancials: (ProjectFinancials) -> ();
+   updateProjectFunder: (ProjectFunder) -> ();
+   updateProjectOwner: (ProjectOwner) -> ();
+   updateProjectProjections: (ProjectProjections) -> ();
+   updateProjectTerm: (ProjectTerm) -> ();
+   updateProjectionExpense: (ProjectExpense) -> ();
+   updateProjectionIncome: (ProjectIncome) -> (Result);
+   updateTreasury: (Treasury) -> ();
+ };
 type ProjectType = 
  variant {
    AgTech;
    Farm;
    GreenHouse;
-   NotSpecified;
    Offtaking;
    Proccessing;
    ProcessingPlant;
@@ -45,7 +95,6 @@ type ProjectTerm =
  record {
    createdBy: principal;
    duration: int;
-   isStart: bool;
    payoutFrequency: int;
    projectId: text;
    projectType: ProjectType;
@@ -65,33 +114,10 @@ type ProjectRequest =
    owner: principal;
    summary: text;
  };
-type ProjectProposalRequest = 
- record {
-   coop: principal;
-   isAccept: bool;
-   projectId: text;
-   timestamp: Time;
-   userId: principal;
-   voteDuration: int;
-   voteStart: opt Time;
- };
-type ProjectProposalId = text;
-type ProjectProposal = 
- record {
-   coop: principal;
-   id: text;
-   isAccept: bool;
-   projectId: text;
-   timestamp: Time;
-   userId: principal;
-   voteDuration: int;
-   voteStart: opt Time;
- };
 type ProjectProjections = 
  record {
    expenses: nat;
    income: nat;
-   isStart: bool;
    profit: nat;
    projectId: text;
    royaltyPercentage: nat;
@@ -108,13 +134,10 @@ type ProjectOwner =
 type ProjectIncomeRequest = 
  record {
    amount: nat;
-   createdBy: principal;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
    quantity: nat;
-   timestamp: Time;
-   total: nat;
  };
 type ProjectIncomeId = text;
 type ProjectIncome = 
@@ -143,7 +166,6 @@ type ProjectFinancials =
  record {
    expenses: nat;
    income: nat;
-   isStart: bool;
    profit: nat;
    projectId: text;
    royaltyPercentage: nat;
@@ -153,13 +175,10 @@ type ProjectFinancials =
 type ProjectExpenseRequest = 
  record {
    amount: nat;
-   createdBy: principal;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
    quantity: nat;
-   timestamp: Time;
-   total: nat;
  };
 type ProjectExpenseId = text;
 type ProjectExpense = 
@@ -198,21 +217,40 @@ type Project =
    summary: text;
    timestamp: Time;
  };
-type MilestoneId = text;
-type Milestone = 
+type MilestoneStatus = 
+ variant {
+   Completed;
+   Inprogress;
+   NotStarted;
+ };
+type MilestoneRequest = 
  record {
-   approvedBy: opt principal;
-   budget: float64;
-   completedDate: opt Time;
-   description: opt text;
-   dueDate: opt Time;
-   id: text;
-   isComplete: bool;
-   isStart: bool;
+   budget: nat;
+   description: text;
+   name: text;
    projectId: text;
    task1: text;
    task2: opt text;
    task3: opt text;
+   timeframe: nat;
+ };
+type MilestoneId = text;
+type Milestone = 
+ record {
+   approvedBy: opt principal;
+   budget: nat;
+   completedDate: opt Time;
+   createdBy: principal;
+   description: text;
+   id: text;
+   isComplete: bool;
+   milestoneStatus: MilestoneStatus;
+   name: text;
+   projectId: text;
+   task1: text;
+   task2: opt text;
+   task3: opt text;
+   timeframe: nat;
    timestamp: Time;
  };
 type FundingStatus = 
@@ -230,58 +268,4 @@ type EntityType =
    NGO;
    University;
  };
-service : {
-  addFinancialsExpense: (ProjectExpenseRequest) -> ();
-  addFinancialsIncome: (ProjectIncomeRequest) -> ();
-  addMilestone: (Milestone) -> ();
-  addProject: (ProjectRequest) -> (Result);
-  addProjectFunder: (ProjectFunder) -> ();
-  addProjectOwner: (ProjectOwner) -> ();
-  addProjectProposal: (ProjectProposalRequest) -> ();
-  addProjectTerm: (ProjectTerm) -> ();
-  addProjectionExpense: (ProjectExpenseRequest) -> ();
-  addProjectionIncome: (ProjectIncomeRequest) -> ();
-  addVote: (Vote) -> ();
-  getAllProjectOwners: () -> (vec ProjectOwner);
-  getAllProjects: () -> (vec Project);
-  getEntityTypes: () -> (vec text) query;
-  getFinancialsExpenseById: (ProjectExpenseId) -> (ProjectExpense);
-  getFinancialsExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
-  getFinancialsIncomeById: (ProjectIncomeId) -> (ProjectIncome);
-  getFinancialsIncomesByProjectId: (ProjectId) -> (vec ProjectIncome);
-  getMilestoneById: (MilestoneId) -> (Milestone);
-  getMilestonesByProjectId: (ProjectId) -> (vec Milestone);
-  getProjectById: (ProjectId) -> (Project);
-  getProjectFinancialsByProjectId: (ProjectId) -> (ProjectFinancials);
-  getProjectFunderById: (ProjectFunderId) -> (ProjectFunder);
-  getProjectFundersByProjectId: (ProjectId) -> (vec ProjectFunder);
-  getProjectFundersByUserId: (principal) -> (vec ProjectFunder);
-  getProjectOwner: () -> (ProjectOwner);
-  getProjectProjectionsByProjectId: (ProjectId) -> (ProjectProjections);
-  getProjectProposalById: (ProjectProposalId) -> (ProjectProposal);
-  getProjectProposalsByProjectId: (ProjectId) -> (vec ProjectProposal);
-  getProjectTermById: (ProjectTermId) -> (ProjectTerm);
-  getProjectTermsByProjectId: (ProjectId) -> (vec ProjectTerm);
-  getProjectionExpenseById: (ProjectExpenseId) -> (ProjectExpense);
-  getProjectionExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
-  getProjectionIncomeById: (ProjectIncomeId) -> (ProjectIncome);
-  getProjectionIncomesByProjectId: (ProjectId) -> (vec ProjectIncome);
-  getProjectsByUserId: (UserId) -> (vec Project);
-  getStartProject: (ProjectId) -> (Project) query;
-  getTreasuryByProjectId: (ProjectId) -> (Treasury);
-  getVoteById: (text) -> (Vote);
-  getVotesByUserId: (principal) -> (vec Vote);
-  projectOwnerCheck: () -> (bool) query;
-  updateFinancialsExpense: (ProjectExpense) -> ();
-  updateFinancialsIncome: (ProjectIncome) -> ();
-  updateMilestone: (Milestone) -> ();
-  updateProject: (Project) -> ();
-  updateProjectFinancials: (ProjectFinancials) -> ();
-  updateProjectFunder: (ProjectFunder) -> ();
-  updateProjectProjections: (ProjectProjections) -> ();
-  updateProjectProposal: (ProjectProposal) -> ();
-  updateProjectTerm: (ProjectTerm) -> ();
-  updateProjectionExpense: (ProjectExpense) -> ();
-  updateProjectionIncome: (ProjectIncome) -> ();
-  updateTreasury: (Treasury) -> ();
-}
+service : () -> Projects

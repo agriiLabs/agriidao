@@ -75,6 +75,7 @@ export const idlFactory = ({ IDL }) => {
     'createCoOpCanister' : IDL.Func([CoopRequest], [Result_1], []),
     'getAllMemberships' : IDL.Func([], [IDL.Vec(MembershipRecord)], []),
     'getCommunityCoops' : IDL.Func([], [IDL.Vec(CoopRecord)], []),
+    'getCoopById' : IDL.Func([IDL.Principal], [CoopRecord], []),
     'getCoopCanisterStatus' : IDL.Func([IDL.Principal], [Result], []),
     'getCreatedCanisters' : IDL.Func([], [IDL.Vec(CoopRecord)], ['query']),
     'getDaoCoops' : IDL.Func([], [IDL.Vec(CoopRecord)], []),

@@ -77,6 +77,7 @@ export interface _SERVICE {
   'createCoOpCanister' : ActorMethod<[CoopRequest], Result_1>,
   'getAllMemberships' : ActorMethod<[], Array<MembershipRecord>>,
   'getCommunityCoops' : ActorMethod<[], Array<CoopRecord>>,
+  'getCoopById' : ActorMethod<[Principal], CoopRecord>,
   'getCoopCanisterStatus' : ActorMethod<[Principal], Result>,
   'getCreatedCanisters' : ActorMethod<[], Array<CoopRecord>>,
   'getDaoCoops' : ActorMethod<[], Array<CoopRecord>>,

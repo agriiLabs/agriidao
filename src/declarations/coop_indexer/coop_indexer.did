@@ -94,6 +94,7 @@ service : {
   createCoOpCanister: (CoopRequest) -> (Result_1);
   getAllMemberships: () -> (vec MembershipRecord);
   getCommunityCoops: () -> (vec CoopRecord);
+  getCoopById: (principal) -> (CoopRecord);
   getCoopCanisterStatus: (principal) -> (Result);
   getCreatedCanisters: () -> (vec CoopRecord) query;
   getDaoCoops: () -> (vec CoopRecord);
