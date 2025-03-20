@@ -22,6 +22,7 @@ export { idlFactory as proposalsIdlFactory } from "../../../declarations/proposa
 // export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
 // export const projectsCanisterId = "xncbs-uqaaa-aaaag-at3mq-cai"
 // export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai"
+export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 
 //local
 

@@ -76,7 +76,6 @@ export const idlFactory = ({ IDL }) => {
     'getProfileLatestByPrincipal' : IDL.Func([ProfileId], [Result_2], []),
     'getUserByCaller' : IDL.Func([], [Result], ['query']),
     'getUserLatestByPrincipal' : IDL.Func([IDL.Principal], [Result], []),
-    'getUserVersions' : IDL.Func([IDL.Principal], [IDL.Vec(User)], ['query']),
     'getUsers' : IDL.Func([], [IDL.Vec(User)], ['query']),
     'getWalletAddressByCaller' : IDL.Func([], [Result_1], ['query']),
     'getWalletAddressLatestByPrincipal' : IDL.Func(

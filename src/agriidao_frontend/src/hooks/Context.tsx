@@ -20,11 +20,15 @@ import {
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
-import type {_SERVICE as _commodityService } from "../../../declarations/commodity/commodity.did";
+import type { _SERVICE as _commodityService } from "../../../declarations/commodity/commodity.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
 import type {_SERVICE as _projectsService } from "../../../declarations/projects/projects.did";
 import type { _SERVICE as _proposalsService } from "../../../declarations/proposals/proposals.did";
+import { _SERVICE as _SCALER_SERVICE } from '../../../declarations/scaler/scaler.did';
+import { _SERVICE as STORAGE_SERVICE } from '../../../declarations/storage/storage.did';
+import { idlFactory as scalerIdl } from "../../../declarations/scaler";
+import { idlFactory as storageIdl } from "../../../declarations/storage";
 // import {canisterId as iiCanId} from "../../../declarations/internet_identity/internet_identity.did";
 
 import {
@@ -43,6 +47,7 @@ import {
   coopLedgerCanisterId,
   projectsCanisterId,
   projectsIdlFactory,
+  storageScalerCanId,
   proposalsCanisterId,
   proposalsIdlFactory,
 } from "../constants/canisters_config";
@@ -60,6 +65,7 @@ type ContextType = {
   coopIndexerActor: ActorSubclass<_coopIndexerService> | null;
   coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
   projectsActor: ActorSubclass<_projectsService> | null;
+  storageActor: ActorSubclass<STORAGE_SERVICE> | null;
   proposalsActor: ActorSubclass<_proposalsService> | null;
   isAuthenticated: boolean;
   login: () => Promise<void>;
@@ -72,11 +78,12 @@ const initialContext: ContextType = {
   identity: null,
   bountyActor: null,
   userActor: null,
-  settingsActor: null, 
+  settingsActor: null,
   commodityActor: null,
   coopIndexerActor: null,
   coopLedgerActor: null,
   projectsActor: null,
+  storageActor: null,
   proposalsActor: null,
   isAuthenticated: false,
   login: async () => {
@@ -86,7 +93,7 @@ const initialContext: ContextType = {
     throw new Error("logout function must be overridden");
   },
   temporaryVal: null,
-  setTempVal: (): void => {},
+  setTempVal: (): void => { },
 };
 
 const ContextWrapper = createContext<ContextType>(initialContext);
@@ -123,19 +130,21 @@ export const Context = (options = defaultOptions) => {
   const [commodityActor, setCommodityActor] =
     useState<ActorSubclass<_commodityService> | null>(null);
   const [user, setUser] = useState(null);
-  const [coopIndexerActor, setCoopIndexerActor] = 
+  const [coopIndexerActor, setCoopIndexerActor] =
     useState<ActorSubclass<_coopIndexerService> | null>(null);
-  const [coopLedgerActor, setCoopLedgerActor] = 
-    useState<ActorSubclass<_coopLedgerService> | null >(null);
+  const [coopLedgerActor, setCoopLedgerActor] =
+    useState<ActorSubclass<_coopLedgerService> | null>(null);
   const [temporaryVal, setTempVal] = useState<string | null>(null);
   const [projectsActor, setProjectsActor] = useState<ActorSubclass<_projectsService> | null>(null);
+  const [scaler, setScaler] = useState<ActorSubclass<_SCALER_SERVICE> | null>(null);
+  const [storageActor, setStorage] = useState<ActorSubclass<STORAGE_SERVICE> | null>(null);
   const [proposalsActor, setProposalsActor] = useState<ActorSubclass<_proposalsService> | null>(null);
 
 
   useEffect(() => {
     AuthClient.create(options.createOptions).then(async (client) => {
       // if (await client.isAuthenticated()) {
-        handleAuthenticated(client);
+      handleAuthenticated(client);
       // }
     });
   }, []);
@@ -163,6 +172,32 @@ export const Context = (options = defaultOptions) => {
     setUser(null);
   };
 
+  useEffect(() => {
+    if (authClient && scaler) {
+    (async () => {
+
+      let storageCanister = await scaler.query_storage_canister();
+
+      const _identity = authClient.getIdentity();
+      let agent = await HttpAgent.create({
+        host: host,
+        identity: _identity,
+      });
+      if (network === "local") {
+        agent.fetchRootKey();
+      }
+      const _storage: ActorSubclass<STORAGE_SERVICE> = Actor.createActor(
+        storageIdl,
+        {
+          agent,
+          canisterId: storageCanister,
+        }
+      );
+      setStorage(_storage);
+    })();
+    }
+  }, [authClient, scaler]);
+
   const handleAuthenticated = async (client: AuthClient) => {
     setAuthClient(client)
     setIsAuthenticated(await client.isAuthenticated());
@@ -178,6 +213,15 @@ export const Context = (options = defaultOptions) => {
       agent.fetchRootKey();
     }
 
+    const _scaler: ActorSubclass<_SCALER_SERVICE> = Actor.createActor(
+      scalerIdl,
+      {
+        agent,
+        canisterId: storageScalerCanId,
+      }
+    );
+    setScaler(_scaler);
+
     // set user actor
     const _userBackend: ActorSubclass<_userService> = Actor.createActor(
       userIdlFactory,
@@ -187,7 +231,7 @@ export const Context = (options = defaultOptions) => {
       }
     );
     setUserActor(_userBackend);
-    
+
 
     // set bounty actor
     const _bountyBackend: ActorSubclass<_bountyService> = Actor.createActor(
@@ -196,7 +240,7 @@ export const Context = (options = defaultOptions) => {
         agent,
         canisterId: bountyCanisterId,
       }
-    );  
+    );
     setBountyActor(_bountyBackend);
 
     // set settings actor
@@ -221,35 +265,35 @@ export const Context = (options = defaultOptions) => {
 
     // set coop indexer actor
     const _coOpIndexerBackend: ActorSubclass<_coopIndexerService> =
-    Actor.createActor(
-      coopIndexerIdlFactory,
-      {
-        agent,
-        canisterId: coopIndexerCanisterId,
-      }
-    );
+      Actor.createActor(
+        coopIndexerIdlFactory,
+        {
+          agent,
+          canisterId: coopIndexerCanisterId,
+        }
+      );
     setCoopIndexerActor(_coOpIndexerBackend);
 
     // set coop ledger actor
     const _coopLedgerBackend: ActorSubclass<_coopLedgerService> =
-    Actor.createActor(
-      coopLedgerIdlFactory,
-      {
-        agent,
-        canisterId: coopLedgerCanisterId,
-      }
-    );
+      Actor.createActor(
+        coopLedgerIdlFactory,
+        {
+          agent,
+          canisterId: coopLedgerCanisterId,
+        }
+      );
     setCoopLedgerActor(_coopLedgerBackend);
 
     // set projects actor
-    const _projectsBackend: ActorSubclass<_projectsService> = 
-    Actor.createActor(
-      projectsIdlFactory,
-      {
-        agent,
-        canisterId: projectsCanisterId,
-      }
-    );
+    const _projectsBackend: ActorSubclass<_projectsService> =
+      Actor.createActor(
+        projectsIdlFactory,
+        {
+          agent,
+          canisterId: projectsCanisterId,
+        }
+      );
     setProjectsActor(_projectsBackend);
 
     // set proposals actor
@@ -275,6 +319,7 @@ export const Context = (options = defaultOptions) => {
     projectsActor,
     proposalsActor,
     isAuthenticated,
+    storageActor, 
     login,
     logout,
     temporaryVal,

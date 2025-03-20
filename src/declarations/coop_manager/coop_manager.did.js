@@ -86,11 +86,6 @@ export const idlFactory = ({ IDL }) => {
     'getFeeHistory' : IDL.Func([], [IDL.Vec(PlatformFees)], []),
     'getFeesDetails' : IDL.Func([IDL.Nat], [MintingFees], ['query']),
     'getMemberById' : IDL.Func([CoopMemberId], [CoopMember], []),
-    'getMemberVersionById' : IDL.Func(
-        [CoopMemberId],
-        [IDL.Vec(CoopMember)],
-        [],
-      ),
     'getMemberbyUserId' : IDL.Func([IDL.Principal], [CoopMember], []),
     'getTransactionById' : IDL.Func([TransactionId], [Transaction], []),
     'getTransactions' : IDL.Func([], [IDL.Vec(Transaction)], []),

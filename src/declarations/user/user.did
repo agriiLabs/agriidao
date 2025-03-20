@@ -87,7 +87,6 @@ type AgriiUser =
    getProfileLatestByPrincipal: (ProfileId) -> (Result_2);
    getUserByCaller: () -> (Result) query;
    getUserLatestByPrincipal: (principal) -> (Result);
-   getUserVersions: (principal) -> (vec User) query;
    getUsers: () -> (vec User) query;
    getWalletAddressByCaller: () -> (Result_1) query;
    getWalletAddressLatestByPrincipal: (WalletAddressId) -> (Result_1);

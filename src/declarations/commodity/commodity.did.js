@@ -116,11 +116,6 @@ export const idlFactory = ({ IDL }) => {
       ),
     'deleteMarketPrice' : IDL.Func([MarketPrice], [], []),
     'getAllLatestCommodities' : IDL.Func([], [IDL.Vec(Commodity)], ['query']),
-    'getAllLatestCommoditiesByCategoryName' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(Commodity)],
-        ['query'],
-      ),
     'getAllLatestMarketCommoditiesByMarketId' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(MarketLocationCommodity)],
@@ -151,11 +146,6 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(MarketLocationAgent)],
         ['query'],
       ),
-    'getAllMarketLocationVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketLocation)],
-        ['query'],
-      ),
     'getAllMarketLocationsLatest' : IDL.Func(
         [],
         [IDL.Vec(MarketLocation)],
@@ -167,16 +157,6 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getCommodityLatest' : IDL.Func([IDL.Text], [Result_4], ['query']),
-    'getCommodityVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(Commodity)],
-        ['query'],
-      ),
-    'getLatestMarketLocationAgentVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketLocationAgent)],
-        ['query'],
-      ),
     'getLatestMarketLocationAgentbyId' : IDL.Func(
         [IDL.Text],
         [Result_3],
@@ -184,11 +164,6 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getLatestMarketPriceById' : IDL.Func([IDL.Text], [Result_2], ['query']),
     'getLatestMarketPriceByMarketLocationId' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketPrice)],
-        ['query'],
-      ),
-    'getLatestMarketPriceVersionsById' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(MarketPrice)],
         ['query'],
@@ -218,17 +193,7 @@ export const idlFactory = ({ IDL }) => {
         [Result_1],
         ['query'],
       ),
-    'getMarketLocationCommodityVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketLocationCommodity)],
-        ['query'],
-      ),
     'getMarketLocationLatest' : IDL.Func([IDL.Text], [Result], ['query']),
-    'getMarketLocationsByCountryName' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketLocation)],
-        ['query'],
-      ),
     'getMarketPriceByMarketCommodityId' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(MarketPrice)],

@@ -19,7 +19,6 @@ export interface AgriiUser {
   'getProfileLatestByPrincipal' : ActorMethod<[ProfileId], Result_2>,
   'getUserByCaller' : ActorMethod<[], Result>,
   'getUserLatestByPrincipal' : ActorMethod<[Principal], Result>,
-  'getUserVersions' : ActorMethod<[Principal], Array<User>>,
   'getUsers' : ActorMethod<[], Array<User>>,
   'getWalletAddressByCaller' : ActorMethod<[], Result_1>,
   'getWalletAddressLatestByPrincipal' : ActorMethod<

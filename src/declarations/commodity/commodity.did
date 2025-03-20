@@ -119,6 +119,9 @@ type CommodityActor =
    /// ******** MARKET LOCATION AGENTS ***********
    /// *******************************************
    addMarketLocationAgent: (MarketLocationAgentRequest) -> ();
+   /// *******************************************
+   /// ******** MARKET LOCATION COMMODITY ********
+   /// *******************************************
    addMarketLocationCommodity: (MarketLocationCommodityRequest) -> ();
    addMarketPrice: (MarketPriceRequest) -> ();
    deleteCommodity: (Commodity) -> ();
@@ -127,7 +130,6 @@ type CommodityActor =
    deleteMarketLocationCommodity: (MarketLocationCommodity) -> ();
    deleteMarketPrice: (MarketPrice) -> ();
    getAllLatestCommodities: () -> (vec Commodity) query;
-   getAllLatestCommoditiesByCategoryName: (text) -> (vec Commodity) query;
    getAllLatestMarketCommoditiesByMarketId: (text) ->
     (vec MarketLocationCommodity) query;
    getAllLatestMarketLocationAgents: () -> (vec MarketLocationAgent) query;
@@ -138,27 +140,19 @@ type CommodityActor =
    getAllLatestMarketPrices: () -> (vec MarketPrice) query;
    getAllMarketLocationAgentsByMarketId: (text) ->
     (vec MarketLocationAgent) query;
-   getAllMarketLocationVersions: (text) -> (vec MarketLocation) query;
    getAllMarketLocationsLatest: () -> (vec MarketLocation) query;
    getCommodityByCategory: (text) -> (vec Commodity) query;
    getCommodityLatest: (text) -> (Result_4) query;
-   getCommodityVersions: (text) -> (vec Commodity) query;
-   getLatestMarketLocationAgentVersions: (text) ->
-    (vec MarketLocationAgent) query;
    getLatestMarketLocationAgentbyId: (text) -> (Result_3) query;
    getLatestMarketPriceById: (text) -> (Result_2) query;
    getLatestMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
-   getLatestMarketPriceVersionsById: (text) -> (vec MarketPrice) query;
    getMarketLocationAgentByAgentId: (text) -> (vec MarketLocationAgent) query;
    getMarketLocationByAgentId: (text) -> (vec MarketLocationAgent);
    getMarketLocationByCountryId: (text) -> (vec MarketLocation) query;
    getMarketLocationCommodityByCommodityId: (text) ->
     (vec MarketLocationCommodity) query;
    getMarketLocationCommodityById: (text) -> (Result_1) query;
-   getMarketLocationCommodityVersions: (text) ->
-    (vec MarketLocationCommodity) query;
    getMarketLocationLatest: (text) -> (Result) query;
-   getMarketLocationsByCountryName: (text) -> (vec MarketLocation) query;
    getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice) query;
    getMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
    updateCommodity: (Commodity) -> ();

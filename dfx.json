@@ -1,9 +1,7 @@
 {
   "canisters": {
     "agriidao_frontend": {
-      "source": [
-        "src/agriidao_frontend/dist", "well-known"
-      ],
+      "source": ["src/agriidao_frontend/dist", "well-known"],
       "type": "assets",
       "workspace": "agriidao_frontend"
     }, "internet_identity": {
