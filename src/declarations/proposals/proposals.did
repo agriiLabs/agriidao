@@ -1,0 +1,53 @@
+type Vote = 
+ record {
+   isAccept: bool;
+   proposalId: text;
+   timestamp: Time;
+   userId: principal;
+ };
+type Time = int;
+type Proposals = 
+ service {
+   addProposal: (ProposalRequest) -> ();
+   addVote: (Vote) -> ();
+   getProposalById: (ProposalId) -> (Proposal) query;
+   getProposalsByCoopId: (CoopId) -> (vec Proposal) query;
+   getProposalsByProjectId: (ProjectId) -> (vec Proposal) query;
+   getRemainingTime: (ProposalId) -> (nat) query;
+   getVoteById: (text) -> (Vote) query;
+   getVotesByProposalId: (ProposalId) -> (vec Vote) query;
+   getVotesByUserId: (principal) -> (vec Vote) query;
+   updateProposal: (Proposal) -> ();
+   updateProposalStatus: (text) -> (bool);
+ };
+type ProposalStatus = 
+ variant {
+   Accepted;
+   Open;
+   Rejected;
+ };
+type ProposalRequest = 
+ record {
+   coop: opt principal;
+   description: text;
+   projectId: opt text;
+   submissionDeposit: nat;
+ };
+type ProposalId = text;
+type Proposal = 
+ record {
+   coop: opt principal;
+   description: text;
+   id: text;
+   projectId: opt text;
+   proposer: principal;
+   status: ProposalStatus;
+   submissionDeposit: nat;
+   timestamp: Time;
+   voteDuration: nat;
+   voteEnd: Time;
+   voteStart: Time;
+ };
+type ProjectId = text;
+type CoopId = principal;
+service : () -> Proposals
