@@ -4,9 +4,9 @@ import {
   Project,
   ProjectOwner,
 } from "../../../../../declarations/projects/projects.did";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import imagePath2 from "../../../assets/images/projects-default.png";
-import { formatDate } from "../../../utils/Utils";
+import { formatNanoDate } from "../../../utils/Utils";
 import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexer.did";
 import { useDispatch } from "react-redux";
 import { setProjectOwner } from "../../../redux/slices/app";
@@ -15,7 +15,6 @@ import { setProjectOwner } from "../../../redux/slices/app";
 const DProjectManager = () => {
   const { projectsActor, coopIndexerActor } = useAuth();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [owner, setOwner] = useState<ProjectOwner | null>(null);
   const [coop, setCoop] = useState<CoopRecord | null>(null);
@@ -64,6 +63,7 @@ const DProjectManager = () => {
       }
     }
   };
+  console.log("projects", projects);
 
   useEffect(() => {
     if (projects) {
@@ -85,6 +85,9 @@ const DProjectManager = () => {
       console.error("Error fetching coop:", error);
     }
   };
+  console.log("coop", coop);
+  console.log("Fetching Co-op with ID:", projects?.[0]?.coop);
+  console.log("Fetching Co-op with ID:", projects?.[0]?.coop.toText());
 
   return (
     <>
@@ -123,23 +126,14 @@ const DProjectManager = () => {
                   <dt className="col-sm-6">Manager Since</dt>
                   <dd className="col-sm-6 text-end">
                     {" "}
-                    {formatDate(Number(owner?.timestamp))
-                      ? formatDate(Number(owner?.timestamp))
+                    {formatNanoDate(Number(owner?.timestamp))
+                      ? formatNanoDate(Number(owner?.timestamp))
                       : ""}{" "}
                   </dd>
                   <dt className="col-sm-6">Projects</dt>
                   <dd className="col-sm-6 text-end">{projectCount}</dd>
                 </dl>
               </div>
-              <div className="mt-3">
-                <NavLink
-                  to={`/d/projects/manager/update/${owner?.userId}`}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Update Manager Info
-                </NavLink>
-              </div>
-            
             </div>
           </div>
         </div>

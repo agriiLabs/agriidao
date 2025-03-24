@@ -70,7 +70,6 @@ const DCoops = () => {
     }
 
     setCoopBalances(balances);
-    console.log("All balances:", balances);
   };
 
   return (

@@ -53,7 +53,7 @@ const MyRewards = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsers();
+    const res = await bountyActor.getUserCampaignsByUserId();
     setCampaignSubs(res);
   };
 
@@ -62,7 +62,7 @@ const MyRewards = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersPending();
+    const res = await bountyActor.getUserCampaignsPending();
     setCampaignPending(res);
   };
 
@@ -71,7 +71,7 @@ const MyRewards = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersRejected();
+    const res = await bountyActor.getUserCampaignsRejected();
     setCampaignRejected(res);
   };
 
@@ -80,7 +80,7 @@ const MyRewards = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersAccepted();
+    const res = await bountyActor.getUserCampaignsAccepted();
     setCampaignAccepted(res);
   };
 
@@ -111,9 +111,9 @@ const MyRewards = () => {
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
             <option value="all">All</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Pending">Pending</option>
           </select>
         </div>
       </div>
@@ -128,9 +128,7 @@ const MyRewards = () => {
               <div className="mt-4">
                 <dl className="row">
                   <dt className="col-sm-5">Total Points</dt>
-                  <dd className="col-sm-7 text-end">
-                    {bountyPoint?.balance }
-                  </dd>
+                  <dd className="col-sm-7 text-end">{bountyPoint?.balance}</dd>
                   <dt className="col-sm-6">All Submissions</dt>
                   <dd className="col-sm-6 text-end">
                     <Count {...{ campaignSubs }} />
@@ -174,7 +172,18 @@ const MyRewards = () => {
                       <DCampaignSub key={index} campaignSub={campaignSub} />
                     ))
                   ) : (
-                    <p className="mt-4">You have not submitted any tasks yet</p>
+                    <tr>
+                      <td colSpan={4} className="text-center p-4 text-muted">
+                        {selectedStatus === "Accepted" &&
+                          "No tasks have been accepted yet"}
+                        {selectedStatus === "Rejected" &&
+                          "No tasks have been rejected yet"}
+                        {selectedStatus === "Pending" &&
+                          "No tasks are pending review"}
+                        {selectedStatus === "all" &&
+                          "You have not submitted any tasks yet"}
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>

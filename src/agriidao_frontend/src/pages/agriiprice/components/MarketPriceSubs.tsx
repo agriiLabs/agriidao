@@ -114,20 +114,23 @@ const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
   //   calculateAllPriceDifferences();
 
   return (
-    
     <tr>
-      <Link 
-        to={`/market-price/${marketPriceSub?.marketLocationCommodityId}`}
-        
-      >
-      <td className="text-left text-dark">{commodity?.name}</td>
-      </Link>
-      <td className="mb-1" style={{ paddingTop: 0 }}>1</td>
+      {commodity ? (
+        <Link to={`/market-price/${marketPriceSub?.marketLocationCommodityId}`}>
+          <td className="text-left text-dark">{commodity?.name}</td>
+        </Link>
+      ) : (
+        "Loading..."
+      )}
       <td className="mb-1" style={{ paddingTop: 0 }}>
-        {marketPriceSub.pricePerKg ? marketPriceSub.pricePerKg.toFixed(2) : "N/A"}
+        1
+      </td>
+      <td className="mb-1" style={{ paddingTop: 0 }}>
+        {marketPriceSub.pricePerKg
+          ? marketPriceSub.pricePerKg.toFixed(2)
+          : "N/A"}
       </td>
       {/* <td>{difference}</td> */}
-      
     </tr>
   );
 };

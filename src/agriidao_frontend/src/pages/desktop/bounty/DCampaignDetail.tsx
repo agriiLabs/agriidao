@@ -111,15 +111,31 @@ const DCampaignDetail = () => {
           <h5 className="mb-0">Campaign Detail</h5>
         </div>
         <div className="mb-0 position-relative">
-          <a
-            onClick={(e) => {
-              e.preventDefault();
-              handleTaskRewards();
-            }}
-            className="btn btn-outline-dark col-sm-12"
-          >
-            Claim Reward
-          </a>
+        {userSocialExists ? (
+          <>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                handleTaskRewards();
+              }}
+              className="btn btn-outline-dark col-sm-12"
+            >
+              Claim Reward
+            </a>
+          </>
+        ) : (
+          <>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                handleUserSocial();
+              }}
+              className="btn btn-outline-dark col-sm-12"
+            >
+              Claim Reward
+            </a>
+          </>
+        )}
         </div>
       </div>
 
@@ -186,17 +202,6 @@ const DCampaignDetail = () => {
                   ))}
                 </tbody>
               </table>
-              <div className="mt-4">
-                <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleTaskRewards();
-                  }}
-                  className="btn btn-outline-dark col-sm-12"
-                >
-                  Claim Reward
-                </a>
-              </div>
             </div>
           </div>
         </div>

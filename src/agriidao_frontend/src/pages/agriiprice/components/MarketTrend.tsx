@@ -8,7 +8,7 @@ export interface DataPoint {
   interface MarketTrend {
     firstPrice: number;
     lastPrice: number;
-    trend: boolean; // True for positive trend, false for negative
+    trend: boolean; 
   }
   
   const determineMarketTrend = (data: DataPoint[]): MarketTrend => {
@@ -37,8 +37,6 @@ export interface DataPoint {
     const firstPrice = data[0].y;
     const lastPrice = data[data.length - 1].y;
   
-    console.log(`Sorted Data:`, data);
-    console.log(`First Price: ${firstPrice}, Last Price: ${lastPrice}`);
     return {
       firstPrice,
       lastPrice,

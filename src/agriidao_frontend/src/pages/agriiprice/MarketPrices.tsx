@@ -2,28 +2,30 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/Context";
 import {
   MarketLocation,
-  MarketLocationCommodity,
   MarketPrice,
   Commodity,
 } from "../../../../declarations/commodity/commodity.did";
 import ProfileClick from "../profile/component/ProfileClick";
-import MarketPriceSubs from "./components/MarketPriceSubs";
-import transformBigIntToString from "./components/BigIntToString";
 import CountryName from "../../components/agriidao/CountryName";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setSelectedMarketLocation } from "../../redux/slices/app";
+import { Link } from "react-router-dom";
 
 const MarketPrices = () => {
   const dispatch = useDispatch();
   const { commodityActor } = useAuth();
-  const [mLCommodity, setMLCommodity] = useState<MarketLocationCommodity[]>([]);
-  const {selectedMarketLocation} = useSelector((state: RootState) => state.app);
-
-  const [prices, setPrices] = useState<MarketPrice[]>([]);
-  // const [market, setMarket] = useState<MarketLocation | null>(null);
+  const { selectedMarketLocation } = useSelector(
+    (state: RootState) => state.app
+  );
+  const [prices, setPrices] = useState<EnrichedPrice[]>([]);
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  interface EnrichedPrice extends MarketPrice {
+    commodity?: Commodity;
+  }
 
   useEffect(() => {
     getAllMarkets();
@@ -68,20 +70,51 @@ const MarketPrices = () => {
 
   const fetchMarketData = async (marketId: string, commodityActor: any) => {
     try {
-      const commodityRes =
-        await commodityActor.getAllLatestMarketCommoditiesByMarketId(marketId);
+      setLoading(true);
+      const pricesRes: MarketPrice[] =
+        await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
 
-      setMLCommodity(commodityRes);
+      const latestMap = new Map<string, MarketPrice>();
 
-      const pricesRes = await commodityActor.getLatestMarketPriceByMarketLocationId(
-        marketId
+      pricesRes.forEach((price: MarketPrice) => {
+        const key = price.marketLocationCommodityId;
+        const existing = latestMap.get(key);
+
+        if (!existing || Number(price.timeStamp) > Number(existing.timeStamp)) {
+          latestMap.set(key, price);
+        }
+      });
+
+      const enrichedPrices = await Promise.all(
+        Array.from(latestMap.values()).map(
+          async (price): Promise<EnrichedPrice> => {
+            const locRes = await commodityActor.getMarketLocationCommodityById(
+              price.marketLocationCommodityId
+            );
+            if ("ok" in locRes) {
+              const commRes = await commodityActor.getCommodityLatest(
+                locRes.ok.commodityId
+              );
+              if ("ok" in commRes) {
+                return { ...price, commodity: commRes.ok };
+              }
+            }
+            return price;
+          }
+        )
       );
 
+      enrichedPrices.sort((a, b) => {
+        const nameA = a.commodity?.name?.toLowerCase() || "";
+        const nameB = b.commodity?.name?.toLowerCase() || "";
+        return nameA.localeCompare(nameB);
+      });
 
-      const transformedPrices = transformBigIntToString(pricesRes);
-      setPrices(transformedPrices);
+      setPrices(enrichedPrices);
     } catch (error) {
       console.error("Error fetching market data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,13 +127,11 @@ const MarketPrices = () => {
   const handleMarketChange = (event: HandleMarketChangeEvent) => {
     const marketId = event.target.value;
     setSelectedCountryId(marketId);
-    console.log("Selected market:", marketId);
 
-    // Find the selected market object and update state
     const selectedMarket = markets.find((m) => m.countryId === marketId);
     if (selectedMarket !== selectedMarketLocation) {
       dispatch(setSelectedMarketLocation(selectedMarket || null));
-    } 
+    }
   };
 
   return (
@@ -121,20 +152,20 @@ const MarketPrices = () => {
 
       <div className="page-content header-clear-medium">
         <div className="content my-0 mb-4">
-        <div className="input-style has-borders no-icon mb-4">
-          <select
-            id="marketLocation"
-            className="select form-control"
-            value={selectedMarketLocation?.countryId || ""}
-            onChange={handleMarketChange} 
-          >
-            <option value="">Select Market</option>
-            {markets.map((market, index) => (
-              <option key={index} value={market.countryId}>
-                <CountryName id={market.countryId} /> 
-              </option>
-            ))}
-          </select>
+          <div className="input-style has-borders no-icon mb-4">
+            <select
+              id="marketLocation"
+              className="select form-control"
+              value={selectedMarketLocation?.countryId || ""}
+              onChange={handleMarketChange}
+            >
+              <option value="">Select Market</option>
+              {markets.map((market, index) => (
+                <option key={index} value={market.countryId}>
+                  <CountryName id={market.countryId} />
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="card card-style">
@@ -159,9 +190,27 @@ const MarketPrices = () => {
               </tr>
             </thead>
             <tbody>
-              {prices && prices.length > 0 ? (
-                prices.map((price: MarketPrice, index) => (
-                  <MarketPriceSubs key={index} marketPriceSub={price} />
+              {loading ? (
+                <tr>
+                  <td colSpan={4} className="text-center">
+                    Loading...
+                  </td>
+                </tr>
+              ) : prices && prices.length > 0 ? (
+                prices.map((price, index) => (
+                  <tr key={index}>
+                    <Link
+                      to={`/market-price/${price?.marketLocationCommodityId}`}
+                    >
+                      <td className="text-left">{price.commodity?.name}</td>
+                    </Link>
+                    <td className="mb-1" style={{ paddingTop: 0 }}>
+                      1
+                    </td>
+                    <td className="mb-1" style={{ paddingTop: 0 }}>
+                      {price.pricePerKg}
+                    </td>
+                  </tr>
                 ))
               ) : (
                 <tr>

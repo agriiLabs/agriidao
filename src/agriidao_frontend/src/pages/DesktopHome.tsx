@@ -181,7 +181,7 @@ const DesktopLandingPage = () => {
                   a fully verifiable on-chain system.
                 </p>
                 <NavLink 
-                  to="https://pa7lj-sqaaa-aaaag-at6la-cai.icp0.io/" 
+                  to="https://agriiprotocol.org" 
                   target="_blank"
                   className="mt-4 text-dark btn bg-white border-dark">
                   Explore agriiProtocol

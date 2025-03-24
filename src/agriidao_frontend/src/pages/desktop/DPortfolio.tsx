@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/Context";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../../../declarations/coop_manager/coop_manager.did";
 import getCoopActor from "../coops/components/CoopActor";
 import imagePath2 from "../../assets/images/co-ops-default.png";
+import { ckUSDCe6s } from "../../constants/canisters_config";
 
 
 
@@ -132,12 +133,15 @@ const DPortfolio = () => {
   };
 
   const totalBalance = () => {
-    return coopBalances.reduce((sum, coopBalance) => {
+    const total = coopBalances.reduce((sum, coopBalance) => {
       const coopDetail = coopDetails[coopBalance.coop.id];
       const balance = BigInt(coopBalance.balance);
       const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
       return sum + balance * unitPrice;
-    }, BigInt(0)).toString();
+    }, BigInt(0));
+  
+    const formatted = Number(total) / Number(ckUSDCe6s);
+    return formatted.toLocaleString(undefined);
   };
 
   useEffect(() => {
@@ -150,18 +154,6 @@ const DPortfolio = () => {
       <div className="d-flex align-items-center justify-content-between">
         <div>
           <h5 className="mb-0">My Portfolio</h5>
-        </div>
-        <div className="mb-0 position-relative">
-          <select
-            className="form-select form-control"
-            id="campaignFilter"
-            value=""
-          >
-            <option value="all">All</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
-          </select>
         </div>
       </div>
 
@@ -225,7 +217,7 @@ const DPortfolio = () => {
                         )?.balance ?? 0
                       );
                       const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
-                      const total = balance * unitPrice;
+                      const total = Number(balance * unitPrice) / ckUSDCe6s
 
                       return (
                         <tr key={coop.coopId.toText()}>

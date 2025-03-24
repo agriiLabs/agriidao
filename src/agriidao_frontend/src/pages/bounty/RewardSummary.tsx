@@ -38,7 +38,7 @@ const RewardSummary = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsers();
+    const res = await bountyActor.getUserCampaignsByUserId();
     setCampaignSubs(res);
   };
 
@@ -48,7 +48,7 @@ const RewardSummary = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersPending();
+    const res = await bountyActor.getUserCampaignsPending();
     setCampaignPending(res);
   };
 
@@ -58,7 +58,7 @@ const RewardSummary = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersRejected();
+    const res = await bountyActor.getUserCampaignsRejected();
     setCampaignRejected(res);
   };
 
@@ -68,7 +68,7 @@ const RewardSummary = () => {
       console.error("caller or bountyActor is null");
       return;
     }
-    const res = await bountyActor.getAllLatestCampaignUsersAccepted();
+    const res = await bountyActor.getUserCampaignsAccepted();
     setCampaignAccepted(res);
   };
 

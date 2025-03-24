@@ -69,8 +69,6 @@ const Profile = () => {
     }
   }, [isAuthenticated, user]);
 
-  console.log("user", user);
-
   useEffect(() => {
     if (bountyActor) {
       getBountyPoints();

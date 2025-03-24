@@ -10,15 +10,6 @@ const BottomBar = () => {
         <img src={imagePath} width="19" alt="agriiClub icon" className="nav-icon"/>
         <span>Home</span>
       </NavLink>
-      {/* <NavLink to="/" id="funds-nav-bottom">
-        <i className="fa fa-handshake"></i>
-        <span>Stokvels</span>
-      </NavLink>
-      
-      <NavLink to="/" id="cgc-nav-bottom">
-        <i className="fa fa-users"></i>
-        <span>CoOp</span>
-      </NavLink> */}
       <NavLink to="/" id="portfolio-nav-bottom">
         <i className="fa fa-chart-pie"></i>
         <span>Markets</span>

@@ -23,7 +23,7 @@ const DesktopBottomBar = () => {
                       communities to create and operate transparent, efficient,
                       and sustainable food systems.
                     </p>
-                    <ul className="list-unstyled social-icon foot-social-icon mb-0 mt-4">
+                    {/* <ul className="list-unstyled social-icon foot-social-icon mb-0 mt-4">
                       <li className="list-inline-item mb-0">
                         <a
                           href="https://twitter.com/agrii_DAO"
@@ -53,10 +53,58 @@ const DesktopBottomBar = () => {
                       </li>
                       
                     
-                    </ul>
+                    </ul> */}
                   </div>
 
-                  <div className="col-lg-4 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0 text-white">
+                  <div className="col-lg-3 col-md-3 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0 text-white">
+                    <h5 className="footer-head">Connect With Us</h5>
+                    <ul className="list-unstyled footer-list mt-4">
+                      <li>
+                        <a
+                          href="https://twitter.com/agrii_DAO" target="_blank"
+                          className="text-foot text-white"
+                        >
+                          <i className="mdi mdi-chevron-right me-1"></i> X
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://oc.app/community/gnr3a-2aaaa-aaaar-bd37a-cai/channel/1481150702" 
+                          target="_blank"
+                          className="text-foot text-white"
+                        >
+                          <i className="mdi mdi-chevron-right me-1"></i> OpenChat
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://www.linkedin.com/company/agriidao/"
+                          className="text-foot text-white"
+                        >
+                          <i className="mdi mdi-chevron-right me-1"></i> LinkedIn
+                        </a>
+                      </li>
+                      {/* <li>
+                        <a
+                          href="javascript:void(0)"
+                          className="text-foot text-white"
+                        >
+                          <i className="mdi mdi-chevron-right me-1"></i>{" "}
+                          Documentation
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          className="text-foot text-white"
+                        >
+                          <i className="mdi mdi-chevron-right me-1"></i>{" "}
+                          Roadmap
+                        </a>
+                      </li> */}
+                    </ul>
+                  </div>
+                  <div className="col-lg-3 col-md-3 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0 text-white">
                     <h5 className="footer-head">Useful Links</h5>
                     <ul className="list-unstyled footer-list mt-4">
                       <li>
@@ -69,10 +117,10 @@ const DesktopBottomBar = () => {
                       </li>
                       <li>
                         <a
-                          href="javascript:void(0)"
+                          href="https://nuance.xyz/publication/agriiDAO"
                           className="text-foot text-white"
                         >
-                          <i className="mdi mdi-chevron-right me-1"></i> Freeze-dried RWAs Deck
+                          <i className="mdi mdi-chevron-right me-1"></i> Blog
                         </a>
                       </li>
                       {/* <li>
@@ -96,7 +144,7 @@ const DesktopBottomBar = () => {
                     </ul>
                   </div>
 
-                  <div className="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0 text-white">
+                  {/* <div className="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0 text-white">
                     <h5 className="footer-head">Newsletter</h5>
                     <p className="mt-4 font-17 text-white">
                       Sign up and receive the latest tips via email.
@@ -155,7 +203,7 @@ const DesktopBottomBar = () => {
                         </div>
                       </div>
                     </form>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -171,7 +219,7 @@ const DesktopBottomBar = () => {
                   <p className="mb-0 text-white font-16">
                     ©{" "}
                     {new Date().getFullYear()} {" "}
-                    agriiDAO with <i className="mdi mdi-heart text-danger"></i> by{" "}
+                    agriiDAO by{" "}
                     <a
                       href="https://agriilabs.com/"
                       target="_blank"
