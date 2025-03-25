@@ -4,6 +4,7 @@ import { CoopRecord } from "../../../../../declarations/coop_indexer/coop_indexe
 import { Link, NavLink } from "react-router-dom";
 import imagePath2 from "../../../assets/images/co-ops-default.png";
 import getCoopActor from "../../coops/components/CoopActor";
+import { ckUSDCe6s } from "../../../constants/canisters_config";
 
 const DCoops = () => {
   const { coopIndexerActor } = useAuth();
@@ -59,7 +60,7 @@ const DCoops = () => {
         const coopBalance =
           (coopDetails.totalUnit - coopDetails.availableUnit) *
           BigInt(coopDetails.unitPrice);
-        balances[coop.canisterId.toText()] = coopBalance;
+        balances[coop.canisterId.toText()] = coopBalance / BigInt(ckUSDCe6s);
       } catch (error) {
         console.log(
           `Failed to fetch balance for co-op ${coop.canisterId}:`,
