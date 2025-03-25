@@ -34,7 +34,7 @@ const DProfile = () => {
   useEffect(() => {
     if (isAuthenticated && user) {
       if (user.username.length === 0) {
-        navigate("/update-username");
+        navigate("/d/update-username");
       } else {
         navigate("/d/profile");
       }

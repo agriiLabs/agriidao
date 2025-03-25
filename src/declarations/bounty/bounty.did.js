@@ -167,23 +167,7 @@ export const idlFactory = ({ IDL }) => {
     'deleteTier' : IDL.Func([Tier], [], []),
     'deleteUserSocialMedia' : IDL.Func([UserSocialMedia], [], []),
     'getAllAllocations' : IDL.Func([], [IDL.Vec(Allocation)], ['query']),
-    'getAllBountyPointVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(BountyPoint)],
-        ['query'],
-      ),
-    'getAllCampaignTaskVersionsById' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(CampaignTask)],
-        ['query'],
-      ),
-    'getAllCampaignVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(Campaign)],
-        ['query'],
-      ),
     'getAllCampaignsLatest' : IDL.Func([], [IDL.Vec(Campaign)], ['query']),
-    'getAllLatestBounties' : IDL.Func([], [IDL.Vec(Bounty__1)], ['query']),
     'getAllLatestBountyCampaignsByName' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(Campaign)],
@@ -239,14 +223,12 @@ export const idlFactory = ({ IDL }) => {
         [Result_1],
         ['query'],
       ),
-    'getAllTierVersions' : IDL.Func([IDL.Text], [IDL.Vec(Tier)], ['query']),
     'getAllTiersLatest' : IDL.Func([], [IDL.Vec(Tier)], ['query']),
     'getAllocation' : IDL.Func([IDL.Text], [Result_8], ['query']),
     'getBountyCampaigns' : IDL.Func([IDL.Text], [IDL.Vec(Campaign)], ['query']),
     'getBountyLatest' : IDL.Func([IDL.Text], [Result_7], ['query']),
     'getBountyPointByCampaignId' : IDL.Func([IDL.Text], [Result_4], ['query']),
     'getBountyPointByUserId' : IDL.Func([], [Result_4], ['query']),
-    'getBountyVersions' : IDL.Func([IDL.Text], [IDL.Vec(Bounty__1)], ['query']),
     'getCampaignCampaignTasks' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(CampaignTask)],
@@ -255,11 +237,6 @@ export const idlFactory = ({ IDL }) => {
     'getCampaignLatest' : IDL.Func([IDL.Text], [Result_6], ['query']),
     'getCampaignTiers' : IDL.Func([IDL.Text], [IDL.Vec(Tier)], ['query']),
     'getCampaignUser' : IDL.Func([IDL.Text], [Result_5], ['query']),
-    'getCampaignUserVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(CampaignUser)],
-        ['query'],
-      ),
     'getCampaignUsersByCampaignId' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(CampaignUser)],
@@ -273,6 +250,26 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(CampaignUser)],
         ['query'],
       ),
+    'getUserCampaignsAccepted' : IDL.Func(
+        [],
+        [IDL.Vec(CampaignUser)],
+        ['query'],
+      ),
+    'getUserCampaignsByUserId' : IDL.Func(
+        [],
+        [IDL.Vec(CampaignUser)],
+        ['query'],
+      ),
+    'getUserCampaignsPending' : IDL.Func(
+        [],
+        [IDL.Vec(CampaignUser)],
+        ['query'],
+      ),
+    'getUserCampaignsRejected' : IDL.Func(
+        [],
+        [IDL.Vec(CampaignUser)],
+        ['query'],
+      ),
     'getUserSocialMediaBySocialMediaId' : IDL.Func(
         [IDL.Text],
         [Result_1],
@@ -281,11 +278,6 @@ export const idlFactory = ({ IDL }) => {
     'getUserSocialMediaLatestById' : IDL.Func(
         [IDL.Text],
         [Result_1],
-        ['query'],
-      ),
-    'getUserSocialMediaVersions' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(UserSocialMedia)],
         ['query'],
       ),
     'rejectCampaignUserSubmission' : IDL.Func([CampaignUser], [], []),

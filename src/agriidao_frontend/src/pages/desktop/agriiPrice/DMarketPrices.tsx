@@ -4,6 +4,7 @@ import {
   MarketLocation,
   MarketLocationCommodity,
   MarketPrice,
+  Commodity,
 } from "../../../../../declarations/commodity/commodity.did";
 import CountryName from "../../../components/agriidao/CountryName";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +12,7 @@ import { RootState } from "../../../redux/store";
 import { setSelectedMarketLocation } from "../../../redux/slices/app";
 import transformBigIntToString from "../../agriiprice/components/BigIntToString";
 import DMarketPriceSubs from "./../components/DMarketPriceSubs";
+import { formatNanoDate } from "../../../utils/Utils";
 
 const DMarketPrices = () => {
   const dispatch = useDispatch();
@@ -19,9 +21,17 @@ const DMarketPrices = () => {
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
-  const [prices, setPrices] = useState<MarketPrice[]>([]);
+  const [prices, setPrices] = useState<EnrichedPrice[]>([]);
+  // const [prices, setPrices] = useState<MarketPrice[]>([]);
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
+
+  interface EnrichedPrice extends MarketPrice {
+      commodity?: Commodity;
+    }
 
   useEffect(() => {
     getAllMarkets();
@@ -64,20 +74,70 @@ const DMarketPrices = () => {
     }
   }, [selectedMarketLocation, commodityActor]);
 
+  // const fetchMarketData = async (marketId: string, commodityActor: any) => {
+  //   try {
+  //     const commodityRes =
+  //       await commodityActor.getAllLatestMarketCommoditiesByMarketId(marketId);
+
+  //     setMLCommodity(commodityRes);
+
+  //     const pricesRes =
+  //       await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
+
+  //     const transformedPrices = transformBigIntToString(pricesRes);
+  //     setPrices(transformedPrices);
+  //   } catch (error) {
+  //     console.error("Error fetching market data:", error);
+  //   }
+  // };
+
   const fetchMarketData = async (marketId: string, commodityActor: any) => {
     try {
-      const commodityRes =
-        await commodityActor.getAllLatestMarketCommoditiesByMarketId(marketId);
-
-      setMLCommodity(commodityRes);
-
-      const pricesRes =
+      setLoading(true);
+      const pricesRes: MarketPrice[] =
         await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
 
-      const transformedPrices = transformBigIntToString(pricesRes);
-      setPrices(transformedPrices);
+      const latestMap = new Map<string, MarketPrice>();
+
+      pricesRes.forEach((price: MarketPrice) => {
+        const key = price.marketLocationCommodityId;
+        const existing = latestMap.get(key);
+
+        if (!existing || Number(price.timeStamp) > Number(existing.timeStamp)) {
+          latestMap.set(key, price);
+        }
+      });
+
+      const enrichedPrices = await Promise.all(
+        Array.from(latestMap.values()).map(
+          async (price): Promise<EnrichedPrice> => {
+            const locRes = await commodityActor.getMarketLocationCommodityById(
+              price.marketLocationCommodityId
+            );
+            if ("ok" in locRes) {
+              const commRes = await commodityActor.getCommodityLatest(
+                locRes.ok.commodityId
+              );
+              if ("ok" in commRes) {
+                return { ...price, commodity: commRes.ok };
+              }
+            }
+            return price;
+          }
+        )
+      );
+
+      enrichedPrices.sort((a, b) => {
+        const nameA = a.commodity?.name?.toLowerCase() || "";
+        const nameB = b.commodity?.name?.toLowerCase() || "";
+        return nameA.localeCompare(nameB);
+      });
+
+      setPrices(enrichedPrices);
     } catch (error) {
       console.error("Error fetching market data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,6 +157,12 @@ const DMarketPrices = () => {
       dispatch(setSelectedMarketLocation(selectedMarket || null));
     }
   }; 
+
+   useEffect(() => {
+      if (prices.length > 0) {
+        setLastUpdated(formatNanoDate(Number(prices[0].timeStamp)));
+      }
+    }, [prices]);
 
   return (
     <>
@@ -160,9 +226,25 @@ const DMarketPrices = () => {
               </thead>
               
               <tbody>
-              {prices && prices.length > 0 ? (
-                prices.map((price: MarketPrice, index) => (
-                  <DMarketPriceSubs key={index} marketPriceSub={price} />
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="text-center">
+                    Loading...
+                  </td>
+                </tr>
+              ) : prices && prices.length > 0 ? (
+                prices.map((price, index) => (
+                  <tr>
+                  <td className="p-3">
+                    <span className="ms-2">{price?.commodity?.name}</span>
+                  </td>
+                  <td className="text-center p-3">1</td>
+                  <td className="text-center p-3">
+                    {price.pricePerKg ? price.pricePerKg.toFixed(2) : "-"}
+                  </td>
+                  <td className="text-center p-3">{price?.currency}</td>
+                  <td className="text-center p-3">{lastUpdated}</td>
+                </tr>
                 ))
               ) : (
                 <tr>

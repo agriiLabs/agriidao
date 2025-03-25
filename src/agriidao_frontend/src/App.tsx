@@ -85,7 +85,7 @@ import DProjectForecast from "./pages/desktop/projects/DProjectForecast";
 import DProjectMilestone from "./pages/desktop/projects/DProjectMilestone";
 import DProjectMilestoneDetail from "./pages/desktop/projects/DProjectMilestoneDetail";
 import DProjectProposals from "./pages/desktop/projects/DProjectProposals";
-import DPortfolio from "./pages/desktop/DPortfolio";
+import DPortfolio from "./pages/desktop/portfolio/DPortfolio";
 import DProjectProposalDetail from "./pages/desktop/projects/DProjectProposalDetail";
 import { RootState } from "./redux/store";
 import DProjectTreasury from "./pages/desktop/projects/DProjectTreasury";
@@ -94,6 +94,8 @@ import DCoopProjects from "./pages/desktop/agriiCoop/DCoopProjects";
 import DCoopProposals from "./pages/desktop/agriiCoop/DCoopProposals";
 import DCoopProposalDetail from "./pages/desktop/agriiCoop/DCoopProposalDetail";
 import DCoopMembers from "./pages/desktop/agriiCoop/DCoopMembers";
+import DUpdateUsername from "./pages/desktop/profile/DUpdateUsername";
+import DPortofolioUnits from "./pages/desktop/portfolio/DPortofolioUnits";
 
 export interface Response {
   err?: any;
@@ -308,6 +310,8 @@ const App = () => {
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/d/portfolio" element={<DPortfolio />} />
+            <Route path="/d/portfolio/units/:id" element={<DPortofolioUnits />} />
+            <Route path="/d/update-username" element={<DUpdateUsername />} />
             <Route path="/d/profile" element={<DProfile />} />
             <Route path="/d/profile-create" element={<DProfileCreate />} />
             <Route path="/d/profile-detail/" element={<DProfileDetail />} />

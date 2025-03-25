@@ -64,15 +64,6 @@ const DesktopTopBar = () => {
                 Back a Co-op
               </a>
             </li>
-            {/* <li>
-              <a
-                href="#faqs"
-                onClick={(e) => handleScroll(e, "faqs")}
-                className="sub-menu-item color-white"
-              >
-                FAQs
-              </a>
-            </li> */}
             <li>
               <a
                 href="https://docsend.com/view/2jsbhp2hxinuu83b"

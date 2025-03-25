@@ -24,30 +24,43 @@ const DCoopCardProps: React.FC<DCoopCardProps> = ({ coop }) => {
     setAllocatedUnits(totalUnit - availableUnit);
   }, [coop]);
 
-  const getCoopMembers = async () => {
-    try {
-      if (!id) {
-        console.error("Coop ID is undefined");
-        return;
-      }
-      const res = await coopIndexerActor?.getMembershipsByCoopId(
-        Principal.fromText(id)
-      );
-      const count = res
-        ? res.filter(
-            (record) => record.coopId.toText() === coop?.id?.toString()
-          ).length
-        : 0;
-      setMembersCount((prev) => ({ ...prev, [id]: count }));
-    } catch (error) {
-      console.error("Error fetching co-op members:", error);
-    }
-  };
+  // const getCoopMembers = async () => {
+  //   try {
+  //     if (!id) {
+  //       console.error("Coop ID is undefined");
+  //       return;
+  //     }
+  //     const res = await coopIndexerActor?.getMembershipsByCoopId(
+  //       Principal.fromText(id)
+  //     );
+  //     const count = res
+  //       ? res.filter(
+  //           (record) => record.coopId.toText() === coop?.id?.toString()
+  //         ).length
+  //       : 0;
+  //     setMembersCount((prev) => ({ ...prev, [id]: count }));
+  //   } catch (error) {
+  //     console.error("Error fetching co-op members:", error);
+  //   }
+  // };
 
   useEffect(() => {
     if (!coop) return;
     getCoopMembers();
   }, [coop]);
+
+  const getCoopMembers = async () => {
+    let res = await coopIndexerActor?.getAllMemberships();
+    if (res) {
+      const membershipCounts: { [key: string]: number } = {};
+      res.forEach((membership) => {
+        const coopId = membership.coopId.toText();
+        membershipCounts[coopId] = (membershipCounts[coopId] || 0) + 1;
+      });
+
+      setMembersCount(membershipCounts);
+    }
+  };
 
   return (
     <>

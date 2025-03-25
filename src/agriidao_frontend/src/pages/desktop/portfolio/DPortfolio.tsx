@@ -1,18 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/Context";
+import { useAuth } from "../../../hooks/Context";
 import {
-  CoopRecord,
   MembershipRecord,
-} from "../../../../declarations/coop_indexer/coop_indexer.did";
+} from "../../../../../declarations/coop_indexer/coop_indexer.did";
 import {
   _SERVICE,
   Coop,
-} from "../../../../declarations/coop_manager/coop_manager.did";
-import getCoopActor from "../coops/components/CoopActor";
-import imagePath2 from "../../assets/images/co-ops-default.png";
-
-
+} from "../../../../../declarations/coop_manager/coop_manager.did";
+import getCoopActor from "../../coops/components/CoopActor";
+import imagePath2 from "../../../assets/images/co-ops-default.png";
+import { ckUSDCe6s } from "../../../constants/canisters_config";
 
 type CoopBalance = {
   coop: {
@@ -65,10 +63,6 @@ const DPortfolio = () => {
           const coopDetails = await coopActor.getDetails();
 
           if (coopDetails) {
-            console.log(
-              `Co-op Details for ${coop.coopId.toText()}:`,
-              coopDetails
-            );
             detailsList[coop.coopId.toText()] = coopDetails;
           }
         } catch (error) {
@@ -78,8 +72,6 @@ const DPortfolio = () => {
           );
         }
       }
-
-      console.log("Fetched Co-op Details:", detailsList);
       setCoopDetails(detailsList);
     } catch (error) {
       console.error("Error fetching co-op details:", error);
@@ -103,7 +95,6 @@ const DPortfolio = () => {
 
         if (userId) {
           const coopBalance = await coopActor.getMemberbyUserId(userId);
-          console.log(`Balance for ${coop.coopId}:`, coopBalance);
 
           balances.push({
             coop: {
@@ -127,17 +118,7 @@ const DPortfolio = () => {
         });
       }
     }
-    console.log("Final Balances:", balances);
     setCoopBalances(balances);
-  };
-
-  const totalBalance = () => {
-    return coopBalances.reduce((sum, coopBalance) => {
-      const coopDetail = coopDetails[coopBalance.coop.id];
-      const balance = BigInt(coopBalance.balance);
-      const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
-      return sum + balance * unitPrice;
-    }, BigInt(0)).toString();
   };
 
   useEffect(() => {
@@ -145,23 +126,36 @@ const DPortfolio = () => {
       getCoopMemberDetails();
     }
   }, [memberCoops]);
+
+  const totalBalance = () => {
+    const total = coopBalances.reduce((sum, coopBalance) => {
+      const coopDetail = coopDetails[coopBalance.coop.id];
+      const balance = BigInt(coopBalance.balance);
+      const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
+      return sum + balance * unitPrice;
+    }, BigInt(0));
+  
+    const formatted = Number(total) / Number(ckUSDCe6s);
+    return formatted.toLocaleString(undefined);
+  };
+
+  const unitBalance = () => {
+    const total = coopBalances.reduce((sum, coopBalance) => {
+      const coopDetail = coopDetails[coopBalance.coop.id];
+      const balance = BigInt(coopBalance.balance);
+      const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
+      return sum + balance * unitPrice;
+    }, BigInt(0));
+  
+    const formatted = Number(total) / Number(ckUSDCe6s);
+    return formatted.toLocaleString(undefined);
+  };
+
   return (
     <>
       <div className="d-flex align-items-center justify-content-between">
         <div>
           <h5 className="mb-0">My Portfolio</h5>
-        </div>
-        <div className="mb-0 position-relative">
-          <select
-            className="form-select form-control"
-            id="campaignFilter"
-            value=""
-          >
-            <option value="all">All</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
-          </select>
         </div>
       </div>
 
@@ -176,9 +170,10 @@ const DPortfolio = () => {
               <div className="mt-4">
                 <dl className="row">
                   <dt className="col-sm-6">Co-op Units</dt>
-                  <dd className="col-sm-6 text-end">0</dd>
+                  <dd className="col-sm-6 text-end">{unitBalance()}</dd>
                   <dt className="col-sm-6">Co-op Futures</dt>
-                  <dd className="col-sm-6 text-end">0</dd>
+                  <dd className="col-sm-6 text-end">0</dd> 
+                  {/* TODO: Implement Co-op Futures */}
                 </dl>
               </div>
               <div className="mt-3">
@@ -225,12 +220,16 @@ const DPortfolio = () => {
                         )?.balance ?? 0
                       );
                       const unitPrice = BigInt(coopDetail?.unitPrice ?? 0);
-                      const total = balance * unitPrice;
+                      const total = Number(balance * unitPrice) / ckUSDCe6s
 
                       return (
                         <tr key={coop.coopId.toText()}>
                           <td className="d-flex align-items-center p-3">
-                          <img
+                            <Link
+                              to={`/d/portfolio/units/${coop.coopId.toText()}`}
+                              className="d-flex align-items-center"
+                            >
+                              <img
                             src={imagePath2}
                             width="35"
                             className="avatar avatar-ex-small rounded"
@@ -238,6 +237,8 @@ const DPortfolio = () => {
                             style={{ marginRight: "15px" }}
                           />
                             {coopDetail?.name ?? "Unknown Co-op"}
+                            </Link>
+                          
                           </td>
                           <td className="p-3">{balance.toString()}</td>
                           <td className="p-3">{total.toString()} USDC</td>
@@ -256,10 +257,6 @@ const DPortfolio = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="col-xl-8 mt-4">
-        <div className="card border-0"></div>
       </div>
     </>
   );
