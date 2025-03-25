@@ -14,7 +14,7 @@ interface DesktopTopBarProps {
 const DesktopTopBar: React.FC<DesktopTopBarProps> = ({ onToggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { user } = useSelector((state: RootState) => state.app);
+  const { user, profile } = useSelector((state: RootState) => state.app);
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -92,7 +92,7 @@ const DesktopTopBar: React.FC<DesktopTopBarProps> = ({ onToggle }) => {
                 onClick={() => setIsOpen(!isOpen)} 
               >
                 <img
-                  src={imagePath2}
+                  src={profile?.profilePic[0] || imagePath2}
                   className="avatar avatar-ex-small rounded"
                   alt=""
                 />
