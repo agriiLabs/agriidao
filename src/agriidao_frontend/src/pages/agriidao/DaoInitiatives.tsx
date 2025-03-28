@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import imagePath from "../../assets/images/agriidao-logo.svg";
 import imagePath1 from "../../assets/images/bg8.png";
 import imagePath2 from "../../assets/images/default-user-profile.png";
@@ -266,12 +266,12 @@ const Initiatives = () => {
               <strong className="font-500">sustainability, transparency, </strong> and{" "}
               <strong className="font-500">real-world asset tokenization.</strong>
             </p>
-            <Link
-              to={`/ecosystem`}
+            <NavLink
+              to="https://forms.gle/LazxXwDGrSnQ51sE8" target="_blank"
               className="btn btn-sm rounded-sm text-uppercase font-500 border-white color-white bg-theme mb-4"
             >
-              Get Started
-            </Link>
+              Join the Co-op Waitlist
+            </NavLink>
           </div>
         </div>
       </div>

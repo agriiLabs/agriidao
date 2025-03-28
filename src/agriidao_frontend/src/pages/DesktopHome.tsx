@@ -6,19 +6,23 @@ import imagePath4 from "../assets/images/agriicoop.jpeg";
 import imagePath5 from "../assets/images/ecosystem/agriicoop-icon.svg";
 import imagePath8 from "../assets/images/ecosystem/agriimarket-icon.svg";
 import imagePath9 from "../assets/images/ecosystem/agriitrace-icon.svg";
-import imagePath10 from "../assets/images/ecosystem/agriiclub-icon.svg";
 import imagePath7 from "../assets/images/icp-logo.png";
 import imagePath11 from "../assets/images/impact.png";
 import imagePath12 from "../assets/images/transparency.png";
 import imagePath13 from "../assets/images/rewards.png";
-import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import FAQAccordion from "../components/agriidao/FAQAccordion";
+import MarketRedirectButton from "../components/MarketRedirectButton";
+import imagePath from "../assets/images/agriidao-logo-white.svg";
+
 
 const DesktopLandingPage = () => {
   const appHeight = 600;
 
   return (
+    <>
+    <div className="mobile-logo-wrapper d-block d-lg-none text-center py-3 bg-dark">
+        <img src={imagePath} height="30" alt="agriiDAO" />
+      </div>
     <div>
       <section id="home" className="bg-half bg-dark d-table w-100 overflow-hidden">
         <div className="container position-relative">
@@ -95,9 +99,9 @@ const DesktopLandingPage = () => {
                       <div className="d-flex align-items-center">
                         <div className="flex-1 ms-2">
                           <h6 className="text-dark mb-0">
-                            9000+ fresh produce prices
+                          Securing Global Food Systems 
                           </h6>
-                          <p className="text-muted small mb-0">agriiPrice</p>
+                          <p className="text-muted small mb-0">One Co-op at a Time</p>
                         </div>
                       </div>
                     </div>
@@ -160,12 +164,7 @@ const DesktopLandingPage = () => {
                   and buying decisions. Members gain reliable data to plan
                   production and maximize profitability.
                 </p>
-                <NavLink
-                  to="/d/markets"
-                  className="mt-4 text-dark btn bg-white border-dark"
-                >
-                  Check Market Prices
-                </NavLink>
+                <MarketRedirectButton />
               </div>
             </div>
 
@@ -334,6 +333,8 @@ const DesktopLandingPage = () => {
         </div>
       </section>
     </div>
+    </>
+    
   );
 };
 export default DesktopLandingPage;

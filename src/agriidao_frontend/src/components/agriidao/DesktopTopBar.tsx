@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import imagePath from "../../assets/images/agriidao-logo-white.svg";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const DesktopTopBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const handleScroll = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     sectionId: string
@@ -14,8 +15,13 @@ const DesktopTopBar = () => {
     }
   };
 
+  const toggleLine = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
+
   return (
-    <header id="topnav" className="defaultscroll sticky">
+    <header id="topnav" className="defaultscroll sticky bg-dark">
       <div className="container d-flex justify-content-between align-items-center">
         <a className="logo" href="#">
           <img
@@ -26,12 +32,28 @@ const DesktopTopBar = () => {
           />
         </a>
 
-        <nav id="navigation">
-          <ul className="navigation-menu d-flex ">
+        <div className="menu-extras">
+            <div className="menu-item">
+            <button
+                onClick={toggleLine}
+                className={isOpen ? "navbar-toggle open" : "navbar-toggle"}
+              >
+                <div className="lines">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </button>
+            </div>
+        </div>
+
+
+        <nav id="navigation" className={`mobile-nav ${isOpen ? "open" : ""} bg-dark`}>
+          <ul className="navigation-menu d-flex flex-column flex-md-row">
             <li>
               <a
                 href="#home"
-                onClick={(e) => handleScroll(e, "home")}
+                onClick={(e) => {handleScroll(e, "home"); setIsOpen(false);}}
                 className="sub-menu-item color-white"
               >
                 Home
@@ -40,7 +62,7 @@ const DesktopTopBar = () => {
             <li>
               <a
                 href="#overview"
-                onClick={(e) => handleScroll(e, "overview")}
+                onClick={(e) => {handleScroll(e, "overview"); setIsOpen(false);}}
                 className="sub-menu-item color-white"
               >
                 Overview
@@ -49,7 +71,7 @@ const DesktopTopBar = () => {
             <li>
               <a
                 href="#process"
-                onClick={(e) => handleScroll(e, "process")}
+                onClick={(e) => {handleScroll(e, "process"); setIsOpen(false);}}
                 className="sub-menu-item color-white"
               >
                 The Process
@@ -58,7 +80,7 @@ const DesktopTopBar = () => {
             <li>
               <a
                 href="#back-a-coop"
-                onClick={(e) => handleScroll(e, "back-a-coop")}
+                onClick={(e) => {handleScroll(e, "back-a-coop"); setIsOpen(false);}}
                 className="sub-menu-item color-white"
               >
                 Back a Co-op
@@ -78,7 +100,7 @@ const DesktopTopBar = () => {
                 <NavLink
                   to="/d/markets/"
                   id="nav-bottom"
-                  className="btn btn-outline-light text-light mt-3"
+                  className="btn btn-outline-light text-light mt-3 mb-2"
                 >
                   Launch App
                 </NavLink>

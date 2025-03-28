@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useAuth } from "../../hooks/Context";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import ProfileClick from "../profile/component/ProfileClick";
 
 function More() {
@@ -34,24 +34,12 @@ function More() {
         <div className="card card-style">
             <div className="content my-0">
                 <div className="list-group list-custom-small">
-                    <Link to={`/african-food-systems-challenges`}>
-                        <i className="fa fa-exclamation-circle color-dark"></i>
-                        <span className="opacity-70">Why Food Systems Need Change</span>
+                    
+                    <NavLink to={`/esg`}>
+                        <i className="fa fa-briefcase color-dark"></i>
+                        <span className="opacity-70">SNS TGE Deck</span>
                         <i className="fa fa-angle-right"></i>
-                    </Link>
-                    <a href="#">
-                        
-                    </a>
-                    <Link to={`/how-it-works`}>
-                        <i className="fa fa-cogs color-dark"></i>
-                        <span className="opacity-70">How agriiDAO Works</span>
-                        <i className="fa fa-angle-right"></i>
-                    </Link>
-                    <Link to={`/ecosystem`}>
-                        <i className="fa fa-network-wired color-dark"></i>
-                        <span className="opacity-70">Our Ecosystem</span>
-                        <i className="fa fa-angle-right"></i>
-                    </Link>
+                    </NavLink>
                     <Link to={`/esg`}>
                         <i className="fa fa-globe color-dark"></i>
                         <span className="opacity-70">Environmental, Social and Governance</span>
@@ -80,9 +68,19 @@ function More() {
                         <span className="opacity-70">Terms and Conditions</span>
                         <i className="fa fa-angle-right"></i>
                     </a> */}
-                    <a href="/home">
+                    <NavLink to="https://twitter.com/agrii_DAO" target="_blank">
+                        <i className="fab fa-twitter color-dark"></i>
+                        <span className="opacity-70">X (Formely Twitter)</span>
+                        <i className="fa fa-angle-right"></i>
+                    </NavLink>
+                    <NavLink to="https://www.linkedin.com/company/agriidao/">
+                        <i className="fab fa-linkedin color-dark"></i>
+                        <span className="opacity-70">LinkedIn</span>
+                        <i className="fa fa-angle-right"></i>
+                    </NavLink>
+                    <a href="https://oc.app/community/gnr3a-2aaaa-aaaar-bd37a-cai/channel/1481150702">
                         <i className="fa fa-comment color-dark"></i>
-                        <span className="opacity-70">Get in touch</span>
+                        <span className="opacity-70">OpenChat</span>
                         <i className="fa fa-angle-right"></i>
                     </a>
                 </div>

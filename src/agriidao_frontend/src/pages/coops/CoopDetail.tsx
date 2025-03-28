@@ -4,7 +4,7 @@ import getCoopActor from "./components/CoopActor";
 import { Coop } from "../../../../declarations/coop_manager/coop_manager.did";
 import { useState } from "react";
 import ProfileClick from "../profile/component/ProfileClick";
-import imagePath2 from "../../assets/images/default-user-profile.png";
+import imagePath2 from "../../assets/images/co-ops-default.png";
 import { useAuth } from "../../hooks/Context";
 import { Principal } from "@dfinity/principal";
 import DescriptionModal from "./components/DescriptionModal";
@@ -26,12 +26,6 @@ const CoopDetail = () => {
       getCoopDetails();
     }
   }, [id]);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     getCoopMembers();
-  //   }
-  // }, [id]);
 
   const getCoopDetails = async () => {
     try {
@@ -63,24 +57,22 @@ const CoopDetail = () => {
     setAllocatedUnits(totalUnit - availableUnit);
   
   }, [coop]);
+
+  useEffect(() => {
+      if (!coop) return;
+      getCoopMembers();
+    }, [coop]);
  
   const getCoopMembers = async () => {
-    try {
-      if (!id) {
-        console.error("Coop ID is undefined");
-        return;
-      }
-      const res = await coopIndexerActor?.getMembershipsByCoopId(
-        Principal.fromText(id)
-      );
-      const count = res
-        ? res.filter(
-            (record) => record.coopId.toText() === coop?.id?.toString()
-          ).length : 0;
-      console.log(`Member count for coop ${coop?.id}:`, count);
-      setMembersCount((prev) => ({ ...prev, [id]: count }));
-    } catch (error) {
-      console.error("Error fetching co-op members:", error);
+    let res = await coopIndexerActor?.getAllMemberships();
+    if (res) {
+      const membershipCounts: { [key: string]: number } = {};
+      res.forEach((membership) => {
+        const coopId = membership.coopId.toText();
+        membershipCounts[coopId] = (membershipCounts[coopId] || 0) + 1;
+      });
+
+      setMembersCount(membershipCounts);
     }
   };
 
@@ -93,7 +85,7 @@ const CoopDetail = () => {
   }
 
   const managementFee = coop?.managementFee ?? 0; 
-  const formattedFee = parseFloat((Number(managementFee) / ckUSDCe6s * 100).toFixed(2));
+  const formattedFee = parseFloat((Number(managementFee) / ckUSDCe6s).toFixed(2));
   const unitPrice = coop?.unitPrice ?? 0;
   const formattedUnitPrice = parseFloat((Number(unitPrice) / ckUSDCe6s).toFixed(2));
 
@@ -142,7 +134,7 @@ const CoopDetail = () => {
                   </div>
                   <div className="ms-auto">
                     <p className="font-14">
-                      {allocatedUnits * (Number(coop?.unitPrice) ?? 0)} USD
+                      {(allocatedUnits * (Number(coop?.unitPrice)/ckUSDCe6s))} USD
                     </p>
                   </div>
                 </div>
@@ -163,32 +155,33 @@ const CoopDetail = () => {
         <div className="card card-style">
           <div className="content mb-0">
             <p>{coop?.summary}</p>
-          </div>
-          <div
-            className="accordion"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDescriptionModal();
-            }}
-          >
-            <p
-              className="btn accordion-btn opacity-80"
-              style={{
-                marginBottom: "0",
-                paddingLeft: "0",
+            <div
+              className="accordion"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDescriptionModal();
               }}
             >
-              <span
+              <p
+                className="btn accordion-btn opacity-80"
                 style={{
-                  color: "inherit",
-                  textDecoration: "none",
                   marginBottom: "0",
+                  paddingLeft: "0",
                 }}
               >
-                Read More
-              </span>
-            </p>
+                <span
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                    marginBottom: "0",
+                  }}
+                >
+                  Read More
+                </span>
+              </p>
+            </div>
           </div>
+          
         </div>
 
         <div className="card card-style">

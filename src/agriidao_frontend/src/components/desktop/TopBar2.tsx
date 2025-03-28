@@ -31,7 +31,7 @@ const DesktopTopBar: React.FC<DesktopTopBarProps> = ({ onToggle }) => {
   const handleLogout = () => {
     logout(); 
     localStorage.removeItem("user");
-    navigate("/d/markets");
+    navigate("/d/coops");
   };
   
   useEffect(() => {
@@ -55,11 +55,35 @@ const DesktopTopBar: React.FC<DesktopTopBarProps> = ({ onToggle }) => {
           <button onClick={onToggle} className="btn btn-soft-light">
             <i className="mdi mdi-menu"></i>
           </button>
-          
+          <div className="search-bar p-0 d-none d-md-block ms-2">
+            <div id="search" className="menu-search mb-0">
+              <form
+                role="search"
+                method="get"
+                id="searchform"
+                className="searchform"
+              >
+                <div>
+                  <input
+                    type="text"
+                    className="form-control border rounded"
+                    name="s"
+                    id="s"
+                    placeholder="Ask Yoma..."
+                  />
+                  <input type="submit" id="searchsubmit" value="Search" />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
         <ul className="list-unstyled mb-0 d-flex">
-          
+          <li className="list-inline-item">
+            <a href="#" className="btn btn-soft-light">
+              <i className="mdi mdi-robot"></i>
+            </a>
+          </li>
           <li className="list-inline-item">
             <div className="dropdown dropdown-primary" ref={dropdownRef}>
               <button
