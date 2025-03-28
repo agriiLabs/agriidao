@@ -68,7 +68,7 @@ const DProfile = () => {
       <div className="row">
         <div className="col-xl-4"> 
           <div className="col-xl-12 mt-4">
-            <div className="card rounded shadow border-0 p-4">
+            <div className="rounded shadow border-0 p-4">
             <ProfileCard user={user} userTypeChips={userTypeChips} profileExists={profileExists} />            </div>
             
           </div>
