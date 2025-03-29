@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Principal } from "@dfinity/principal";
-import { ProjectRequest } from "../../../../../declarations/projects/projects.did";
+import { ProjectRequest, ProjectType } from "../../../../../declarations/projects/projects.did";
 import {
   setCoopRecord,
   setProjectRequest,
@@ -20,8 +20,9 @@ type FormData = {
   name: string;
   summary: string;
   description: string;
+  projectType: string;
   duration: number;
-  fundingGoal: number;
+  unitsGoal: number;
   location: string;
   //   image: string;
 };
@@ -32,17 +33,62 @@ const DProjectCreate = () => {
     const { projectsActor, coopIndexerActor, settingsActor } = useAuth();
     const { user } = useSelector((state: RootState) => state.app);
     const [coops, setCoops] = useState<CoopRecord[] | null>([]);
-    const [countries, setCountries] = useState<any[] | null>(null);
+    const [countries, setCountries] = useState<any[] | null>([]);
+    const [projectTypes, setProjectTypes] = useState<string[] | null>(null);
   
     const schema = z.object({
       coop: z.string().min(1, { message: "Invalid Principal" }),
       name: z.string().min(1, { message: "Name required" }),
       summary: z.string().min(1, { message: "Summary required" }),
       description: z.string().min(1, { message: "Description required" }),
+      projectType: z.string().min(1, { message: "Project type required" }),
       duration: z.number().min(1, { message: "Duration required" }),
-      fundingGoal: z.number().min(1, { message: "Funding Goal required" }),
+      unitsGoal: z.number().min(1, { message: "Units Goal required" }),
       location: z.string().min(1, { message: "Location required" }),
     });
+
+    useEffect(() => {
+      if (projectsActor) {
+        getProjectTypes();
+      }
+    }
+    , [projectsActor]);
+
+    const getProjectTypes = async () => {
+      if (!projectsActor) {
+        console.error("projectsActor is null");
+        return;
+      }
+      try {
+        const res = await projectsActor.getProjectTypes();
+        setProjectTypes(res);
+      } catch (error) {
+        console.error("Error getting project types: ", error);
+      }
+    };
+
+    const convertToProjectType = (type: string): ProjectType | null => {
+      switch (type) {
+        case "GreenHouse":
+          return { GreenHouse: null };
+        case "Warehouse":
+          return { Warehouse: null };
+        case "Farm":
+          return { Farm: null };
+        case "SolarMiniGrid":
+          return { SolarMiniGrid: null };
+        case "Processing":
+          return { Proccessing: null };
+        case "Offtaking":
+          return { Offtaking: null };
+        case "ResearchAndDevelopment":
+          return { ResearchAndDevelopment: null };
+        case "AgTech":
+          return { AgTech: null };
+        default:
+          return null;
+      }
+    };  
   
     useEffect(() => {
       if (coopIndexerActor) {
@@ -110,6 +156,12 @@ const DProjectCreate = () => {
         }
 
         const coopPrincipal = Principal.fromText(data.coop); 
+        console.log("data", data);
+        const projectType = convertToProjectType(data.projectType);
+        if (!projectType) {
+            console.error("Invalid project type");
+            return;
+        }
 
         const country = countries?.find((country) => country.code === data.location);
         if (!country) {
@@ -117,14 +169,16 @@ const DProjectCreate = () => {
             return;
         }
 
+        try {
         let project: ProjectRequest = {
             owner: user?.id,
             coop: coopPrincipal,
             name: data.name,
             summary: data.summary,
             description: data.description,
+            projectType,
             duration: BigInt(Number(data.duration) || 0),
-            fundingGoal: BigInt(Number(data.fundingGoal) || 0),
+            unitsGoal: BigInt(Number(data.unitsGoal) || 0),
             currency: country.currency,
             location: data.location,
             image: [],
@@ -135,7 +189,10 @@ const DProjectCreate = () => {
         dispatch(setCountry(country));
 
         navigate("/d/start-project/preview");  
-    };
+    } catch (error) {
+        console.error("Error saving project details:", error);
+    }
+  };
 
   return (
     <>
@@ -216,6 +273,26 @@ const DProjectCreate = () => {
                   </span>
                 )}
               </div>
+              <div className="input-style no-borders input-required">
+              <select
+                  id="projectType"
+                  {...register("projectType")}
+                  className="form-control"
+                >
+                  <option value="">What type of project are you starting?</option>
+                    
+                  {projectTypes?.map((type, index) => (
+                    <option key={index} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                {errors.projectType && (
+                  <span style={{ color: "red" }}>
+                    {errors.projectType.message}
+                  </span>
+                )}
+              </div>
               
               <div className="input-style no-borders input-required">
                 <input
@@ -235,13 +312,13 @@ const DProjectCreate = () => {
                 <input
                   placeholder="How much funding does your project need?"
                   type="number"
-                  id="fundingGoal"
-                  {...register("fundingGoal", { valueAsNumber: true })}
+                  id="unitsGoal"
+                  {...register("unitsGoal", { valueAsNumber: true })}
                   className="textinput textInput form-control"
                 />
-                {errors.fundingGoal && (
+                {errors.unitsGoal && (
                   <span style={{ color: "red" }}>
-                    {errors.fundingGoal.message}
+                    {errors.unitsGoal.message}
                   </span>
                 )}
               </div>

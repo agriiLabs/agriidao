@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Principal } from "@dfinity/principal";
-import { ProjectRequest } from "../../../../declarations/projects/projects.did";
+import { ProjectRequest, ProjectType } from "../../../../declarations/projects/projects.did";
 import { setCoopRecord, setProjectRequest, setCountry } from "../../redux/slices/app";
 import ProfileClick from "../profile/component/ProfileClick";
 import { CoopRecord } from "../../../../declarations/coop_indexer/coop_indexer.did";
@@ -17,8 +17,9 @@ type FormData = {
   name: string;
   summary: string;
   description: string;
+  projectType: string;
   duration: string;
-  fundingGoal: string;
+  unitsGoal: string;
   location: string;
 //   image: string;
 }; 
@@ -30,17 +31,40 @@ const AddProject = () => {
   const { user } = useSelector((state: RootState) => state.app);
   const [coops, setCoops] = useState<CoopRecord[] | null>([]);
   const [countries, setCountries] = useState<any[] | null>(null);
+  const [projectTypes, setProjectTypes] = useState<string[] | null>(null);
 
   const schema = z.object({
     coop: z.string().min(1, { message: "Invalid Principal" }),
     name: z.string().min(1, { message: "Name required" }),
     summary: z.string().min(1, { message: "Summary required" }),
     description: z.string().min(1, { message: "Description required" }),
+    projectType: z.string().min(1, { message: "Project Type required" }),
     duration: z.string().min(1, { message: "Duration required" }),
-    fundingGoal: z.string().min(1, { message: "Funding Goal required" }),
+    unitsGoal: z.string().min(1, { message: "Funding Goal required" }),
     location: z.string().min(1, { message: "Location required" }),
     // image: z.string().min(1, { message: "Image required" }),
   });
+
+  useEffect(() => {
+    if (projectsActor) {
+      getProjectTypes();
+    }
+  }
+  , [projectsActor]);
+
+  const getProjectTypes = async () => {
+    if (!projectsActor) {
+      console.error("projectsActor is null");
+      return;
+    }
+    try {
+      const res = await projectsActor.getProjectTypes();
+      setProjectTypes(res);
+    } catch (error) {
+      console.error("Error getting project types: ", error);
+    }
+  };
+
 
   useEffect(() => {
     if (coopIndexerActor) {
@@ -80,6 +104,29 @@ const AddProject = () => {
     }
   };
 
+  const convertToProjectType = (type: string): ProjectType | null => {
+    switch (type) {
+      case "GreenHouse":
+        return { GreenHouse: null };
+      case "Warehouse":
+        return { Warehouse: null };
+      case "Farm":
+        return { Farm: null };
+      case "SolarMiniGrid":
+        return { SolarMiniGrid: null };
+      case "Processing":
+        return { Proccessing: null };
+      case "Offtaking":
+        return { Offtaking: null };
+      case "ResearchAndDevelopment":
+        return { ResearchAndDevelopment: null };
+      case "AgTech":
+        return { AgTech: null };
+      default:
+        return null;
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -105,6 +152,12 @@ const AddProject = () => {
         return;
     }
     const coopDetails = getCoopDetails;
+
+    const projectType = convertToProjectType(data.projectType);
+    if (!projectType) {
+        console.error("Invalid project type");
+        return;
+    }
      
     const coopPrincipal = Principal.fromText(data.coop); 
 
@@ -122,8 +175,9 @@ const AddProject = () => {
       name: data.name,
       summary: data.summary,
       description: data.description,
+      projectType: projectType,
       duration: BigInt(Number(data.duration) || 0),
-      fundingGoal: BigInt(Number(data.fundingGoal) || 0),
+      unitsGoal: BigInt(Number(data.unitsGoal) || 0),
       currency: country.currency,
       location: data.location,
       image: [],
@@ -237,6 +291,23 @@ const AddProject = () => {
                 {errors.description && (
                   <p className="text-red-600">{errors.description.message}</p>
                 )}
+                <select
+                  id="projectType"
+                  {...register("projectType")}
+                  className="form-control"
+                >
+                  <option value="">
+                    What type of project are you starting?
+                  </option>  
+                  {projectTypes?.map((type, index) => (
+                    <option key={index} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+                {errors.projectType && (
+                  <p className="text-red-600">{errors.projectType.message}</p>
+                )}
                 <input
                   placeholder="How long your project run?"
                   type="number"
@@ -250,12 +321,12 @@ const AddProject = () => {
                 <input
                   placeholder="How much funding does your project need?"
                   type="number"
-                  id="fundingGoal"
-                  {...register("fundingGoal")}
+                  id="unitsGoal"
+                  {...register("unitsGoal")}
                   className="textinput textInput form-control"
                 />
-                {errors.fundingGoal && (
-                  <p className="text-red-600">{errors.fundingGoal.message}</p>
+                {errors.unitsGoal && (
+                  <p className="text-red-600">{errors.unitsGoal.message}</p>
                 )}
                 <select
                   id="location"
