@@ -1,4 +1,5 @@
 export const idlFactory = ({ IDL }) => {
+  const ProjectId = IDL.Text;
   const ProjectExpenseRequest = IDL.Record({
     'item' : IDL.Text,
     'projectFinancialsId' : IDL.Opt(IDL.Text),
@@ -23,16 +24,27 @@ export const idlFactory = ({ IDL }) => {
     'projectId' : IDL.Text,
     'budget' : IDL.Nat,
   });
+  const ProjectType = IDL.Variant({
+    'SolarMiniGrid' : IDL.Null,
+    'Farm' : IDL.Null,
+    'Warehouse' : IDL.Null,
+    'Proccessing' : IDL.Null,
+    'AgTech' : IDL.Null,
+    'Offtaking' : IDL.Null,
+    'GreenHouse' : IDL.Null,
+    'ResearchAndDevelopment' : IDL.Null,
+  });
   const ProjectRequest = IDL.Record({
     'duration' : IDL.Int,
+    'projectType' : ProjectType,
     'owner' : IDL.Principal,
     'coop' : IDL.Principal,
     'name' : IDL.Text,
     'description' : IDL.Text,
     'summary' : IDL.Text,
     'currency' : IDL.Text,
-    'fundingGoal' : IDL.Nat,
     'image' : IDL.Opt(IDL.Text),
+    'unitsGoal' : IDL.Nat,
     'location' : IDL.Text,
   });
   const Time = IDL.Int;
@@ -41,7 +53,7 @@ export const idlFactory = ({ IDL }) => {
     'userId' : IDL.Principal,
     'projectId' : IDL.Text,
     'timestamp' : Time,
-    'amount' : IDL.Float64,
+    'amount' : IDL.Nat,
   });
   const EntityType = IDL.Variant({
     'NGO' : IDL.Null,
@@ -55,17 +67,6 @@ export const idlFactory = ({ IDL }) => {
     'name' : IDL.Text,
     'timestamp' : Time,
     'entityType' : EntityType,
-  });
-  const ProjectType = IDL.Variant({
-    'SolarMiniGrid' : IDL.Null,
-    'Farm' : IDL.Null,
-    'Warehouse' : IDL.Null,
-    'Proccessing' : IDL.Null,
-    'AgTech' : IDL.Null,
-    'ProcessingPlant' : IDL.Null,
-    'Offtaking' : IDL.Null,
-    'GreenHouse' : IDL.Null,
-    'ResearchAndDevelopment' : IDL.Null,
   });
   const ProjectTerm = IDL.Record({
     'duration' : IDL.Int,
@@ -115,6 +116,7 @@ export const idlFactory = ({ IDL }) => {
     'id' : IDL.Text,
     'duration' : IDL.Int,
     'endDate' : IDL.Opt(Time),
+    'projectType' : ProjectType,
     'owner' : IDL.Principal,
     'coop' : IDL.Principal,
     'name' : IDL.Text,
@@ -124,18 +126,26 @@ export const idlFactory = ({ IDL }) => {
     'fundingEnd' : IDL.Opt(Time),
     'isActive' : IDL.Bool,
     'summary' : IDL.Text,
+    'unitsRaised' : IDL.Nat,
     'currency' : IDL.Text,
     'timestamp' : Time,
     'proposalStatus' : ProposalStatus,
     'fundingStart' : IDL.Opt(Time),
-    'fundingGoal' : IDL.Nat,
     'image' : IDL.Opt(IDL.Text),
     'isDelete' : IDL.Bool,
+    'unitsGoal' : IDL.Nat,
     'location' : IDL.Text,
     'startDate' : IDL.Opt(Time),
   });
+  const CommitmentVault = IDL.Record({
+    'balance' : IDL.Nat,
+    'totalIn' : IDL.Nat,
+    'totalOut' : IDL.Nat,
+    'projectId' : IDL.Text,
+    'totalFunders' : IDL.Int,
+    'timestamp' : Time,
+  });
   const ProjectExpenseId = IDL.Text;
-  const ProjectId = IDL.Text;
   const ProjectIncomeId = IDL.Text;
   const MilestoneId = IDL.Text;
   const MilestoneStatus = IDL.Variant({
@@ -182,15 +192,15 @@ export const idlFactory = ({ IDL }) => {
   const ProjectTermId = IDL.Text;
   const UserId = IDL.Principal;
   const Treasury = IDL.Record({
-    'balance' : IDL.Float64,
-    'totalIn' : IDL.Float64,
-    'totalOut' : IDL.Float64,
+    'balance' : IDL.Nat,
+    'totalIn' : IDL.Nat,
+    'totalOut' : IDL.Nat,
     'projectId' : IDL.Text,
-    'totalFunders' : IDL.Int,
     'timestamp' : Time,
   });
   const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const Projects = IDL.Service({
+    'addCommitmentVault' : IDL.Func([ProjectId], [], []),
     'addFinancialsExpense' : IDL.Func([ProjectExpenseRequest], [], []),
     'addFinancialsIncome' : IDL.Func([ProjectIncomeRequest], [], []),
     'addMilestone' : IDL.Func([MilestoneRequest], [], []),
@@ -201,6 +211,11 @@ export const idlFactory = ({ IDL }) => {
     'addProjectionExpense' : IDL.Func([ProjectExpenseRequest], [Result_2], []),
     'addProjectionIncome' : IDL.Func([ProjectIncomeRequest], [Result_1], []),
     'getAllProjects' : IDL.Func([], [IDL.Vec(Project)], []),
+    'getCommitmentVaultByProjectId' : IDL.Func(
+        [ProjectId],
+        [CommitmentVault],
+        ['query'],
+      ),
     'getEntityTypes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'getFinancialsExpenseById' : IDL.Func(
         [ProjectExpenseId],
@@ -257,6 +272,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(ProjectTerm)],
         [],
       ),
+    'getProjectTypes' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'getProjectionExpenseById' : IDL.Func(
         [ProjectExpenseId],
         [ProjectExpense],

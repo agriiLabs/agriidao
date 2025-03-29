@@ -93,8 +93,6 @@ const DCoopCreate = () => {
     } catch (error) {
       console.error("Error saving Coop details:", error);
     }
-    console.log(data);
-    console.log("Fee raw:", data.managementFee);
   };
 
   return (

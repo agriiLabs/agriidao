@@ -73,7 +73,6 @@ function DUpdateUsername() {
       };
       try {
         const res = await userActor.updateUser(body);
-        console.log("Response from updateUser:", res);
         if ("ok" in res) {
           dispatch(setUser(res.ok));
           navigate(`/d/profile`);

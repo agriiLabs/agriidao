@@ -2,6 +2,14 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
+export interface CommitmentVault {
+  'balance' : bigint,
+  'totalIn' : bigint,
+  'totalOut' : bigint,
+  'projectId' : string,
+  'totalFunders' : bigint,
+  'timestamp' : Time,
+}
 export type EntityType = { 'NGO' : null } |
   { 'University' : null } |
   { 'Business' : null } |
@@ -46,6 +54,7 @@ export interface Project {
   'id' : string,
   'duration' : bigint,
   'endDate' : [] | [Time],
+  'projectType' : ProjectType,
   'owner' : Principal,
   'coop' : Principal,
   'name' : string,
@@ -55,13 +64,14 @@ export interface Project {
   'fundingEnd' : [] | [Time],
   'isActive' : boolean,
   'summary' : string,
+  'unitsRaised' : bigint,
   'currency' : string,
   'timestamp' : Time,
   'proposalStatus' : ProposalStatus,
   'fundingStart' : [] | [Time],
-  'fundingGoal' : bigint,
   'image' : [] | [string],
   'isDelete' : boolean,
+  'unitsGoal' : bigint,
   'location' : string,
   'startDate' : [] | [Time],
 }
@@ -98,7 +108,7 @@ export interface ProjectFunder {
   'userId' : Principal,
   'projectId' : string,
   'timestamp' : Time,
-  'amount' : number,
+  'amount' : bigint,
 }
 export type ProjectFunderId = string;
 export type ProjectId = string;
@@ -138,14 +148,15 @@ export interface ProjectProjections {
 }
 export interface ProjectRequest {
   'duration' : bigint,
+  'projectType' : ProjectType,
   'owner' : Principal,
   'coop' : Principal,
   'name' : string,
   'description' : string,
   'summary' : string,
   'currency' : string,
-  'fundingGoal' : bigint,
   'image' : [] | [string],
+  'unitsGoal' : bigint,
   'location' : string,
 }
 export interface ProjectTerm {
@@ -163,11 +174,11 @@ export type ProjectType = { 'SolarMiniGrid' : null } |
   { 'Warehouse' : null } |
   { 'Proccessing' : null } |
   { 'AgTech' : null } |
-  { 'ProcessingPlant' : null } |
   { 'Offtaking' : null } |
   { 'GreenHouse' : null } |
   { 'ResearchAndDevelopment' : null };
 export interface Projects {
+  'addCommitmentVault' : ActorMethod<[ProjectId], undefined>,
   'addFinancialsExpense' : ActorMethod<[ProjectExpenseRequest], undefined>,
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
   'addMilestone' : ActorMethod<[MilestoneRequest], undefined>,
@@ -178,6 +189,7 @@ export interface Projects {
   'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], Result_2>,
   'addProjectionIncome' : ActorMethod<[ProjectIncomeRequest], Result_1>,
   'getAllProjects' : ActorMethod<[], Array<Project>>,
+  'getCommitmentVaultByProjectId' : ActorMethod<[ProjectId], CommitmentVault>,
   'getEntityTypes' : ActorMethod<[], Array<string>>,
   'getFinancialsExpenseById' : ActorMethod<[ProjectExpenseId], ProjectExpense>,
   'getFinancialsExpensesByProjectId' : ActorMethod<
@@ -209,6 +221,7 @@ export interface Projects {
   >,
   'getProjectTermById' : ActorMethod<[ProjectTermId], ProjectTerm>,
   'getProjectTermsByProjectId' : ActorMethod<[ProjectId], Array<ProjectTerm>>,
+  'getProjectTypes' : ActorMethod<[], Array<string>>,
   'getProjectionExpenseById' : ActorMethod<[ProjectExpenseId], ProjectExpense>,
   'getProjectionExpensesByProjectId' : ActorMethod<
     [ProjectId],
@@ -246,11 +259,10 @@ export type Result_2 = { 'ok' : ProjectExpense } |
   { 'err' : string };
 export type Time = bigint;
 export interface Treasury {
-  'balance' : number,
-  'totalIn' : number,
-  'totalOut' : number,
+  'balance' : bigint,
+  'totalIn' : bigint,
+  'totalOut' : bigint,
   'projectId' : string,
-  'totalFunders' : bigint,
   'timestamp' : Time,
 }
 export type UserId = Principal;

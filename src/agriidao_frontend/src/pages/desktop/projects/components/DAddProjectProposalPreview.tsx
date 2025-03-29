@@ -31,16 +31,11 @@ const DAddProjectProposalReview = ({
         return;
       }
       console.log("proposalRequest", proposalRequest);
-      const res = await proposalsActor.addProposal(proposalRequest);
-      console.log("Proposal creation response:", res);
-      if (res && "ok" in res) {
+      await proposalsActor.addProposal(proposalRequest);      
         setSaving(false);
         dispatch(setProposalRequest(null));
         toastSuccess("Proposal successfully added");
         navigate(`/d/projects/manager`);
-      } else {
-        throw new Error("Failed to add proposal");
-      }
     } catch (error) {
       setSaving(false);
       toastError("Error adding proposal");

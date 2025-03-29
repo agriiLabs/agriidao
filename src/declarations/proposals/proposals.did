@@ -17,8 +17,7 @@ type Proposals =
    getVoteById: (text) -> (Vote) query;
    getVotesByProposalId: (ProposalId) -> (vec Vote) query;
    getVotesByUserId: (principal) -> (vec Vote) query;
-   updateProposal: (Proposal) -> ();
-   updateProposalStatus: (text) -> (bool);
+   updateProposalStatus: (Proposal) -> ();
  };
 type ProposalStatus = 
  variant {
@@ -49,5 +48,12 @@ type Proposal =
    voteStart: Time;
  };
 type ProjectId = text;
+type EnvType = 
+ variant {
+   local;
+   production;
+   staging;
+ };
 type CoopId = principal;
-service : () -> Proposals
+type CanisterInitArgs = record {env: EnvType;};
+service : (CanisterInitArgs) -> Proposals

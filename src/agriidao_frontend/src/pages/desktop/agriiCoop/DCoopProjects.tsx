@@ -106,7 +106,7 @@ const getProjects = async () => {
                             {project.name}
                           </Link>
                         </td>
-                        <td className="p-3">{Number(project?.fundingGoal) || ""}</td>
+                        <td className="p-3">{Number(project?.unitsGoal) || ""}</td>
                         <td className="p-3"><CountryName id={project?.location || ""} /></td>
                         <td className="p-3">{Object.keys(project?.fundingStatus)[0] || ""}</td>
                       </tr>

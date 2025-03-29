@@ -15,29 +15,23 @@ const DProjectOwnwePreview = ({ setCurrentStep }: { setCurrentStep: (step: numbe
 
     const handleSave = async () => {
       if (!projectsActor) {
-        console.error("projectsActor is null");
         return;
       }
       
       setSaving(true);
       try {
         if (!projectOwner) {
-          console.error("Project owner is null, cannot proceed.");
           setSaving(false);
           return;
         }
     
         const res = await projectsActor.addProjectOwner(projectOwner);
-        console.log("Project owner creation response:", res);
     
         if (res && "ok" in res) {
-          // ✅ Wait and fetch updated owner details
-          console.log("Fetching updated owner info...");
           let updatedOwner = null;
           for (let i = 0; i < 5; i++) { // Try 5 times
             updatedOwner = await projectsActor.getProjectOwner();
             if (updatedOwner && "ok" in updatedOwner) {
-              console.log("New owner detected, closing modal...");
               break;
             }
             await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 sec

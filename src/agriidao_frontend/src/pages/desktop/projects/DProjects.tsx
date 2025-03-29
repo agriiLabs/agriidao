@@ -179,7 +179,7 @@ const DProjects = () => {
                       </td>
 
                       <td className=" p-4">
-                        {parseFloat(Number(project.fundingGoal).toString())}
+                        {parseFloat(Number(project.unitsGoal).toString())}
                         {} USDC
                       </td>
                       <td className=" p-4">

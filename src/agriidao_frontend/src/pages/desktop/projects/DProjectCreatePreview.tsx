@@ -7,6 +7,7 @@ import {
 } from "../../../redux/slices/app";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../../utils/Utils";
+import { ProjectType } from "../../../../../declarations/projects/projects.did";
 
 const DProjectCreatePreview = () => {
   const { projectsActor } = useAuth();
@@ -17,15 +18,12 @@ const DProjectCreatePreview = () => {
   );
   const [saving, setSaving] = useState(false);
 
-  console.log("projectRequest", projectRequest);
-  console.log("coopRecord", coopRecord);
-  console.log("country", country);
-
   const handleSave = async () => {
     if (!projectsActor) {
       console.error("projectsActor is null");
       return;
     }
+
     setSaving(true);
     try {
       if (!projectRequest) {
@@ -34,10 +32,9 @@ const DProjectCreatePreview = () => {
         return;
       }
       const res = await projectsActor.addProject(projectRequest);
-      console.log("Project creation response:", res);
 
       if (res && "ok" in res) {
-        setSaving(false);
+        
         dispatch(setProjectRequest(null));
         toastSuccess("Project successfully added");
         navigate(`/d/projects/manager`);
@@ -46,7 +43,7 @@ const DProjectCreatePreview = () => {
       }
     } catch (error) {
       setSaving(false);
-      toastError("Error adding project");
+      // toastError("Error adding project");
       console.error("Error adding project:", error);
     }
   };
@@ -55,8 +52,14 @@ const DProjectCreatePreview = () => {
     Number(projectRequest?.duration).toString()
   );
   const formattedFundingGoal = parseFloat(
-    Number(projectRequest?.fundingGoal).toString()
+    Number(projectRequest?.unitsGoal).toString()
   );
+
+  function getProjectTypeLabel(type: ProjectType | undefined): string {
+    if (!type) return 'N/A';
+    const key = Object.keys(type)[0];
+    return key.replace(/([A-Z])/g, ' $1').trim(); // Optional formatting
+  }  
 
   return (
     <>
@@ -79,6 +82,10 @@ const DProjectCreatePreview = () => {
             <dt className="col-sm-2">Description</dt>
             <dd className="col-sm-10 text-end">
               <div dangerouslySetInnerHTML={{ __html: projectRequest?.description || "" }} />
+            </dd>
+            <dt className="col-sm-6">Project Type</dt>
+            <dd className="col-sm-6 text-end">
+              {getProjectTypeLabel(projectRequest?.projectType)}
             </dd>
             <dt className="col-sm-6">Funding Goal</dt>
             <dd className="col-sm-6 text-end">{formattedFundingGoal} USDC</dd>

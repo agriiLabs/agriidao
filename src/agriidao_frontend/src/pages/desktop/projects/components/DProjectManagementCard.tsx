@@ -55,7 +55,7 @@ const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => 
             </dd>
             <dt className="col-sm-6">Funding Goal</dt>
             <dd className="col-sm-6 text-end">
-              {Number(project?.fundingGoal) || 0} USDC
+              {Number(project?.unitsGoal) || 0} USDC
             </dd>
             <dt className="col-sm-6">Location</dt>
             <dd className="col-sm-6 text-end">

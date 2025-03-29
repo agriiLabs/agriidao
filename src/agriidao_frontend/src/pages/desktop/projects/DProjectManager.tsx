@@ -175,10 +175,10 @@ const DProjectManager = () => {
                             <span>{project.name}</span>
                           </Link>
                         </td>
-
+ 
                         <td className="p-3">{coop?.name}</td>
                         <td className="p-3">
-                          {parseFloat(Number(project.fundingGoal).toString())}
+                          {parseFloat(Number(project.unitsGoal).toString())}
                           {} USDC
                         </td>
                         <td className="p-3">

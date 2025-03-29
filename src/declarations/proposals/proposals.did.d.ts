@@ -2,7 +2,11 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
+export interface CanisterInitArgs { 'env' : EnvType }
 export type CoopId = Principal;
+export type EnvType = { 'staging' : null } |
+  { 'production' : null } |
+  { 'local' : null };
 export type ProjectId = string;
 export interface Proposal {
   'id' : string,
@@ -37,8 +41,7 @@ export interface Proposals {
   'getVoteById' : ActorMethod<[string], Vote>,
   'getVotesByProposalId' : ActorMethod<[ProposalId], Array<Vote>>,
   'getVotesByUserId' : ActorMethod<[Principal], Array<Vote>>,
-  'updateProposal' : ActorMethod<[Proposal], undefined>,
-  'updateProposalStatus' : ActorMethod<[string], boolean>,
+  'updateProposalStatus' : ActorMethod<[Proposal], undefined>,
 }
 export type Time = bigint;
 export interface Vote {

@@ -56,7 +56,7 @@ const AddProjectPreview = () => {
     Number(projectRequest?.duration).toString()
   );
   const formattedFundingGoal = parseFloat(
-    Number(projectRequest?.fundingGoal).toString()
+    Number(projectRequest?.unitsGoal).toString()
   );
   return (
     <>

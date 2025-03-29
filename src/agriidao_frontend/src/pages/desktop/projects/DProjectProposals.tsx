@@ -26,10 +26,10 @@ const DProjectProposals = () => {
   }, [projectOwner]);
 
   useEffect(() => {
-    if (id) {
+    if (id && projectsActor) {
       getProject();
-    }
-  }, [id]);
+    } 
+  }, [id, projectsActor]);
 
   const getProject = async () => {
     try {

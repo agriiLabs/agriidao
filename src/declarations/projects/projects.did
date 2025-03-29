@@ -1,12 +1,11 @@
 type UserId = principal;
 type Treasury = 
  record {
-   balance: float64;
+   balance: nat;
    projectId: text;
    timestamp: Time;
-   totalFunders: int;
-   totalIn: float64;
-   totalOut: float64;
+   totalIn: nat;
+   totalOut: nat;
  };
 type Time = int;
 type Result_2 = 
@@ -32,6 +31,7 @@ type ProposalStatus =
  };
 type Projects = 
  service {
+   addCommitmentVault: (ProjectId) -> ();
    addFinancialsExpense: (ProjectExpenseRequest) -> ();
    addFinancialsIncome: (ProjectIncomeRequest) -> ();
    addMilestone: (MilestoneRequest) -> ();
@@ -42,6 +42,7 @@ type Projects =
    addProjectionExpense: (ProjectExpenseRequest) -> (Result_2);
    addProjectionIncome: (ProjectIncomeRequest) -> (Result_1);
    getAllProjects: () -> (vec Project);
+   getCommitmentVaultByProjectId: (ProjectId) -> (CommitmentVault) query;
    getEntityTypes: () -> (vec text) query;
    getFinancialsExpenseById: (ProjectExpenseId) -> (ProjectExpense);
    getFinancialsExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
@@ -58,6 +59,7 @@ type Projects =
    getProjectProjectionsByProjectId: (ProjectId) -> (ProjectProjections);
    getProjectTermById: (ProjectTermId) -> (ProjectTerm);
    getProjectTermsByProjectId: (ProjectId) -> (vec ProjectTerm);
+   getProjectTypes: () -> (vec text) query;
    getProjectionExpenseById: (ProjectExpenseId) -> (ProjectExpense);
    getProjectionExpensesByProjectId: (ProjectId) -> (vec ProjectExpense);
    getProjectionIncomeById: (ProjectIncomeId) -> (ProjectIncome);
@@ -85,7 +87,6 @@ type ProjectType =
    GreenHouse;
    Offtaking;
    Proccessing;
-   ProcessingPlant;
    ResearchAndDevelopment;
    SolarMiniGrid;
    Warehouse;
@@ -107,12 +108,13 @@ type ProjectRequest =
    currency: text;
    description: text;
    duration: int;
-   fundingGoal: nat;
    image: opt text;
    location: text;
    name: text;
    owner: principal;
+   projectType: ProjectType;
    summary: text;
+   unitsGoal: nat;
  };
 type ProjectProjections = 
  record {
@@ -156,7 +158,7 @@ type ProjectId = text;
 type ProjectFunderId = text;
 type ProjectFunder = 
  record {
-   amount: float64;
+   amount: nat;
    id: text;
    projectId: text;
    timestamp: Time;
@@ -202,7 +204,6 @@ type Project =
    duration: int;
    endDate: opt Time;
    fundingEnd: opt Time;
-   fundingGoal: nat;
    fundingStart: opt Time;
    fundingStatus: FundingStatus;
    id: text;
@@ -212,10 +213,13 @@ type Project =
    location: text;
    name: text;
    owner: principal;
+   projectType: ProjectType;
    proposalStatus: ProposalStatus;
    startDate: opt Time;
    summary: text;
    timestamp: Time;
+   unitsGoal: nat;
+   unitsRaised: nat;
  };
 type MilestoneStatus = 
  variant {
@@ -267,5 +271,14 @@ type EntityType =
    Individual;
    NGO;
    University;
+ };
+type CommitmentVault = 
+ record {
+   balance: nat;
+   projectId: text;
+   timestamp: Time;
+   totalFunders: int;
+   totalIn: nat;
+   totalOut: nat;
  };
 service : () -> Projects

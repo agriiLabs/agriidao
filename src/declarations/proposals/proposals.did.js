@@ -1,4 +1,10 @@
 export const idlFactory = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
   const ProposalRequest = IDL.Record({
     'coop' : IDL.Opt(IDL.Principal),
     'description' : IDL.Text,
@@ -47,9 +53,16 @@ export const idlFactory = ({ IDL }) => {
     'getVoteById' : IDL.Func([IDL.Text], [Vote], ['query']),
     'getVotesByProposalId' : IDL.Func([ProposalId], [IDL.Vec(Vote)], ['query']),
     'getVotesByUserId' : IDL.Func([IDL.Principal], [IDL.Vec(Vote)], ['query']),
-    'updateProposal' : IDL.Func([Proposal], [], []),
-    'updateProposalStatus' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'updateProposalStatus' : IDL.Func([Proposal], [], []),
   });
   return Proposals;
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
+  return [CanisterInitArgs];
+};
