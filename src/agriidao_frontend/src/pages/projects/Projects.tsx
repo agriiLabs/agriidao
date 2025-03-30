@@ -110,7 +110,7 @@ const Projects = () => {
             {projects &&
               projects.map((project, index) => {
                 const funding = parseFloat(
-                  Number(project.fundingGoal).toFixed(2)
+                  Number(project.unitsGoal).toFixed(2)
                 );
 
                 return (

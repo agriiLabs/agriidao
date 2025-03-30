@@ -31,7 +31,7 @@ const DAddProjectProposalReview = ({
         return;
       }
       console.log("proposalRequest", proposalRequest);
-      await proposalsActor.addProposal(proposalRequest);      
+      await proposalsActor.addSeedProposal(proposalRequest);      
         setSaving(false);
         dispatch(setProposalRequest(null));
         toastSuccess("Proposal successfully added");

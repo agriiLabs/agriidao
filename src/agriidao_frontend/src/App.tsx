@@ -105,7 +105,7 @@ export interface Response {
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, userActor, projectsActor, identity, logout } =
+  const { isAuthenticated, userActor, proposalsActor, identity, logout } =
     useAuth();
   type Result = { ok: User } | { err: string };
 
