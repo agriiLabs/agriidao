@@ -2,6 +2,7 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
+export interface CanisterInitArgs { 'env' : EnvType }
 export interface CommitmentVault {
   'balance' : bigint,
   'totalIn' : bigint,
@@ -15,6 +16,9 @@ export type EntityType = { 'NGO' : null } |
   { 'Business' : null } |
   { 'Government' : null } |
   { 'Individual' : null };
+export type EnvType = { 'staging' : null } |
+  { 'production' : null } |
+  { 'local' : null };
 export type FundingStatus = { 'Unfunded' : null } |
   { 'Funded' : null } |
   { 'Raising' : null } |
@@ -249,6 +253,7 @@ export interface Projects {
   'updateTreasury' : ActorMethod<[Treasury], undefined>,
 }
 export type ProposalStatus = { 'Approved' : null } |
+  { 'Draft' : null } |
   { 'Rejected' : null } |
   { 'Pending' : null };
 export type Result = { 'ok' : null } |

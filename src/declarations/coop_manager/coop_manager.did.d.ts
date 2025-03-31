@@ -6,7 +6,6 @@ export interface Coop {
   'id' : Principal,
   'managementFee' : bigint,
   'ticker' : string,
-  'isCommunity' : boolean,
   'name' : string,
   'createdBy' : string,
   'description' : string,
@@ -27,14 +26,13 @@ export interface CoopInitArgs {
   'initPayoutFrequency' : bigint,
   'initUnitImage' : [] | [string],
   'initSummary' : string,
-  'initIsCommunity' : boolean,
   'initUnitPrice' : bigint,
   'initName' : string,
   'initDescription' : string,
   'initAvailableUnit' : bigint,
   'initMaxValue' : bigint,
   'initLockPeriod' : bigint,
-  'initCreatedBy' : string,
+  'initCreatedBy' : Principal,
   'initTotalUnit' : bigint,
   'initManagementFee' : bigint,
 }
@@ -44,7 +42,7 @@ export interface CoopManager {
   'getFeeHistory' : ActorMethod<[], Array<PlatformFees>>,
   'getFeesDetails' : ActorMethod<[bigint], MintingFees>,
   'getMemberById' : ActorMethod<[CoopMemberId], CoopMember>,
-  'getMemberbyUserId' : ActorMethod<[Principal], CoopMember>,
+  'getMemberbyUserId' : ActorMethod<[Principal], Result>,
   'getTransactionById' : ActorMethod<[TransactionId], Transaction>,
   'getTransactions' : ActorMethod<[], Array<Transaction>>,
   'mintUnits' : ActorMethod<[MintUnitsArgs], boolean>,
@@ -79,6 +77,8 @@ export interface PlatformFees {
   'timestamp' : Time,
   'proposalId' : [] | [string],
 }
+export type Result = { 'ok' : CoopMember } |
+  { 'err' : string };
 export type Time = bigint;
 export interface Transaction {
   'managementFee' : bigint,

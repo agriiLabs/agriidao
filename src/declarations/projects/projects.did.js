@@ -1,4 +1,10 @@
 export const idlFactory = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
   const ProjectId = IDL.Text;
   const ProjectExpenseRequest = IDL.Record({
     'item' : IDL.Text,
@@ -109,6 +115,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const ProposalStatus = IDL.Variant({
     'Approved' : IDL.Null,
+    'Draft' : IDL.Null,
     'Rejected' : IDL.Null,
     'Pending' : IDL.Null,
   });
@@ -311,4 +318,12 @@ export const idlFactory = ({ IDL }) => {
   });
   return Projects;
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
+  return [CanisterInitArgs];
+};

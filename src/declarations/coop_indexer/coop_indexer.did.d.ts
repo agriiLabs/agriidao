@@ -23,16 +23,32 @@ export interface CanisterStatusResult {
   'module_hash' : [] | [Uint8Array | number[]],
   'reserved_cycles' : bigint,
 }
+export interface CoOpIndexer {
+  'addContoller' : ActorMethod<[AddControllerArgs], Result_3>,
+  'addCoopRecord' : ActorMethod<[CoopRecord], undefined>,
+  'addMembershipRecord' : ActorMethod<[MembershipRecord], boolean>,
+  'createCoOpCanister' : ActorMethod<[CoopRequest], Result_2>,
+  'getAllMemberships' : ActorMethod<[], Array<MembershipRecord>>,
+  'getCoopByCaller' : ActorMethod<[], Array<CoopRecord>>,
+  'getCoopById' : ActorMethod<[Principal], Result_1>,
+  'getCoopCanisterStatus' : ActorMethod<[Principal], Result>,
+  'getCreatedCanisters' : ActorMethod<[], Array<CoopRecord>>,
+  'getMembership' : ActorMethod<[MembershipRecordId], MembershipRecord>,
+  'getMembershipByCaller' : ActorMethod<[], Array<MembershipRecord>>,
+  'updateMembershipRecord' : ActorMethod<
+    [MembershipRecordId],
+    MembershipRecord
+  >,
+}
 export interface CoopRecord {
-  'isCommunity' : boolean,
   'name' : string,
   'createdAt' : Time,
+  'createdBy' : Principal,
   'canisterId' : Principal,
 }
 export interface CoopRequest {
   'managementFee' : bigint,
   'ticker' : string,
-  'isCommunity' : boolean,
   'name' : string,
   'description' : string,
   'totalUnit' : bigint,
@@ -66,28 +82,13 @@ export interface MembershipRecord {
 export type MembershipRecordId = string;
 export type Result = { 'ok' : CanisterStatusResult } |
   { 'err' : string };
-export type Result_1 = { 'ok' : Principal } |
+export type Result_1 = { 'ok' : CoopRecord } |
   { 'err' : string };
-export type Result_2 = { 'ok' : null } |
+export type Result_2 = { 'ok' : Principal } |
+  { 'err' : string };
+export type Result_3 = { 'ok' : null } |
   { 'err' : string };
 export type Time = bigint;
-export interface _SERVICE {
-  'addContoller' : ActorMethod<[AddControllerArgs], Result_2>,
-  'addMembershipRecord' : ActorMethod<[MembershipRecord], boolean>,
-  'createCoOpCanister' : ActorMethod<[CoopRequest], Result_1>,
-  'getAllMemberships' : ActorMethod<[], Array<MembershipRecord>>,
-  'getCommunityCoops' : ActorMethod<[], Array<CoopRecord>>,
-  'getCoopById' : ActorMethod<[Principal], CoopRecord>,
-  'getCoopCanisterStatus' : ActorMethod<[Principal], Result>,
-  'getCreatedCanisters' : ActorMethod<[], Array<CoopRecord>>,
-  'getDaoCoops' : ActorMethod<[], Array<CoopRecord>>,
-  'getMembership' : ActorMethod<[MembershipRecordId], MembershipRecord>,
-  'getMembershipByCaller' : ActorMethod<[], Array<MembershipRecord>>,
-  'getMembershipsByCoopId' : ActorMethod<[Principal], Array<MembershipRecord>>,
-  'updateMembershipRecord' : ActorMethod<
-    [MembershipRecordId],
-    MembershipRecord
-  >,
-}
+export interface _SERVICE extends CoOpIndexer {}
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

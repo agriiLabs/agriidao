@@ -6,14 +6,13 @@ export const idlFactory = ({ IDL }) => {
     'initPayoutFrequency' : IDL.Int,
     'initUnitImage' : IDL.Opt(IDL.Text),
     'initSummary' : IDL.Text,
-    'initIsCommunity' : IDL.Bool,
     'initUnitPrice' : IDL.Nat,
     'initName' : IDL.Text,
     'initDescription' : IDL.Text,
     'initAvailableUnit' : IDL.Nat,
     'initMaxValue' : IDL.Nat,
     'initLockPeriod' : IDL.Int,
-    'initCreatedBy' : IDL.Text,
+    'initCreatedBy' : IDL.Principal,
     'initTotalUnit' : IDL.Nat,
     'initManagementFee' : IDL.Nat,
   });
@@ -29,7 +28,6 @@ export const idlFactory = ({ IDL }) => {
     'id' : IDL.Principal,
     'managementFee' : IDL.Nat,
     'ticker' : IDL.Text,
-    'isCommunity' : IDL.Bool,
     'name' : IDL.Text,
     'createdBy' : IDL.Text,
     'description' : IDL.Text,
@@ -59,6 +57,7 @@ export const idlFactory = ({ IDL }) => {
     'totalPrice' : IDL.Nat,
   });
   const CoopMemberId = IDL.Text;
+  const Result = IDL.Variant({ 'ok' : CoopMember, 'err' : IDL.Text });
   const TransactionId = IDL.Text;
   const Transaction = IDL.Record({
     'managementFee' : IDL.Nat,
@@ -86,7 +85,7 @@ export const idlFactory = ({ IDL }) => {
     'getFeeHistory' : IDL.Func([], [IDL.Vec(PlatformFees)], []),
     'getFeesDetails' : IDL.Func([IDL.Nat], [MintingFees], ['query']),
     'getMemberById' : IDL.Func([CoopMemberId], [CoopMember], []),
-    'getMemberbyUserId' : IDL.Func([IDL.Principal], [CoopMember], []),
+    'getMemberbyUserId' : IDL.Func([IDL.Principal], [Result], []),
     'getTransactionById' : IDL.Func([TransactionId], [Transaction], []),
     'getTransactions' : IDL.Func([], [IDL.Vec(Transaction)], []),
     'mintUnits' : IDL.Func([MintUnitsArgs], [IDL.Bool], []),
@@ -102,14 +101,13 @@ export const init = ({ IDL }) => {
     'initPayoutFrequency' : IDL.Int,
     'initUnitImage' : IDL.Opt(IDL.Text),
     'initSummary' : IDL.Text,
-    'initIsCommunity' : IDL.Bool,
     'initUnitPrice' : IDL.Nat,
     'initName' : IDL.Text,
     'initDescription' : IDL.Text,
     'initAvailableUnit' : IDL.Nat,
     'initMaxValue' : IDL.Nat,
     'initLockPeriod' : IDL.Int,
-    'initCreatedBy' : IDL.Text,
+    'initCreatedBy' : IDL.Principal,
     'initTotalUnit' : IDL.Nat,
     'initManagementFee' : IDL.Nat,
   });

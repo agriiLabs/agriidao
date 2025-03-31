@@ -30,6 +30,7 @@ export const idlFactory = ({ IDL }) => {
     'coop' : IDL.Opt(IDL.Principal),
     'voteStart' : Time,
     'description' : IDL.Text,
+    'isSeed' : IDL.Bool,
     'voteDuration' : IDL.Nat,
     'projectId' : IDL.Opt(IDL.Text),
     'voteEnd' : Time,
@@ -41,6 +42,7 @@ export const idlFactory = ({ IDL }) => {
   const ProjectId = IDL.Text;
   const Proposals = IDL.Service({
     'addProposal' : IDL.Func([ProposalRequest], [], []),
+    'addSeedProposal' : IDL.Func([ProposalRequest], [], []),
     'addVote' : IDL.Func([Vote], [], []),
     'getProposalById' : IDL.Func([ProposalId], [Proposal], ['query']),
     'getProposalsByCoopId' : IDL.Func([CoopId], [IDL.Vec(Proposal)], ['query']),
@@ -53,6 +55,7 @@ export const idlFactory = ({ IDL }) => {
     'getVoteById' : IDL.Func([IDL.Text], [Vote], ['query']),
     'getVotesByProposalId' : IDL.Func([ProposalId], [IDL.Vec(Vote)], ['query']),
     'getVotesByUserId' : IDL.Func([IDL.Principal], [IDL.Vec(Vote)], ['query']),
+    'updateProposalIfExpired' : IDL.Func([ProposalId], [], []),
     'updateProposalStatus' : IDL.Func([Proposal], [], []),
   });
   return Proposals;

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/Context";
 import {
   MarketLocation,
-  MarketLocationCommodity,
   MarketPrice,
   Commodity,
 } from "../../../../../declarations/commodity/commodity.did";
@@ -10,19 +9,15 @@ import CountryName from "../../../components/agriidao/CountryName";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { setSelectedMarketLocation } from "../../../redux/slices/app";
-import transformBigIntToString from "../../agriiprice/components/BigIntToString";
-import DMarketPriceSubs from "./../components/DMarketPriceSubs";
 import { formatNanoDate } from "../../../utils/Utils";
 
 const DMarketPrices = () => {
   const dispatch = useDispatch();
   const { commodityActor } = useAuth();
-  const [mLCommodity, setMLCommodity] = useState<MarketLocationCommodity[]>([]);
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
   const [prices, setPrices] = useState<EnrichedPrice[]>([]);
-  // const [prices, setPrices] = useState<MarketPrice[]>([]);
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -243,7 +238,7 @@ const DMarketPrices = () => {
                     {price.pricePerKg ? price.pricePerKg.toFixed(2) : "-"}
                   </td>
                   <td className="text-center p-3">{price?.currency}</td>
-                  <td className="text-center p-3">{lastUpdated}</td>
+                  <td className="text-center p-3">{formatNanoDate(Number(price.timeStamp))}</td>
                 </tr>
                 ))
               ) : (

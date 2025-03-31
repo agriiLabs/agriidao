@@ -15,6 +15,11 @@ type Transaction =
    userId: principal;
  };
 type Time = int;
+type Result = 
+ variant {
+   err: text;
+   ok: CoopMember;
+ };
 type PlatformFees = 
  record {
    depositFee: nat;
@@ -55,7 +60,7 @@ type CoopManager =
    getFeeHistory: () -> (vec PlatformFees);
    getFeesDetails: (nat) -> (MintingFees) query;
    getMemberById: (CoopMemberId) -> (CoopMember);
-   getMemberbyUserId: (principal) -> (CoopMember);
+   getMemberbyUserId: (principal) -> (Result);
    getTransactionById: (TransactionId) -> (Transaction);
    getTransactions: () -> (vec Transaction);
    mintUnits: (MintUnitsArgs) -> (bool);
@@ -64,9 +69,8 @@ type CoopManager =
 type CoopInitArgs = 
  record {
    initAvailableUnit: nat;
-   initCreatedBy: text;
+   initCreatedBy: principal;
    initDescription: text;
-   initIsCommunity: bool;
    initLockPeriod: int;
    initManagementFee: nat;
    initMaxValue: nat;
@@ -86,7 +90,6 @@ type Coop =
    description: text;
    id: principal;
    isActive: bool;
-   isCommunity: bool;
    lockPeriod: int;
    managementFee: nat;
    maxValue: nat;

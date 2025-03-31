@@ -78,8 +78,8 @@ const DProjectManager = () => {
     }
     try {
       const res = await coopIndexerActor?.getCoopById(projects[0]?.coop);
-      if (res) {
-        setCoop(res);
+      if (res && 'ok' in res) {
+        setCoop(res.ok);
       }
     } catch (error) {
       console.error("Error fetching coop:", error);

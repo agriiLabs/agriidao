@@ -9,6 +9,7 @@ type Time = int;
 type Proposals = 
  service {
    addProposal: (ProposalRequest) -> ();
+   addSeedProposal: (ProposalRequest) -> ();
    addVote: (Vote) -> ();
    getProposalById: (ProposalId) -> (Proposal) query;
    getProposalsByCoopId: (CoopId) -> (vec Proposal) query;
@@ -17,6 +18,7 @@ type Proposals =
    getVoteById: (text) -> (Vote) query;
    getVotesByProposalId: (ProposalId) -> (vec Vote) query;
    getVotesByUserId: (principal) -> (vec Vote) query;
+   updateProposalIfExpired: (ProposalId) -> ();
    updateProposalStatus: (Proposal) -> ();
  };
 type ProposalStatus = 
@@ -38,6 +40,7 @@ type Proposal =
    coop: opt principal;
    description: text;
    id: text;
+   isSeed: bool;
    projectId: opt text;
    proposer: principal;
    status: ProposalStatus;

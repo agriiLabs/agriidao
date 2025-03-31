@@ -1,13 +1,18 @@
 type Time = int;
-type Result_2 = 
+type Result_3 = 
  variant {
    err: text;
    ok;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: text;
    ok: principal;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: CoopRecord;
  };
 type Result = 
  variant {
@@ -43,7 +48,6 @@ type CoopRequest =
  record {
    availableUnit: nat;
    description: text;
-   isCommunity: bool;
    lockPeriod: int;
    managementFee: nat;
    maxValue: nat;
@@ -59,8 +63,23 @@ type CoopRecord =
  record {
    canisterId: principal;
    createdAt: Time;
-   isCommunity: bool;
+   createdBy: principal;
    name: text;
+ };
+type CoOpIndexer = 
+ service {
+   addContoller: (AddControllerArgs) -> (Result_3);
+   addCoopRecord: (CoopRecord) -> ();
+   addMembershipRecord: (MembershipRecord) -> (bool);
+   createCoOpCanister: (CoopRequest) -> (Result_2);
+   getAllMemberships: () -> (vec MembershipRecord);
+   getCoopByCaller: () -> (vec CoopRecord) query;
+   getCoopById: (principal) -> (Result_1);
+   getCoopCanisterStatus: (principal) -> (Result);
+   getCreatedCanisters: () -> (vec CoopRecord) query;
+   getMembership: (MembershipRecordId) -> (MembershipRecord);
+   getMembershipByCaller: () -> (vec MembershipRecord);
+   updateMembershipRecord: (MembershipRecordId) -> (MembershipRecord);
  };
 type CanisterStatusResult = 
  record {
@@ -88,18 +107,4 @@ type AddControllerArgs =
    canister: principal;
    controller: principal;
  };
-service : {
-  addContoller: (AddControllerArgs) -> (Result_2);
-  addMembershipRecord: (MembershipRecord) -> (bool);
-  createCoOpCanister: (CoopRequest) -> (Result_1);
-  getAllMemberships: () -> (vec MembershipRecord);
-  getCommunityCoops: () -> (vec CoopRecord);
-  getCoopById: (principal) -> (CoopRecord);
-  getCoopCanisterStatus: (principal) -> (Result);
-  getCreatedCanisters: () -> (vec CoopRecord) query;
-  getDaoCoops: () -> (vec CoopRecord);
-  getMembership: (MembershipRecordId) -> (MembershipRecord);
-  getMembershipByCaller: () -> (vec MembershipRecord);
-  getMembershipsByCoopId: (principal) -> (vec MembershipRecord) query;
-  updateMembershipRecord: (MembershipRecordId) -> (MembershipRecord);
-}
+service : () -> CoOpIndexer

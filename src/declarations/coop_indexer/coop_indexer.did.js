@@ -3,8 +3,14 @@ export const idlFactory = ({ IDL }) => {
     'controller' : IDL.Principal,
     'canister' : IDL.Principal,
   });
-  const Result_2 = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
+  const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const Time = IDL.Int;
+  const CoopRecord = IDL.Record({
+    'name' : IDL.Text,
+    'createdAt' : Time,
+    'createdBy' : IDL.Principal,
+    'canisterId' : IDL.Principal,
+  });
   const MembershipRecord = IDL.Record({
     'id' : IDL.Text,
     'userId' : IDL.Principal,
@@ -15,7 +21,6 @@ export const idlFactory = ({ IDL }) => {
   const CoopRequest = IDL.Record({
     'managementFee' : IDL.Nat,
     'ticker' : IDL.Text,
-    'isCommunity' : IDL.Bool,
     'name' : IDL.Text,
     'description' : IDL.Text,
     'totalUnit' : IDL.Nat,
@@ -27,13 +32,8 @@ export const idlFactory = ({ IDL }) => {
     'payoutFrequency' : IDL.Int,
     'maxValue' : IDL.Nat,
   });
-  const Result_1 = IDL.Variant({ 'ok' : IDL.Principal, 'err' : IDL.Text });
-  const CoopRecord = IDL.Record({
-    'isCommunity' : IDL.Bool,
-    'name' : IDL.Text,
-    'createdAt' : Time,
-    'canisterId' : IDL.Principal,
-  });
+  const Result_2 = IDL.Variant({ 'ok' : IDL.Principal, 'err' : IDL.Text });
+  const Result_1 = IDL.Variant({ 'ok' : CoopRecord, 'err' : IDL.Text });
   const LogVisibility = IDL.Variant({
     'controllers' : IDL.Null,
     'public' : IDL.Null,
@@ -69,28 +69,24 @@ export const idlFactory = ({ IDL }) => {
   });
   const Result = IDL.Variant({ 'ok' : CanisterStatusResult, 'err' : IDL.Text });
   const MembershipRecordId = IDL.Text;
-  return IDL.Service({
-    'addContoller' : IDL.Func([AddControllerArgs], [Result_2], []),
+  const CoOpIndexer = IDL.Service({
+    'addContoller' : IDL.Func([AddControllerArgs], [Result_3], []),
+    'addCoopRecord' : IDL.Func([CoopRecord], [], []),
     'addMembershipRecord' : IDL.Func([MembershipRecord], [IDL.Bool], []),
-    'createCoOpCanister' : IDL.Func([CoopRequest], [Result_1], []),
+    'createCoOpCanister' : IDL.Func([CoopRequest], [Result_2], []),
     'getAllMemberships' : IDL.Func([], [IDL.Vec(MembershipRecord)], []),
-    'getCommunityCoops' : IDL.Func([], [IDL.Vec(CoopRecord)], []),
-    'getCoopById' : IDL.Func([IDL.Principal], [CoopRecord], []),
+    'getCoopByCaller' : IDL.Func([], [IDL.Vec(CoopRecord)], ['query']),
+    'getCoopById' : IDL.Func([IDL.Principal], [Result_1], []),
     'getCoopCanisterStatus' : IDL.Func([IDL.Principal], [Result], []),
     'getCreatedCanisters' : IDL.Func([], [IDL.Vec(CoopRecord)], ['query']),
-    'getDaoCoops' : IDL.Func([], [IDL.Vec(CoopRecord)], []),
     'getMembership' : IDL.Func([MembershipRecordId], [MembershipRecord], []),
     'getMembershipByCaller' : IDL.Func([], [IDL.Vec(MembershipRecord)], []),
-    'getMembershipsByCoopId' : IDL.Func(
-        [IDL.Principal],
-        [IDL.Vec(MembershipRecord)],
-        ['query'],
-      ),
     'updateMembershipRecord' : IDL.Func(
         [MembershipRecordId],
         [MembershipRecord],
         [],
       ),
   });
+  return CoOpIndexer;
 };
 export const init = ({ IDL }) => { return []; };

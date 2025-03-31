@@ -30,7 +30,6 @@ const DAddProjectProposalReview = ({
         setSaving(false);
         return;
       }
-      console.log("proposalRequest", proposalRequest);
       await proposalsActor.addSeedProposal(proposalRequest);      
         setSaving(false);
         dispatch(setProposalRequest(null));

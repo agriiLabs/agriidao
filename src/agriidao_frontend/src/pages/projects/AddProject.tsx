@@ -78,7 +78,7 @@ const AddProject = () => {
       return;
     }
     try {
-      const res = await coopIndexerActor.getDaoCoops();
+      const res = await coopIndexerActor.getCreatedCanisters();
       setCoops(res);
     } catch (error) {
       console.error("Error getting coops: ", error);

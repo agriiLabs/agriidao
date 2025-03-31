@@ -14,6 +14,7 @@ export interface Proposal {
   'coop' : [] | [Principal],
   'voteStart' : Time,
   'description' : string,
+  'isSeed' : boolean,
   'voteDuration' : bigint,
   'projectId' : [] | [string],
   'voteEnd' : Time,
@@ -33,6 +34,7 @@ export type ProposalStatus = { 'Open' : null } |
   { 'Accepted' : null };
 export interface Proposals {
   'addProposal' : ActorMethod<[ProposalRequest], undefined>,
+  'addSeedProposal' : ActorMethod<[ProposalRequest], undefined>,
   'addVote' : ActorMethod<[Vote], undefined>,
   'getProposalById' : ActorMethod<[ProposalId], Proposal>,
   'getProposalsByCoopId' : ActorMethod<[CoopId], Array<Proposal>>,
@@ -41,6 +43,7 @@ export interface Proposals {
   'getVoteById' : ActorMethod<[string], Vote>,
   'getVotesByProposalId' : ActorMethod<[ProposalId], Array<Vote>>,
   'getVotesByUserId' : ActorMethod<[Principal], Array<Vote>>,
+  'updateProposalIfExpired' : ActorMethod<[ProposalId], undefined>,
   'updateProposalStatus' : ActorMethod<[Proposal], undefined>,
 }
 export type Time = bigint;

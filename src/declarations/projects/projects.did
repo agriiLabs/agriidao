@@ -26,6 +26,7 @@ type Result =
 type ProposalStatus = 
  variant {
    Approved;
+   Draft;
    Pending;
    Rejected;
  };
@@ -264,6 +265,12 @@ type FundingStatus =
    Raising;
    Unfunded;
  };
+type EnvType = 
+ variant {
+   local;
+   production;
+   staging;
+ };
 type EntityType = 
  variant {
    Business;
@@ -281,4 +288,5 @@ type CommitmentVault =
    totalIn: nat;
    totalOut: nat;
  };
-service : () -> Projects
+type CanisterInitArgs = record {env: EnvType;};
+service : (CanisterInitArgs) -> Projects

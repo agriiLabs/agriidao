@@ -31,19 +31,14 @@ const DProjectCreatePreview = () => {
         setSaving(false);
         return;
       }
-      const res = await projectsActor.addProject(projectRequest);
-
-      if (res && "ok" in res) {
-        
+      await projectsActor.addProject(projectRequest);
+        setSaving(false);
         dispatch(setProjectRequest(null));
         toastSuccess("Project successfully added");
         navigate(`/d/projects/manager`);
-      } else {
-        throw new Error("Failed to add project");
-      }
     } catch (error) {
       setSaving(false);
-      // toastError("Error adding project");
+      toastError("Error adding project");
       console.error("Error adding project:", error);
     }
   };
@@ -58,7 +53,7 @@ const DProjectCreatePreview = () => {
   function getProjectTypeLabel(type: ProjectType | undefined): string {
     if (!type) return 'N/A';
     const key = Object.keys(type)[0];
-    return key.replace(/([A-Z])/g, ' $1').trim(); // Optional formatting
+    return key.replace(/([A-Z])/g, ' $1').trim(); 
   }  
 
   return (

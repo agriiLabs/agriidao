@@ -101,7 +101,7 @@ const DPortfolio = () => {
               id: coop.coopId.toText(),
               name: coopDetails[coop.coopId.toText()]?.name ?? "Unknown Co-op",
             },
-            balance: Number(coopBalance.balance),
+            balance: "ok" in coopBalance ? Number(coopBalance.ok.balance) : 0,
           });
         }
       } catch (error) {
