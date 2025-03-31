@@ -23,12 +23,12 @@ const CoopHome = () => {
 
   useEffect(() => {
     if (coopIndexerActor) {
-      getDaoCoops();
+      getCoops();
     }
   }, [coopIndexerActor]);
 
-  const getDaoCoops = async () => {
-    let res = await coopIndexerActor?.getDaoCoops();
+  const getCoops = async () => {
+    let res = await coopIndexerActor?.getCreatedCanisters();
     if (res) {
       setCoops(res);
     }
@@ -215,9 +215,6 @@ const CoopHome = () => {
                 <div className="align-self-center">
                   <p className="mb-n1 font-18">
                     {coop.name ?? "Unnamed Co-op"}
-                  </p>
-                  <p className="font-11 opacity-60">
-                    {/* {!coop.isCommunity && <DaoPill />} */}
                   </p>
                 </div>
                 <div className="align-self-center ms-auto text-end">

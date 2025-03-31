@@ -145,7 +145,6 @@ const Coops = () => {
                   </div>
                   <div className="align-self-center">
                     <p className="mb-n1 font-18">{coop.name}</p>
-                    {/* <p className="font-11 opacity-60">{!coop.isCommunity && <DAOPill />}</p> */}
                   </div>
                   <div className="align-self-center ms-auto text-end">
                     <p className="mb-n1 font-18">

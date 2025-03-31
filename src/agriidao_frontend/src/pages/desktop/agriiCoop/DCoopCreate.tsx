@@ -16,7 +16,6 @@ type FormData = {
   lockPeriod: number;
   summary: string;
   description: string;
-  isCommunity: boolean;
   ticker: string;
   managementFee: number;
 };
@@ -47,7 +46,6 @@ const DCoopCreate = () => {
     lockPeriod: z.number().min(1, { message: "Lock period required" }),
     summary: z.string().min(1, { message: "Summary required" }),
     description: z.string().min(1, { message: "Description required" }),
-    isCommunity: z.boolean(),
     ticker: z.string().min(1, { message: "Ticker required" }),
     managementFee: z.number().min(0.1, { message: "Management fee required" }),
   });
@@ -82,7 +80,6 @@ const DCoopCreate = () => {
         lockPeriod: BigInt(data.lockPeriod),
         summary: data.summary,
         description: data.description,
-        isCommunity: data.isCommunity,
         ticker: data.ticker,
         managementFee: BigInt(Math.round(data.managementFee * 100)),
         unitImage: [],
@@ -209,20 +206,6 @@ const DCoopCreate = () => {
                     {errors.managementFee.message}
                   </span>
                 )}
-              </div>
-
-              <div className="d-flex justify-content-between pb-4 ">
-                <h6 className="mb-0">Is this a community co-op?</h6>
-                <div className="form-check">
-                  <input
-                  // placeholder="Is this a community co-op?"
-                    className="form-check-input"
-                    type="checkbox"
-                    id="isCommunity"
-                    {...register("isCommunity")}
-                  />
-                  <label className="form-check-label"></label>
-                </div>
               </div>
 
               <div className="input-style no-borders input-required">

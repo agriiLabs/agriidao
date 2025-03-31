@@ -48,7 +48,9 @@ const MemberCoop = () => {
       const coopActor = await getCoopActor(id);
       if (user?.id) {
         const membership = await coopActor.getMemberbyUserId(user.id);
-        setMembership(membership);
+        if (membership && 'ok' in membership) {
+        setMembership(membership.ok);
+        }
       }
     }
   };
