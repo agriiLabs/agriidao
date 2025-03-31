@@ -5,7 +5,7 @@ const BottomBar = () => {
   return (
     <div id="footer-bar" className="footer-bar-3">
       <NavLink
-        to="/"
+        to="/home"
         id="home-nav-bottom"
         className={({ isActive }) =>
           isActive ? "nav-item active-nav" : "nav-item"
@@ -19,6 +19,24 @@ const BottomBar = () => {
         />
         <span>Home</span>
       </NavLink>
+      <NavLink 
+        to="/coops" 
+        id="campaigns-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }>
+        <i className="fa fa-handshake"></i>
+        <span>Co-ops</span>
+      </NavLink>
+      <NavLink 
+        to="/projects" 
+        id="campaigns-nav-bottom"
+        className={({ isActive }) =>
+          isActive ? "nav-item active-nav" : "nav-item"
+        }>
+        <i className="fa fa-tractor"></i>
+        <span>Projects</span>
+      </NavLink>
       
       <NavLink to="/markets" 
       id="markets-nav-bottom"
@@ -30,7 +48,7 @@ const BottomBar = () => {
       </NavLink>
       <NavLink 
         to="/reward-campaigns" 
-        id="cgc-nav-bottom"
+        id="campaigns-nav-bottom"
         className={({ isActive }) =>
           isActive ? "nav-item active-nav" : "nav-item"
         }>
@@ -38,20 +56,8 @@ const BottomBar = () => {
         <span>Rewards</span>
       </NavLink>
       
-      {/* <NavLink
-        to="/ecosystem"
-        id="funds-nav-bottom"
-        className={({ isActive }) =>
-          isActive ? "nav-item active-nav" : "nav-item"
-        }
-      >
-        <i className="fa fa-trophy"></i>
-        <span>Rewards</span>
-      </NavLink> */}
-      {/* <NavLink to="/reward-summary" id="bounty-nav-bottom">
-        <i className="fa fa-award"></i>
-        <span>agriiPay</span>
-      </NavLink> */}
+      
+     
       <NavLink
         to="/more"
         id="more-nav-bottom"
