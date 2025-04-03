@@ -128,7 +128,7 @@ const DCoopUnits = () => {
 
         setSaving(false);
         toastSuccess("Units minted successfully");
-        navigate("/coop");
+        navigate("/d/portfolio");
       }
     } catch (error: unknown) {
       console.error("Error approving", error);
@@ -160,151 +160,72 @@ const DCoopUnits = () => {
   console.log("coopFeesDetails", coopFeesDetails);
   return (
     <>
-      <div className="d-flex align-items-center justify-content-between">
-        <div>
-          <h5 className="mb-0">Get {coop?.name} Units</h5>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12 mt-4">
-          <div className="table-responsive bg-white shadow rounded">
-            <table className="table mb-2 table-center">
-              <thead>
-                <tr>
-                  <th
-                    className="border-bottom text-start ps-4 py-3"
-                    style={{ minWidth: "300px;" }}
-                  >
-                    Unit
-                  </th>
-                  <th
-                    className="border-bottom text-center py-3"
-                    style={{ minWidth: "160px;" }}
-                  >
-                    Price
-                  </th>
-                  <th
-                    className="border-bottom text-center py-3"
-                    style={{ minWidth: "160px;" }}
-                  >
-                    Qty
-                  </th>
-                  <th
-                    className="border-bottom text-end py-3 pe-4"
-                    style={{ minWidth: "160px;" }}
-                  >
-                    Total
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr className="shop-list">
-                  <td>
-                    <div className="d-flex align-items-center ps-2">
-                      <img
-                        src={imagePath2}
-                        className="avatar avatar-ex-small rounded"
-                        style={{ height: "auto;" }}
-                        alt=""
-                      />
-                      <h6 className="mb-0 ms-3">{coop?.ticker}</h6>
-                    </div>
-                  </td>
-                  <td className="text-center">{unitPrice.toFixed(2)} USD</td>
-                  <td className="text-center">
-                    <div className="d-flex justify-content-center align-items-center gap-2">
-                      <button
-                        onClick={() => handleQuantityChange(units - 1)}
-                        className="btn btn-icon btn-soft-primary minus"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        -
-                      </button>
-
-                      <input
-                        min="1"
-                        name="quantity"
-                        value={units}
-                        type="number"
-                        onChange={(e) =>
-                          handleQuantityChange(Number(e.target.value))
-                        }
-                        className="text-center"
-                        style={{
-                          width: "60px",
-                          height: "40px",
-                          textAlign: "center",
-                          border: "1px solid #ced4da",
-                          borderRadius: "5px",
-                        }}
-                      />
-
-                      <button
-                        onClick={() => handleQuantityChange(units + 1)}
-                        className="btn btn-icon btn-soft-primary plus text-center"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-
-                  <td className="text-end fw-bold pe-4">
-                    {subTotal.toFixed(2)} USD
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <div className="row justify-content-center">
+        <div className="col-lg-6 col-md-6 mx-auto mt-4">
+        <div className="card rounded shadow border-0 p-4">
+          <div className="d-flex justify-content-center mb-4">
+            <h4 className="mb-0">Get {coop?.name} Units</h4>
           </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-lg-4 col-md-6 ms-auto mt-4">
-          <div className="table-responsive bg-white rounded shadow">
-            <table className="table table-center table-padding mb-0">
-              <tbody>
-                <tr>
-                  <td className="h6 ps-4 py-3">Subtotal</td>
-                  <td className="text-end fw-bold pe-4">
-                    {subTotal.toFixed(2)} USD
-                  </td>
-                </tr>
-                <tr>
-                  <td className="h6 ps-4 py-3">Co-op Fee</td>
-                  <td className="text-end fw-bold pe-4">
-                    {" "}
-                    {coopFee.toFixed(2)} USD
-                  </td>
-                </tr>
-                <tr>
-                  <td className="h6 ps-4 py-3">Platform Fee</td>
-                  <td className="text-end fw-bold pe-4">
-                    {" "}
-                    {platformFee.toFixed(2)} USD
-                  </td>
-                </tr>
-                <tr className="bg-light">
-                  <td className="h6 ps-4 py-3">Total</td>
-                  <td className="text-end fw-bold pe-4">
-                    {total.toFixed(2)} USD
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <dl className="row align-items-center">
+            <dt className="col-sm-12 mb-4">
+              <div
+                className="input-group"
+                style={{ maxWidth: "220px", margin: "0 auto" }}
+              >
+                <input
+                  min="1"
+                  name="quantity"
+                  value={units}
+                  type="number"
+                  onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                  className="form-control text-center fw-bold fs-5 border-default"
+                  style={{
+                    height: "50px",
+                    borderWidth: "2px",
+                    borderRadius: "8px",
+                  }}
+                />
+                <span
+                  className="input-group-text bg-white border-default"
+                  style={{
+                    borderWidth: "2px",
+                    borderLeft: "0",
+                    borderTopRightRadius: "8px",
+                    borderBottomRightRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src={imagePath2}
+                    alt="Co-op"
+                    width="24"
+                    height="24"
+                    className="rounded-circle"
+                  />
+                  <span className="fw-semibold">{coop?.ticker}</span>
+                </span>
+              </div>
+            </dt>
+            <dt className="col-sm-6">Subtotal</dt>
+            <dd className="col-sm-6 text-end">
+              {subTotal.toFixed(2)} USD
+            </dd>
+            <dt className="col-sm-6">Co-op Fee</dt>
+            <dd className="col-sm-6 text-end">
+              {coopFee.toFixed(2)} USD
+            </dd>
+            <dt className="col-sm-6">Platform Fee</dt>
+            <dd className="col-sm-6 text-end">
+              {platformFee.toFixed(2)} USD
+            </dd>
+            <dt className="col-sm-6">Total</dt>
+            <dd className="col-sm-6 text-end">
+              {total.toFixed(2)} USD
+            </dd>
+          </dl>
+
           <div className="mt-4 text-end">
             <button
               onClick={handleConfirm}
@@ -314,6 +235,7 @@ const DCoopUnits = () => {
               Get Units
             </button>
           </div>
+        </div>
         </div>
       </div>
     </>

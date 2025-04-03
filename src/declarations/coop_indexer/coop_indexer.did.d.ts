@@ -41,6 +41,7 @@ export interface CoOpIndexer {
   >,
 }
 export interface CoopRecord {
+  'isManagedCanister' : boolean,
   'name' : string,
   'createdAt' : Time,
   'createdBy' : Principal,

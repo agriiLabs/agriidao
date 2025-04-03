@@ -71,6 +71,7 @@ type CoopInitArgs =
    initAvailableUnit: nat;
    initCreatedBy: principal;
    initDescription: text;
+   initIsManagedCanister: bool;
    initLockPeriod: int;
    initManagementFee: nat;
    initMaxValue: nat;
@@ -90,6 +91,7 @@ type Coop =
    description: text;
    id: principal;
    isActive: bool;
+   isManagedCanister: bool;
    lockPeriod: int;
    managementFee: nat;
    maxValue: nat;

@@ -18,8 +18,7 @@ const DCoops = () => {
 
   useEffect(() => {
     if (coopIndexerActor) {
-      getDaoCoops();
-      //   getCommunityCoops();
+      getCoops();
     }
   }, [coopIndexerActor]);
 
@@ -30,12 +29,14 @@ const DCoops = () => {
     }
   }, [coops]);
 
-  const getDaoCoops = async () => {
+  const getCoops = async () => {
     let res = await coopIndexerActor?.getCreatedCanisters();
     if (res) {
       setCoops(res);
     }
-  };
+    console.log("coops", res);
+  };  
+  
 
   const getCoopMembers = async () => {
     let res = await coopIndexerActor?.getAllMemberships();

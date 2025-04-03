@@ -64,6 +64,7 @@ type CoopRecord =
    canisterId: principal;
    createdAt: Time;
    createdBy: principal;
+   isManagedCanister: bool;
    name: text;
  };
 type CoOpIndexer = 

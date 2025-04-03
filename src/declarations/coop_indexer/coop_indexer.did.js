@@ -6,6 +6,7 @@ export const idlFactory = ({ IDL }) => {
   const Result_3 = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const Time = IDL.Int;
   const CoopRecord = IDL.Record({
+    'isManagedCanister' : IDL.Bool,
     'name' : IDL.Text,
     'createdAt' : Time,
     'createdBy' : IDL.Principal,
