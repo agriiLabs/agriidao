@@ -157,7 +157,7 @@ const DCoopUnits = () => {
     );
     setTotal((units * Number(coopFeesDetails?.totalPrice || 0)) / ckUSDCe6s);
   }, [units, unitPrice, coopFeesDetails]);
-  console.log("coopFeesDetails", coopFeesDetails);
+
   return (
     <>
       <div className="row justify-content-center">

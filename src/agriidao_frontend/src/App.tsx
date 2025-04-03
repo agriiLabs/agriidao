@@ -105,7 +105,7 @@ export interface Response {
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, userActor, projectsActor, identity, logout } =
+  const { isAuthenticated, userActor, proposalsActor, identity, logout } =
     useAuth();
   type Result = { ok: User } | { err: string };
 
@@ -172,12 +172,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      
       <Routes>
         {/* DAO */}
         <Route element={<DaoLayout />}>
           <Route index element={<DaoHome />} />
-          {/* <Route path="/home" element={<DaoHome />} /> */}
           <Route path="/market-entry" element={<MarketRedirect />} />
           {/* <Route path="/referral" element={<ReferralLanding />} /> */}
 
@@ -210,7 +208,7 @@ const App = () => {
             path="/market-price/:id"
             element={<CommodityDetail data={[]} />}
           />
-          {/* <Route path="/coop" element={<CoopHome />} />
+          <Route path="/coop" element={<CoopHome />} />
           <Route path="/coop-portfolio/:id" element={<MemberCoop />} />
           <Route path="/coops" element={<Coops />} />
           <Route path="/coop-detail/:id" element={<CoopDetail />} />
@@ -224,7 +222,7 @@ const App = () => {
           <Route path="/start-project" element={<StartProject />} />
           <Route path="/add-project-owner/" element={<AddProjectOwner />} />
           <Route path="/add-project/" element={<AddProject />} />
-          <Route path="/add-project/preview/" element={<AddProjectPreview />} /> */}
+          <Route path="/add-project/preview/" element={<AddProjectPreview />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/profile" element={<Profile />} />
@@ -268,7 +266,6 @@ const App = () => {
         <Route element={<Layout />}>
           <Route index element={<DesktopLandingPage />} />
           <Route path="/" element={<DesktopLandingPage />} />
-
           <Route path="/d/markets" element={<DMarketPrices />} />
           <Route path="/d/leaderboard" element={<DLeaderboard />} />
           <Route path="/d/campaigns" element={<DCampaigns />} />
@@ -276,7 +273,7 @@ const App = () => {
             path="/d/campaigns/campaign-detail/:id"
             element={<DCampaignDetail />}
           />
-          {/* <Route path="/d/coops" element={<DCoops />} />
+          <Route path="/d/coops" element={<DCoops />} />
           <Route path="/d/coop/overview/:id" element={<DCoopDetail />} />
           <Route path="/d/coop/projects/:id" element={<DCoopProjects />} /> 
           <Route path="/d/coop/proposals/:id" element={<DCoopProposals />} />
@@ -284,55 +281,28 @@ const App = () => {
           <Route path="/d/coop/members/:id" element={<DCoopMembers />} />
           <Route path="/d/projects" element={<DProjects />} />
           <Route path="/d/projects/overview/:id" element={<DProjectDetail />} />
-          <Route
-            path="/d/projects/forecast/:id"
-            element={<DProjectForecast />}
-          />
-          <Route
-            path="/d/projects/milestones/:id"
-            element={<DProjectMilestone />}
-          />
-          <Route
-            path="/d/projects/milestone-detail/:id"
-            element={<DProjectMilestoneDetail />}
-          />
-          <Route
-            path="/d/projects/proposals/:id"
-            element={<DProjectProposals />}
-          />
-          <Route
-            path="/d/projects/proposal-detail/:id"
-            element={<DProjectProposalDetail />}
-          />
-          <Route
-            path="/d/projects/treasury/:id"
-            element={<DProjectTreasury />}
-          />
-          <Route
-            path="/d/projects/backers/:id"
-            element={<DProjectBackers />}
-          /> */}
+          <Route path="/d/projects/forecast/:id" element={<DProjectForecast />} />
+          <Route path="/d/projects/milestones/:id" element={<DProjectMilestone />} />
+          <Route path="/d/projects/milestone-detail/:id" element={<DProjectMilestoneDetail />} />
+          <Route path="/d/projects/proposals/:id" element={<DProjectProposals />} />
+          <Route path="/d/projects/proposal-detail/:id" element={<DProjectProposalDetail />} />
+          <Route path="/d/projects/treasury/:id" element={<DProjectTreasury />} />
+          <Route path="/d/projects/backers/:id" element={<DProjectBackers />}/>
 
           <Route element={<ProtectedRoutes />}>
-            {/* <Route path="/d/portfolio" element={<DPortfolio />} />
-            <Route path="/d/portfolio/units/:id" element={<DPortofolioUnits />} /> */}
+            <Route path="/d/portfolio" element={<DPortfolio />} />
+            <Route path="/d/portfolio/units/:id" element={<DPortofolioUnits />} />
             <Route path="/d/update-username" element={<DUpdateUsername />} />
             <Route path="/d/profile" element={<DProfile />} />
             <Route path="/d/profile-create" element={<DProfileCreate />} />
             <Route path="/d/profile-detail/" element={<DProfileDetail />} />
             <Route path="/d/rewards" element={<MyRewards />} />
-            {/* <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
-            <Route path="/d/start-coop" element={<DCoopCreate />} /> */}
-            {/* <Route
-              path="/d/start-coop/preview"
-              element={<DCoopCreatePreview />}
-            /> */}
-            {/* <Route path="/d/start-project" element={<DProjectCreate />} />
-            <Route
-              path="/d/start-project/preview"
-              element={<DProjectCreatePreview />}
-            />
-            <Route path="/d/projects/manager" element={<DProjectManager />} /> */}
+            <Route path="/d/coop-units/:id" element={<DCoopUnits />} />
+            <Route path="/d/start-coop" element={<DCoopCreate />} />
+            <Route path="/d/start-coop/preview" element={<DCoopCreatePreview />} />
+            <Route path="/d/start-project" element={<DProjectCreate />} />
+            <Route path="/d/start-project/preview" element={<DProjectCreatePreview />}/>
+            <Route path="/d/projects/manager" element={<DProjectManager />} />
 
             {/* <Route path="/get-started" element={<GetStarted />} /> */}
           </Route>
