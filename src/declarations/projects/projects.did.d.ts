@@ -115,6 +115,11 @@ export interface ProjectFunder {
   'amount' : bigint,
 }
 export type ProjectFunderId = string;
+export interface ProjectFunderRequest {
+  'userId' : Principal,
+  'projectId' : string,
+  'amount' : bigint,
+}
 export type ProjectId = string;
 export interface ProjectIncome {
   'id' : string,
@@ -187,7 +192,7 @@ export interface Projects {
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
   'addMilestone' : ActorMethod<[MilestoneRequest], undefined>,
   'addProject' : ActorMethod<[ProjectRequest], undefined>,
-  'addProjectFunder' : ActorMethod<[ProjectFunder], undefined>,
+  'addProjectFunder' : ActorMethod<[ProjectFunderRequest], undefined>,
   'addProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
   'addProjectTerm' : ActorMethod<[ProjectTerm], undefined>,
   'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], Result_2>,

@@ -37,7 +37,7 @@ type Projects =
    addFinancialsIncome: (ProjectIncomeRequest) -> ();
    addMilestone: (MilestoneRequest) -> ();
    addProject: (ProjectRequest) -> ();
-   addProjectFunder: (ProjectFunder) -> ();
+   addProjectFunder: (ProjectFunderRequest) -> ();
    addProjectOwner: (ProjectOwner) -> ();
    addProjectTerm: (ProjectTerm) -> ();
    addProjectionExpense: (ProjectExpenseRequest) -> (Result_2);
@@ -156,6 +156,12 @@ type ProjectIncome =
    total: nat;
  };
 type ProjectId = text;
+type ProjectFunderRequest = 
+ record {
+   amount: nat;
+   projectId: text;
+   userId: principal;
+ };
 type ProjectFunderId = text;
 type ProjectFunder = 
  record {

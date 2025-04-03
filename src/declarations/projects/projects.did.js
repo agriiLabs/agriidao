@@ -53,14 +53,12 @@ export const idlFactory = ({ IDL }) => {
     'unitsGoal' : IDL.Nat,
     'location' : IDL.Text,
   });
-  const Time = IDL.Int;
-  const ProjectFunder = IDL.Record({
-    'id' : IDL.Text,
+  const ProjectFunderRequest = IDL.Record({
     'userId' : IDL.Principal,
     'projectId' : IDL.Text,
-    'timestamp' : Time,
     'amount' : IDL.Nat,
   });
+  const Time = IDL.Int;
   const EntityType = IDL.Variant({
     'NGO' : IDL.Null,
     'University' : IDL.Null,
@@ -187,6 +185,13 @@ export const idlFactory = ({ IDL }) => {
     'royaltyPercentage' : IDL.Nat,
   });
   const ProjectFunderId = IDL.Text;
+  const ProjectFunder = IDL.Record({
+    'id' : IDL.Text,
+    'userId' : IDL.Principal,
+    'projectId' : IDL.Text,
+    'timestamp' : Time,
+    'amount' : IDL.Nat,
+  });
   const ProjectProjections = IDL.Record({
     'expenses' : IDL.Nat,
     'royaltySplit' : IDL.Nat,
@@ -212,7 +217,7 @@ export const idlFactory = ({ IDL }) => {
     'addFinancialsIncome' : IDL.Func([ProjectIncomeRequest], [], []),
     'addMilestone' : IDL.Func([MilestoneRequest], [], []),
     'addProject' : IDL.Func([ProjectRequest], [], []),
-    'addProjectFunder' : IDL.Func([ProjectFunder], [], []),
+    'addProjectFunder' : IDL.Func([ProjectFunderRequest], [], []),
     'addProjectOwner' : IDL.Func([ProjectOwner], [], []),
     'addProjectTerm' : IDL.Func([ProjectTerm], [], []),
     'addProjectionExpense' : IDL.Func([ProjectExpenseRequest], [Result_2], []),
