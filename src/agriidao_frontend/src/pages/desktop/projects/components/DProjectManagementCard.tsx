@@ -9,30 +9,29 @@ interface DPManagementCardProps {
 }
 
 const DPManagementCardProps: React.FC<DPManagementCardProps> = ({ project }) => {
-    const { coopIndexerActor } = useAuth();
-    const [coop, setCoop] = useState<string | null>(null);
-    
-  console.log("project", project);
+  const { coopIndexerActor } = useAuth();
+  const [coop, setCoop] = useState<string | null>(null);
+
   useEffect(() => {
-      if (project) {
-        getCoop();
+    if (project) {
+      getCoop();
+    }
+  }, [project]);
+
+  const getCoop = async () => {
+    if (!project) {
+      console.error("Project is null");
+      return;
+    }
+    try {
+      const res = await coopIndexerActor?.getCoopById(project.coop);
+      if (res && 'ok' in res) {
+        setCoop(res.ok.name);
       }
-    }, [project]);
-  
-    const getCoop = async () => {
-      if (!project) {
-        console.error("Project is null");
-        return;
-      }
-      try {
-        const res = await coopIndexerActor?.getCoopById(project.coop);
-        if (res && 'ok' in res) {
-          setCoop(res.ok.name);
-        }
-      } catch (error) {
-        console.error("Error fetching coop:", error);
-      }
-    };
+    } catch (error) {
+      console.error("Error fetching coop:", error);
+    }
+  };
 
   return (
     <div className="col-xl-12 mt-4">

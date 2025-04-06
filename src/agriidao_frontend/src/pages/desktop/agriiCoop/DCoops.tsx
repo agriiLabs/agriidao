@@ -95,21 +95,21 @@ const DCoops = () => {
           <div
             className="table-responsive shadow rounded-bottom"
             data-simplebar
-            style={{ height: "545px;" }}
+            style={{ height: "545px" }}
           >
             <table className="table table-center bg-white mb-0">
               <thead>
                 <tr>
-                  <th className="border-bottom p-3" style={{ width: "150px;" }}>
+                  <th className="border-bottom p-3" style={{ width: "150px" }}>
                     Rank
                   </th>
-                  <th className="border-bottom p-3" style={{ width: "150px;" }}>
+                  <th className="border-bottom p-3" style={{ width: "150px" }}>
                     Co-op
                   </th>
-                  <th className="border-bottom p-3" style={{ width: "150px;" }}>
+                  <th className="border-bottom p-3" style={{ width: "150px" }}>
                     Members
                   </th>
-                  <th className="border-bottom p-3" style={{ width: "150px;" }}>
+                  <th className="border-bottom p-3" style={{ width: "150px" }}>
                     Treasury
                   </th>
                 </tr>

@@ -192,11 +192,11 @@ export interface Projects {
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,
   'addMilestone' : ActorMethod<[MilestoneRequest], undefined>,
   'addProject' : ActorMethod<[ProjectRequest], undefined>,
-  'addProjectFunder' : ActorMethod<[ProjectFunderRequest], undefined>,
+  'addProjectFunder' : ActorMethod<[ProjectFunderRequest], Result_4>,
   'addProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
   'addProjectTerm' : ActorMethod<[ProjectTerm], undefined>,
-  'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], Result_2>,
-  'addProjectionIncome' : ActorMethod<[ProjectIncomeRequest], Result_1>,
+  'addProjectionExpense' : ActorMethod<[ProjectExpenseRequest], Result_3>,
+  'addProjectionIncome' : ActorMethod<[ProjectIncomeRequest], Result_2>,
   'getAllProjects' : ActorMethod<[], Array<Project>>,
   'getCommitmentVaultByProjectId' : ActorMethod<[ProjectId], CommitmentVault>,
   'getEntityTypes' : ActorMethod<[], Array<string>>,
@@ -252,6 +252,7 @@ export interface Projects {
   'updateProjectFunder' : ActorMethod<[ProjectFunder], undefined>,
   'updateProjectOwner' : ActorMethod<[ProjectOwner], undefined>,
   'updateProjectProjections' : ActorMethod<[ProjectProjections], undefined>,
+  'updateProjectProposalStatus' : ActorMethod<[ProjectId], Result_1>,
   'updateProjectTerm' : ActorMethod<[ProjectTerm], undefined>,
   'updateProjectionExpense' : ActorMethod<[ProjectExpense], undefined>,
   'updateProjectionIncome' : ActorMethod<[ProjectIncome], Result>,
@@ -263,9 +264,13 @@ export type ProposalStatus = { 'Approved' : null } |
   { 'Pending' : null };
 export type Result = { 'ok' : null } |
   { 'err' : string };
-export type Result_1 = { 'ok' : ProjectIncome } |
+export type Result_1 = { 'ok' : Project } |
   { 'err' : string };
-export type Result_2 = { 'ok' : ProjectExpense } |
+export type Result_2 = { 'ok' : ProjectIncome } |
+  { 'err' : string };
+export type Result_3 = { 'ok' : ProjectExpense } |
+  { 'err' : string };
+export type Result_4 = { 'ok' : ProjectFunder } |
   { 'err' : string };
 export type Time = bigint;
 export interface Treasury {
