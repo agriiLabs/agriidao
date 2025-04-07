@@ -59,7 +59,7 @@ export const idlFactory = ({ IDL }) => {
     'totalPrice' : IDL.Nat,
   });
   const CoopMemberId = IDL.Text;
-  const Result = IDL.Variant({ 'ok' : CoopMember, 'err' : IDL.Text });
+  const Result_2 = IDL.Variant({ 'ok' : CoopMember, 'err' : IDL.Text });
   const TransactionId = IDL.Text;
   const Transaction = IDL.Record({
     'managementFee' : IDL.Nat,
@@ -81,17 +81,35 @@ export const idlFactory = ({ IDL }) => {
     'blockheight' : IDL.Nat,
     'unitAmount' : IDL.Nat,
   });
+  const TransactionRequest = IDL.Record({
+    'managementFee' : IDL.Nat,
+    'linkedTx' : IDL.Opt(IDL.Text),
+    'ticker' : IDL.Opt(IDL.Text),
+    'platformFee' : IDL.Nat,
+    'tokenTxHash' : IDL.Opt(IDL.Text),
+    'tokenStandard' : IDL.Opt(IDL.Text),
+    'userId' : IDL.Principal,
+    'txId' : IDL.Text,
+    'tokenSymbol' : IDL.Opt(IDL.Text),
+    'timestamp' : Time,
+    'txType' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
+  const Result_1 = IDL.Variant({ 'ok' : Transaction, 'err' : IDL.Text });
+  const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const CoopManager = IDL.Service({
     'getAllMembers' : IDL.Func([], [IDL.Vec(CoopMember)], []),
     'getDetails' : IDL.Func([], [Coop], ['query']),
     'getFeeHistory' : IDL.Func([], [IDL.Vec(PlatformFees)], []),
     'getFeesDetails' : IDL.Func([IDL.Nat], [MintingFees], ['query']),
     'getMemberById' : IDL.Func([CoopMemberId], [CoopMember], []),
-    'getMemberbyUserId' : IDL.Func([IDL.Principal], [Result], []),
+    'getMemberbyUserId' : IDL.Func([IDL.Principal], [Result_2], []),
     'getTransactionById' : IDL.Func([TransactionId], [Transaction], []),
     'getTransactions' : IDL.Func([], [IDL.Vec(Transaction)], []),
     'mintUnits' : IDL.Func([MintUnitsArgs], [IDL.Bool], []),
+    'newTransaction' : IDL.Func([TransactionRequest], [Result_1], []),
     'redeemUnits' : IDL.Func([IDL.Nat, IDL.Text], [IDL.Bool], []),
+    'updateLinkedTx' : IDL.Func([IDL.Text, IDL.Text], [Result], []),
   });
   return CoopManager;
 };

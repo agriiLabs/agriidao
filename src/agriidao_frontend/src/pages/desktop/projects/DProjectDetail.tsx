@@ -104,13 +104,13 @@ const DProjectDetail = () => {
           {isOwner ? (
             <div className="d-flex ms-auto gap-2">
               <NavLink
-              to={`/d/coop-units/${id}`}
+              to={`/d/projects/overview/${id}`}
               className="btn btn-outline-dark"
             >
               Manage
             </NavLink>
             <NavLink
-            to={`/d/coop-units/${id}`}
+            to={`/d/project-units/${id}`}
             className="btn btn-outline-dark col-sm-6 me-4"
           >
             Fund
@@ -118,7 +118,7 @@ const DProjectDetail = () => {
           </div>
           ) : (
             <NavLink
-              to={`/d/coop-units/${id}`}
+              to={`/d/project-units/${id}`}
               className="btn btn-outline-dark col-sm-12"
             >
               Fund

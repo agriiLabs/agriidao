@@ -6,6 +6,11 @@ type Vote =
    userId: principal;
  };
 type Time = int;
+type Result = 
+ variant {
+   err: text;
+   ok: Proposal;
+ };
 type Proposals = 
  service {
    addProposal: (ProposalRequest) -> ();
@@ -18,8 +23,7 @@ type Proposals =
    getVoteById: (text) -> (Vote) query;
    getVotesByProposalId: (ProposalId) -> (vec Vote) query;
    getVotesByUserId: (principal) -> (vec Vote) query;
-   updateProposalIfExpired: (ProposalId) -> ();
-   updateProposalStatus: (Proposal) -> ();
+   updateProposalStatus: (Proposal) -> (Result);
  };
 type ProposalStatus = 
  variant {

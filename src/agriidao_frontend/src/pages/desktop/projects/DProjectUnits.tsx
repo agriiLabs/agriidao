@@ -46,6 +46,8 @@ const DProjectUnits = () => {
       console.error("Error fetching project details:", error);
     }
   };
+  console.log("project detail", project);
+  console.log("coop detail", coop);
 
   useEffect(() => {
     if (project) {
@@ -86,8 +88,10 @@ const DProjectUnits = () => {
         userId: user.id,
         amount: BigInt(amount),
       };
+      console.log("funder", funder);
       const res = await projectsActor?.addProjectFunder(funder);
-      if (res) {
+      console.log("res", res);
+      if (res && "ok" in res) {
         toastSuccess("Units purchased successfully");
         setSaving(false);
         navigate(`/d/projects/${id}`);
@@ -98,6 +102,7 @@ const DProjectUnits = () => {
       setSaving(false);
     }
   };
+  
 
   const handleQuantityChange = (newAmount: number) => {
     if (newAmount < 1) return;

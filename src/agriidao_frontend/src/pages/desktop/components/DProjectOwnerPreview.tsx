@@ -29,12 +29,12 @@ const DProjectOwnwePreview = ({ setCurrentStep }: { setCurrentStep: (step: numbe
     
         if (res && "ok" in res) {
           let updatedOwner = null;
-          for (let i = 0; i < 5; i++) { // Try 5 times
+          for (let i = 0; i < 5; i++) { 
             updatedOwner = await projectsActor.getProjectOwner();
             if (updatedOwner && "ok" in updatedOwner) {
               break;
             }
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 sec
+            await new Promise((resolve) => setTimeout(resolve, 1000)); 
           }
     
           setSaving(false);

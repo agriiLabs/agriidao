@@ -97,6 +97,7 @@ import DCoopMembers from "./pages/desktop/agriiCoop/DCoopMembers";
 import DUpdateUsername from "./pages/desktop/profile/DUpdateUsername";
 import DPortofolioUnits from "./pages/desktop/portfolio/DPortofolioUnits";
 import MarketRedirect from "./components/MarketRedirect";
+import DProjectUnits from "./pages/desktop/projects/DProjectUnits";
 
 export interface Response {
   err?: any;
@@ -303,6 +304,7 @@ const App = () => {
             <Route path="/d/start-project" element={<DProjectCreate />} />
             <Route path="/d/start-project/preview" element={<DProjectCreatePreview />}/>
             <Route path="/d/projects/manager" element={<DProjectManager />} />
+            <Route path="/d/project-units/:id" element={<DProjectUnits />} />
 
             {/* <Route path="/get-started" element={<GetStarted />} /> */}
           </Route>

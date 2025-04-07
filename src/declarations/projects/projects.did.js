@@ -59,6 +59,14 @@ export const idlFactory = ({ IDL }) => {
     'amount' : IDL.Nat,
   });
   const Time = IDL.Int;
+  const ProjectFunder = IDL.Record({
+    'id' : IDL.Text,
+    'userId' : IDL.Principal,
+    'projectId' : IDL.Text,
+    'timestamp' : Time,
+    'amount' : IDL.Nat,
+  });
+  const Result_4 = IDL.Variant({ 'ok' : ProjectFunder, 'err' : IDL.Text });
   const EntityType = IDL.Variant({
     'NGO' : IDL.Null,
     'University' : IDL.Null,
@@ -92,7 +100,7 @@ export const idlFactory = ({ IDL }) => {
     'quantity' : IDL.Nat,
     'amount' : IDL.Nat,
   });
-  const Result_2 = IDL.Variant({ 'ok' : ProjectExpense, 'err' : IDL.Text });
+  const Result_3 = IDL.Variant({ 'ok' : ProjectExpense, 'err' : IDL.Text });
   const ProjectIncome = IDL.Record({
     'id' : IDL.Text,
     'total' : IDL.Nat,
@@ -104,7 +112,7 @@ export const idlFactory = ({ IDL }) => {
     'quantity' : IDL.Nat,
     'amount' : IDL.Nat,
   });
-  const Result_1 = IDL.Variant({ 'ok' : ProjectIncome, 'err' : IDL.Text });
+  const Result_2 = IDL.Variant({ 'ok' : ProjectIncome, 'err' : IDL.Text });
   const FundingStatus = IDL.Variant({
     'Unfunded' : IDL.Null,
     'Funded' : IDL.Null,
@@ -185,13 +193,6 @@ export const idlFactory = ({ IDL }) => {
     'royaltyPercentage' : IDL.Nat,
   });
   const ProjectFunderId = IDL.Text;
-  const ProjectFunder = IDL.Record({
-    'id' : IDL.Text,
-    'userId' : IDL.Principal,
-    'projectId' : IDL.Text,
-    'timestamp' : Time,
-    'amount' : IDL.Nat,
-  });
   const ProjectProjections = IDL.Record({
     'expenses' : IDL.Nat,
     'royaltySplit' : IDL.Nat,
@@ -210,6 +211,7 @@ export const idlFactory = ({ IDL }) => {
     'projectId' : IDL.Text,
     'timestamp' : Time,
   });
+  const Result_1 = IDL.Variant({ 'ok' : Project, 'err' : IDL.Text });
   const Result = IDL.Variant({ 'ok' : IDL.Null, 'err' : IDL.Text });
   const Projects = IDL.Service({
     'addCommitmentVault' : IDL.Func([ProjectId], [], []),
@@ -217,11 +219,11 @@ export const idlFactory = ({ IDL }) => {
     'addFinancialsIncome' : IDL.Func([ProjectIncomeRequest], [], []),
     'addMilestone' : IDL.Func([MilestoneRequest], [], []),
     'addProject' : IDL.Func([ProjectRequest], [], []),
-    'addProjectFunder' : IDL.Func([ProjectFunderRequest], [], []),
+    'addProjectFunder' : IDL.Func([ProjectFunderRequest], [Result_4], []),
     'addProjectOwner' : IDL.Func([ProjectOwner], [], []),
     'addProjectTerm' : IDL.Func([ProjectTerm], [], []),
-    'addProjectionExpense' : IDL.Func([ProjectExpenseRequest], [Result_2], []),
-    'addProjectionIncome' : IDL.Func([ProjectIncomeRequest], [Result_1], []),
+    'addProjectionExpense' : IDL.Func([ProjectExpenseRequest], [Result_3], []),
+    'addProjectionIncome' : IDL.Func([ProjectIncomeRequest], [Result_2], []),
     'getAllProjects' : IDL.Func([], [IDL.Vec(Project)], []),
     'getCommitmentVaultByProjectId' : IDL.Func(
         [ProjectId],
@@ -316,6 +318,7 @@ export const idlFactory = ({ IDL }) => {
     'updateProjectFunder' : IDL.Func([ProjectFunder], [], []),
     'updateProjectOwner' : IDL.Func([ProjectOwner], [], []),
     'updateProjectProjections' : IDL.Func([ProjectProjections], [], []),
+    'updateProjectProposalStatus' : IDL.Func([ProjectId], [Result_1], []),
     'updateProjectTerm' : IDL.Func([ProjectTerm], [], []),
     'updateProjectionExpense' : IDL.Func([ProjectExpense], [], []),
     'updateProjectionIncome' : IDL.Func([ProjectIncome], [Result], []),

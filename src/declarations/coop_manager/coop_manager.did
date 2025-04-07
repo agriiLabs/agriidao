@@ -1,3 +1,18 @@
+type TransactionRequest = 
+ record {
+   amount: nat;
+   linkedTx: opt text;
+   managementFee: nat;
+   platformFee: nat;
+   ticker: opt text;
+   timestamp: Time;
+   tokenStandard: opt text;
+   tokenSymbol: opt text;
+   tokenTxHash: opt text;
+   txId: text;
+   txType: text;
+   userId: principal;
+ };
 type TransactionId = text;
 type Transaction = 
  record {
@@ -15,10 +30,20 @@ type Transaction =
    userId: principal;
  };
 type Time = int;
-type Result = 
+type Result_2 = 
  variant {
    err: text;
    ok: CoopMember;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Transaction;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
  };
 type PlatformFees = 
  record {
@@ -60,11 +85,13 @@ type CoopManager =
    getFeeHistory: () -> (vec PlatformFees);
    getFeesDetails: (nat) -> (MintingFees) query;
    getMemberById: (CoopMemberId) -> (CoopMember);
-   getMemberbyUserId: (principal) -> (Result);
+   getMemberbyUserId: (principal) -> (Result_2);
    getTransactionById: (TransactionId) -> (Transaction);
    getTransactions: () -> (vec Transaction);
    mintUnits: (MintUnitsArgs) -> (bool);
+   newTransaction: (TransactionRequest) -> (Result_1);
    redeemUnits: (nat, text) -> (bool);
+   updateLinkedTx: (text, text) -> (Result);
  };
 type CoopInitArgs = 
  record {

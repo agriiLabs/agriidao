@@ -44,11 +44,13 @@ export interface CoopManager {
   'getFeeHistory' : ActorMethod<[], Array<PlatformFees>>,
   'getFeesDetails' : ActorMethod<[bigint], MintingFees>,
   'getMemberById' : ActorMethod<[CoopMemberId], CoopMember>,
-  'getMemberbyUserId' : ActorMethod<[Principal], Result>,
+  'getMemberbyUserId' : ActorMethod<[Principal], Result_2>,
   'getTransactionById' : ActorMethod<[TransactionId], Transaction>,
   'getTransactions' : ActorMethod<[], Array<Transaction>>,
   'mintUnits' : ActorMethod<[MintUnitsArgs], boolean>,
+  'newTransaction' : ActorMethod<[TransactionRequest], Result_1>,
   'redeemUnits' : ActorMethod<[bigint, string], boolean>,
+  'updateLinkedTx' : ActorMethod<[string, string], Result>,
 }
 export interface CoopMember {
   'id' : string,
@@ -79,7 +81,11 @@ export interface PlatformFees {
   'timestamp' : Time,
   'proposalId' : [] | [string],
 }
-export type Result = { 'ok' : CoopMember } |
+export type Result = { 'ok' : null } |
+  { 'err' : string };
+export type Result_1 = { 'ok' : Transaction } |
+  { 'err' : string };
+export type Result_2 = { 'ok' : CoopMember } |
   { 'err' : string };
 export type Time = bigint;
 export interface Transaction {
@@ -97,6 +103,20 @@ export interface Transaction {
   'amount' : bigint,
 }
 export type TransactionId = string;
+export interface TransactionRequest {
+  'managementFee' : bigint,
+  'linkedTx' : [] | [string],
+  'ticker' : [] | [string],
+  'platformFee' : bigint,
+  'tokenTxHash' : [] | [string],
+  'tokenStandard' : [] | [string],
+  'userId' : Principal,
+  'txId' : string,
+  'tokenSymbol' : [] | [string],
+  'timestamp' : Time,
+  'txType' : string,
+  'amount' : bigint,
+}
 export interface _SERVICE extends CoopManager {}
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

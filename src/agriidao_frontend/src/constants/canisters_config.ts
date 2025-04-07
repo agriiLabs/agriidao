@@ -12,28 +12,35 @@ export { idlFactory as proposalsIdlFactory } from "../../../declarations/proposa
 // export const commodityCanisterId = "ltkqy-7aaaa-aaaag-ats7a-cai"
 // export const userCanisterId = "xy5o7-yqaaa-aaaag-alfia-cai"
 // export const settingsCanisterId = "vfaax-lyaaa-aaaag-alfhq-cai"
+// export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai" //TODO: change this 
+// export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai" //TODO: change this
+// export const projectsCanisterId = "5plzz-uyaaa-aaaag-at5kq-cai" //TODO: change this
+// export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai" //TODO: change this
+// export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai" //TODO: change this
+
 
 // // ic staging
-export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
-export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
-export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
-export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
-export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
-export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
-export const projectsCanisterId = "xncbs-uqaaa-aaaag-at3mq-cai"
-export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai"
-export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
+// export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
+// export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
+// export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
+// export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
+// export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
+// export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
+// export const projectsCanisterId = "5plzz-uyaaa-aaaag-at5kq-cai"
+// export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai"
+// export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 
 //local
 
-// export const bountyCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
-// export const commodityCanisterId = "b77ix-eeaaa-aaaaa-qaada-cai"
-// export const coopIndexerCanisterId = "by6od-j4aaa-aaaaa-qaadq-cai"
-// export const coopLedgerCanisterId = "avqkn-guaaa-aaaaa-qaaea-cai"
-// export const projectsCanisterId = "a3shf-5eaaa-aaaaa-qaafa-cai"
-// export const proposalsCanisterId = "a4tbr-q4aaa-aaaaa-qaafq-cai"
-// export const settingsCanisterId = "ajuq4-ruaaa-aaaaa-qaaga-cai"
-// export const userCanisterId = "aovwi-4maaa-aaaaa-qaagq-cai"
+export const bountyCanisterId = "bkyz2-fmaaa-aaaaa-qaaaq-cai"
+export const commodityCanisterId = "bd3sg-teaaa-aaaaa-qaaba-cai"
+export const coopIndexerCanisterId = "be2us-64aaa-aaaaa-qaabq-cai"
+export const coopLedgerCanisterId = "br5f7-7uaaa-aaaaa-qaaca-cai"
+export const projectsCanisterId = "bw4dl-smaaa-aaaaa-qaacq-cai"
+export const proposalsCanisterId = "b77ix-eeaaa-aaaaa-qaada-cai"
+export const settingsCanisterId = "by6od-j4aaa-aaaaa-qaadq-cai"
+export const userCanisterId = "avqkn-guaaa-aaaaa-qaaea-cai"
+export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 
 // Tokens 
 export const USDCCanisterId = "pynoo-qqaaa-aaaag-atzuq-cai"
@@ -43,6 +50,6 @@ export const ckUSDCFees = 10_000
 
 
 type Env = "ic" | "local"
-export const network: Env = "ic" as Env //FIXME: ONLY CHANGE THIS LINE
+export const network: Env = "local" as Env //FIXME: ONLY CHANGE THIS LINE
 
 export const host = network === "local" ? "http://localhost:4943" :  "https://icp0.io" 

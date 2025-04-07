@@ -8,15 +8,25 @@ type Treasury =
    totalOut: nat;
  };
 type Time = int;
-type Result_2 = 
+type Result_4 = 
+ variant {
+   err: text;
+   ok: ProjectFunder;
+ };
+type Result_3 = 
  variant {
    err: text;
    ok: ProjectExpense;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: text;
    ok: ProjectIncome;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Project;
  };
 type Result = 
  variant {
@@ -37,11 +47,11 @@ type Projects =
    addFinancialsIncome: (ProjectIncomeRequest) -> ();
    addMilestone: (MilestoneRequest) -> ();
    addProject: (ProjectRequest) -> ();
-   addProjectFunder: (ProjectFunderRequest) -> ();
+   addProjectFunder: (ProjectFunderRequest) -> (Result_4);
    addProjectOwner: (ProjectOwner) -> ();
    addProjectTerm: (ProjectTerm) -> ();
-   addProjectionExpense: (ProjectExpenseRequest) -> (Result_2);
-   addProjectionIncome: (ProjectIncomeRequest) -> (Result_1);
+   addProjectionExpense: (ProjectExpenseRequest) -> (Result_3);
+   addProjectionIncome: (ProjectIncomeRequest) -> (Result_2);
    getAllProjects: () -> (vec Project);
    getCommitmentVaultByProjectId: (ProjectId) -> (CommitmentVault) query;
    getEntityTypes: () -> (vec text) query;
@@ -76,6 +86,7 @@ type Projects =
    updateProjectFunder: (ProjectFunder) -> ();
    updateProjectOwner: (ProjectOwner) -> ();
    updateProjectProjections: (ProjectProjections) -> ();
+   updateProjectProposalStatus: (ProjectId) -> (Result_1);
    updateProjectTerm: (ProjectTerm) -> ();
    updateProjectionExpense: (ProjectExpense) -> ();
    updateProjectionIncome: (ProjectIncome) -> (Result);

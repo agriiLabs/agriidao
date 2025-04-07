@@ -43,9 +43,10 @@ export interface Proposals {
   'getVoteById' : ActorMethod<[string], Vote>,
   'getVotesByProposalId' : ActorMethod<[ProposalId], Array<Vote>>,
   'getVotesByUserId' : ActorMethod<[Principal], Array<Vote>>,
-  'updateProposalIfExpired' : ActorMethod<[ProposalId], undefined>,
-  'updateProposalStatus' : ActorMethod<[Proposal], undefined>,
+  'updateProposalStatus' : ActorMethod<[Proposal], Result>,
 }
+export type Result = { 'ok' : Proposal } |
+  { 'err' : string };
 export type Time = bigint;
 export interface Vote {
   'userId' : Principal,
