@@ -87,6 +87,7 @@ const DMarketPrices = () => {
   // };
 
   const fetchMarketData = async (marketId: string, commodityActor: any) => {
+    console.log("Fetching market data for marketId:", marketId);
     try {
       setLoading(true);
       const pricesRes: MarketPrice[] =
@@ -188,31 +189,31 @@ const DMarketPrices = () => {
           <div
             className="table-responsive shadow rounded-bottom"
             data-simplebar
-            style={{ height: "545px;" }}
+            style={{ height: "545px" }}
           >
             <table className="table table-center bg-white mb-0">
               <thead>
                 <tr>
-                  <th className="border-bottom p-3" style={{ width: "220px;" }}>
+                  <th className="border-bottom p-3" style={{ width: "220px" }}>
                     Commodity
                   </th>
                   <th className="text-center border-bottom p-3">KG</th>
                   <th
                     className="text-center border-bottom p-3"
-                    style={{ width: "150px;" }}
+                    style={{ width: "150px" }}
                   >
                     Price 
                   </th>
                   <th
                     className="text-center border-bottom p-3"
-                    style={{ width: "150px;" }}
+                    style={{ width: "150px" }}
                   >
                     Currency 
                   </th>
                   
                   <th
                     className="text-center border-bottom p-3"
-                    style={{ width: "150px;" }}
+                    style={{ width: "150px" }}
                   >
                     Updated
                   </th>

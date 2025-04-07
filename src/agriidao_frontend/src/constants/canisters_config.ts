@@ -20,15 +20,16 @@ export { idlFactory as proposalsIdlFactory } from "../../../declarations/proposa
 
 
 // // ic staging
-// export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
-// export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
-// export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
-// export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
-// export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
-// export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
-// export const projectsCanisterId = "5plzz-uyaaa-aaaag-at5kq-cai"
-// export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai"
-// export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
+export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
+export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
+export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
+export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
+export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"
+export const coopLedgerCanisterId = "oscmu-saaaa-aaaag-atztq-cai"
+// export const projectsCanisterId = "xncbs-uqaaa-aaaag-at3mq-cai"
+export const projectsCanisterId = "5plzz-uyaaa-aaaag-at5kq-cai"
+export const proposalsCanisterId = "5ik7n-zaaaa-aaaag-at5ka-cai"
+export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 
 //local
 

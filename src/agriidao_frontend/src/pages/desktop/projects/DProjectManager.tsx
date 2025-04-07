@@ -85,9 +85,7 @@ const DProjectManager = () => {
       console.error("Error fetching coop:", error);
     }
   };
-  console.log("coop", coop);
-  console.log("Fetching Co-op with ID:", projects?.[0]?.coop);
-  console.log("Fetching Co-op with ID:", projects?.[0]?.coop.toText());
+
 
   return (
     <>
@@ -199,7 +197,6 @@ const DProjectManager = () => {
           </div>
         </div>
       </div>
-
       <div className="col-xl-8 mt-4">
         <div className="card border-0"></div>
       </div>
