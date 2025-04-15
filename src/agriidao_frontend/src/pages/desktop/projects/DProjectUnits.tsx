@@ -71,6 +71,7 @@ const DProjectUnits = () => {
   };
 
   const handleConfirm = async () => {
+    console.log("HANDLE CONFIRM");
     setSaving(true);
     try {
       if (!id) {
