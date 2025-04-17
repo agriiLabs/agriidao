@@ -5,7 +5,6 @@ import { toastError, toastSuccess } from "../../../utils/Utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { setCoopRequest } from "../../../redux/slices/app";
-import { coopIndexerCanisterId } from "../../../constants/canisters_config";
 
 
 const DCoopCreatePreview = () => {
