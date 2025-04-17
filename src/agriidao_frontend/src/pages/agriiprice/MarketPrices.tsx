@@ -55,6 +55,7 @@ const MarketPrices = () => {
     }
     const res = await commodityActor.getMarketLocationByCountryId(countryId);
 
+
     if (res.length > 0) {
       dispatch(setSelectedMarketLocation(res[0]));
     } else {
@@ -73,7 +74,6 @@ const MarketPrices = () => {
       setLoading(true);
       const pricesRes: MarketPrice[] =
         await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
-
       const latestMap = new Map<string, MarketPrice>();
 
       pricesRes.forEach((price: MarketPrice) => {

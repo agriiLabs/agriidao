@@ -128,21 +128,8 @@ const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
       setPercentageChange(percentageChange !== null ? percentageChange : "0");
 
       setLastUpdated(lastUpdated ? lastUpdated.toString() : null);
-      
-
-      // Define chart colors based on trend
-      const lineColor = trend ? "#00E396" : "#FF4560"; // Green for positive, Red for negative
-      const gradientColorStart = trend
-        ? "rgba(0, 227, 150, 0.5)"
-        : "rgba(255, 69, 96, 0.5)";
-      const gradientColorEnd = trend
-        ? "rgba(0, 227, 150, 0)"
-        : "rgba(255, 69, 96, 0)";
-      const fillColor = trend
-        ? "rgba(0, 227, 150, 0.2)"
-        : "rgba(255, 69, 96, 0.2)"; // Area fill color
-
-      // Set options for ApexCharts
+    
+      const lineColor = trend ? "#00E396" : "#FF4560"; 
       setOptions({
         chart: {
           type: "line",
@@ -173,11 +160,10 @@ const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
             stops: [0, 90, 100],
           },
         },
-        colors: [lineColor], // Dynamic line color
+        colors: [lineColor],
       });
     }
 
-    // Set chart data for ApexCharts
     setChartData([
       {
         name: "Price",

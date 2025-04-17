@@ -46,6 +46,7 @@ export const storageScalerCanId = "7i6vo-qaaaa-aaaal-qcaoa-cai"
 export const USDCCanisterId = "pynoo-qqaaa-aaaag-atzuq-cai"
 export const ckUSDCe6s = 1000000
 export const ckUSDCFees = 10_000
+export const startCOOPFees = 20 // 20 usd - 10 for the coop and 10 for the platform
 
 
 

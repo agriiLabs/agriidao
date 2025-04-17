@@ -17,7 +17,6 @@ import { ckUSDCe6s, ckUSDCFees, USDCCanisterId } from "../../constants/canisters
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { IcrcTransferError } from "@dfinity/ledger-icrc";
-import { set } from "zod";
 
 const CoopUnitsPreview = () => {
   const location = useLocation();
