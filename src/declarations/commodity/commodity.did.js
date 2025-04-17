@@ -1,4 +1,32 @@
 export const idlFactory = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
+  const GetPagesArgs = IDL.Record({ 'page' : IDL.Nat, 'size' : IDL.Nat });
+  const MarketPriceId = IDL.Text;
+  const Time = IDL.Int;
+  const MarketPrice = IDL.Record({
+    'id' : IDL.Text,
+    'status' : IDL.Record({
+      'pending' : IDL.Bool,
+      'rejected' : IDL.Bool,
+      'accepted' : IDL.Bool,
+    }),
+    'marketLocationCommodityId' : IDL.Text,
+    'timeStamp' : Time,
+    'userId' : IDL.Text,
+    'createdBy' : IDL.Text,
+    'pricePerKg' : IDL.Float64,
+    'unitKg' : IDL.Int,
+    'isPaid' : IDL.Bool,
+    'currency' : IDL.Text,
+    'isDelete' : IDL.Bool,
+    'price' : IDL.Float64,
+    'marketLocationId' : IDL.Text,
+  });
   const CommodityRequest = IDL.Record({
     'ticker' : IDL.Text,
     'commodityPic' : IDL.Text,
@@ -31,7 +59,6 @@ export const idlFactory = ({ IDL }) => {
     'price' : IDL.Float64,
     'marketLocationId' : IDL.Text,
   });
-  const Time = IDL.Int;
   const Commodity = IDL.Record({
     'id' : IDL.Text,
     'ticker' : IDL.Text,
@@ -66,26 +93,14 @@ export const idlFactory = ({ IDL }) => {
     'isDelete' : IDL.Bool,
     'marketLocationId' : IDL.Text,
   });
-  const MarketPrice = IDL.Record({
-    'id' : IDL.Text,
-    'status' : IDL.Record({
-      'pending' : IDL.Bool,
-      'rejected' : IDL.Bool,
-      'accepted' : IDL.Bool,
-    }),
-    'marketLocationCommodityId' : IDL.Text,
-    'timeStamp' : Time,
-    'userId' : IDL.Text,
-    'createdBy' : IDL.Text,
-    'pricePerKg' : IDL.Float64,
-    'unitKg' : IDL.Int,
-    'isPaid' : IDL.Bool,
-    'currency' : IDL.Text,
-    'isDelete' : IDL.Bool,
-    'price' : IDL.Float64,
-    'marketLocationId' : IDL.Text,
-  });
   const Result_4 = IDL.Variant({ 'ok' : Commodity, 'err' : IDL.Text });
+  const Stats = IDL.Record({
+    'total_market_location_commodities' : IDL.Nat,
+    'total_market_locations' : IDL.Nat,
+    'total_market_location_agents' : IDL.Nat,
+    'total_market_prices' : IDL.Nat,
+    'total_commodities' : IDL.Nat,
+  });
   const Result_3 = IDL.Variant({
     'ok' : MarketLocationAgent,
     'err' : IDL.Text,
@@ -96,7 +111,13 @@ export const idlFactory = ({ IDL }) => {
     'err' : IDL.Text,
   });
   const Result = IDL.Variant({ 'ok' : MarketLocation, 'err' : IDL.Text });
+  const ChartStatsData = IDL.Record({ 'month' : IDL.Nat, 'count' : IDL.Nat });
   const CommodityActor = IDL.Service({
+    'AgetAllMarketPricesPaginated' : IDL.Func(
+        [GetPagesArgs],
+        [IDL.Vec(IDL.Tuple(MarketPriceId, MarketPrice))],
+        ['query'],
+      ),
     'addCommodity' : IDL.Func([CommodityRequest], [], []),
     'addMarketLocation' : IDL.Func([MarketLocationRequest], [], []),
     'addMarketLocationAgent' : IDL.Func([MarketLocationAgentRequest], [], []),
@@ -157,6 +178,7 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getCommodityLatest' : IDL.Func([IDL.Text], [Result_4], ['query']),
+    'getCommodityStats' : IDL.Func([], [Stats], ['query']),
     'getLatestMarketLocationAgentbyId' : IDL.Func(
         [IDL.Text],
         [Result_3],
@@ -164,6 +186,11 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getLatestMarketPriceById' : IDL.Func([IDL.Text], [Result_2], ['query']),
     'getLatestMarketPriceByMarketLocationId' : IDL.Func(
+        [IDL.Text],
+        [IDL.Vec(MarketPrice)],
+        ['query'],
+      ),
+    'getLatestPriceByMarketLocationId' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(MarketPrice)],
         ['query'],
@@ -199,11 +226,9 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(MarketPrice)],
         ['query'],
       ),
-    'getMarketPriceByMarketLocationId' : IDL.Func(
-        [IDL.Text],
-        [IDL.Vec(MarketPrice)],
-        ['query'],
-      ),
+    'getMarketStats' : IDL.Func([], [IDL.Vec(ChartStatsData)], ['query']),
+    'get_total_market_locations' : IDL.Func([], [IDL.Nat], ['query']),
+    'get_total_market_prices' : IDL.Func([], [IDL.Nat], ['query']),
     'updateCommodity' : IDL.Func([Commodity], [], []),
     'updateMarkeLocation' : IDL.Func([MarketLocation], [], []),
     'updateMarketLocationAgent' : IDL.Func([MarketLocationAgent], [], []),
@@ -216,4 +241,12 @@ export const idlFactory = ({ IDL }) => {
   });
   return CommodityActor;
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
+  return [CanisterInitArgs];
+};

@@ -70,6 +70,18 @@ export const idlFactory = ({ IDL }) => {
   });
   const Result = IDL.Variant({ 'ok' : CanisterStatusResult, 'err' : IDL.Text });
   const MembershipRecordId = IDL.Text;
+  const ChartData = IDL.Record({
+    'month' : IDL.Nat,
+    'coop_count' : IDL.Nat,
+    'projects_count' : IDL.Nat,
+    'members_count' : IDL.Nat,
+  });
+  const CoopsProjectsStats = IDL.Record({
+    'chart_data' : IDL.Vec(ChartData),
+    'total_members' : IDL.Nat,
+    'total_projects' : IDL.Nat,
+    'total_coops' : IDL.Nat,
+  });
   const CoOpIndexer = IDL.Service({
     'addContoller' : IDL.Func([AddControllerArgs], [Result_3], []),
     'addCoopRecord' : IDL.Func([CoopRecord], [], []),
@@ -82,6 +94,7 @@ export const idlFactory = ({ IDL }) => {
     'getCreatedCanisters' : IDL.Func([], [IDL.Vec(CoopRecord)], ['query']),
     'getMembership' : IDL.Func([MembershipRecordId], [MembershipRecord], []),
     'getMembershipByCaller' : IDL.Func([], [IDL.Vec(MembershipRecord)], []),
+    'get_coops_projects_stats' : IDL.Func([], [CoopsProjectsStats], []),
     'updateMembershipRecord' : IDL.Func(
         [MembershipRecordId],
         [MembershipRecord],

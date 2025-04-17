@@ -187,6 +187,12 @@ export type ProjectType = { 'SolarMiniGrid' : null } |
   { 'GreenHouse' : null } |
   { 'ResearchAndDevelopment' : null };
 export interface Projects {
+  'A_addCommitmentVault' : ActorMethod<[ProjectId], undefined>,
+  'A_getAllDebugData' : ActorMethod<[], Array<string>>,
+  'A_updateProjectFunddingStatus' : ActorMethod<
+    [ProjectId, FundingStatus],
+    undefined
+  >,
   'addCommitmentVault' : ActorMethod<[ProjectId], undefined>,
   'addFinancialsExpense' : ActorMethod<[ProjectExpenseRequest], undefined>,
   'addFinancialsIncome' : ActorMethod<[ProjectIncomeRequest], undefined>,

@@ -42,6 +42,9 @@ type ProposalStatus =
  };
 type Projects = 
  service {
+   A_addCommitmentVault: (ProjectId) -> ();
+   A_getAllDebugData: () -> (vec text) query;
+   A_updateProjectFunddingStatus: (ProjectId, FundingStatus) -> ();
    addCommitmentVault: (ProjectId) -> ();
    addFinancialsExpense: (ProjectExpenseRequest) -> ();
    addFinancialsIncome: (ProjectIncomeRequest) -> ();
@@ -130,9 +133,9 @@ type ProjectRequest =
  };
 type ProjectProjections = 
  record {
-   expenses: nat;
-   income: nat;
-   profit: nat;
+   expenses: int;
+   income: int;
+   profit: int;
    projectId: text;
    royaltyPercentage: nat;
    royaltySplit: nat;
@@ -147,24 +150,24 @@ type ProjectOwner =
  };
 type ProjectIncomeRequest = 
  record {
-   amount: nat;
+   amount: int;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
-   quantity: nat;
+   quantity: int;
  };
 type ProjectIncomeId = text;
 type ProjectIncome = 
  record {
-   amount: nat;
+   amount: int;
    createdBy: principal;
    id: text;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
-   quantity: nat;
+   quantity: int;
    timestamp: Time;
-   total: nat;
+   total: int;
  };
 type ProjectId = text;
 type ProjectFunderRequest = 
@@ -184,9 +187,9 @@ type ProjectFunder =
  };
 type ProjectFinancials = 
  record {
-   expenses: nat;
-   income: nat;
-   profit: nat;
+   expenses: int;
+   income: int;
+   profit: int;
    projectId: text;
    royaltyPercentage: nat;
    royaltySplit: nat;
@@ -194,24 +197,24 @@ type ProjectFinancials =
  };
 type ProjectExpenseRequest = 
  record {
-   amount: nat;
+   amount: int;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
-   quantity: nat;
+   quantity: int;
  };
 type ProjectExpenseId = text;
 type ProjectExpense = 
  record {
-   amount: nat;
+   amount: int;
    createdBy: principal;
    id: text;
    item: text;
    projectFinancialsId: opt text;
    projectProjectionsId: opt text;
-   quantity: nat;
+   quantity: int;
    timestamp: Time;
-   total: nat;
+   total: int;
  };
 type Project = 
  record {

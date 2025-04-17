@@ -1,4 +1,12 @@
 type Time = int;
+type Stats = 
+ record {
+   total_commodities: nat;
+   total_market_location_agents: nat;
+   total_market_location_commodities: nat;
+   total_market_locations: nat;
+   total_market_prices: nat;
+ };
 type Result_4 = 
  variant {
    err: text;
@@ -39,6 +47,7 @@ type MarketPriceRequest =
    unitKg: int;
    userId: text;
  };
+type MarketPriceId = text;
 type MarketPrice = 
  record {
    createdBy: text;
@@ -101,6 +110,17 @@ type MarketLocation =
    name: text;
    timeStamp: Time;
  };
+type GetPagesArgs = 
+ record {
+   page: nat;
+   size: nat;
+ };
+type EnvType = 
+ variant {
+   local;
+   production;
+   staging;
+ };
 type CommodityRequest = 
  record {
    acCategoryId: text;
@@ -110,6 +130,11 @@ type CommodityRequest =
  };
 type CommodityActor = 
  service {
+   AgetAllMarketPricesPaginated: (GetPagesArgs) ->
+    (vec record {
+           MarketPriceId;
+           MarketPrice;
+         }) query;
    addCommodity: (CommodityRequest) -> ();
    /// *********************************
    /// ******** MARKET LOCATION ********
@@ -143,9 +168,11 @@ type CommodityActor =
    getAllMarketLocationsLatest: () -> (vec MarketLocation) query;
    getCommodityByCategory: (text) -> (vec Commodity) query;
    getCommodityLatest: (text) -> (Result_4) query;
+   getCommodityStats: () -> (Stats) query;
    getLatestMarketLocationAgentbyId: (text) -> (Result_3) query;
    getLatestMarketPriceById: (text) -> (Result_2) query;
    getLatestMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
+   getLatestPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
    getMarketLocationAgentByAgentId: (text) -> (vec MarketLocationAgent) query;
    getMarketLocationByAgentId: (text) -> (vec MarketLocationAgent);
    getMarketLocationByCountryId: (text) -> (vec MarketLocation) query;
@@ -154,7 +181,9 @@ type CommodityActor =
    getMarketLocationCommodityById: (text) -> (Result_1) query;
    getMarketLocationLatest: (text) -> (Result) query;
    getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice) query;
-   getMarketPriceByMarketLocationId: (text) -> (vec MarketPrice) query;
+   getMarketStats: () -> (vec ChartStatsData) query;
+   get_total_market_locations: () -> (nat) query;
+   get_total_market_prices: () -> (nat) query;
    updateCommodity: (Commodity) -> ();
    updateMarkeLocation: (MarketLocation) -> ();
    updateMarketLocationAgent: (MarketLocationAgent) -> ();
@@ -172,4 +201,10 @@ type Commodity =
    ticker: text;
    timeStamp: Time;
  };
-service : () -> CommodityActor
+type ChartStatsData = 
+ record {
+   count: nat;
+   month: nat;
+ };
+type CanisterInitArgs = record {env: EnvType;};
+service : (CanisterInitArgs) -> CommodityActor

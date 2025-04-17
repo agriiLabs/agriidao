@@ -123,7 +123,7 @@ const Profile = () => {
       console.error("Error uploading file:", file.name, error);
     }
   };
-
+  console.log("storageActor", storageActor);
   const handleImageUpdate = async (file: File) => {
     try {
       if (!storageActor || !profile) {
