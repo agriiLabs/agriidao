@@ -8,8 +8,8 @@
       "type": "assets",
       "workspace": "agriidao_frontend"
     },
-    "backend": {
-      "main": "src/backend/main.mo",
+    "agriidao_backend": {
+      "main": "src/agriidao_backend/main.mo",
       "type": "motoko"
     },
     "internet_identity": {
