@@ -1,0 +1,47 @@
+type Staff = 
+ record {
+   approved: bool;
+   created: int;
+   email: text;
+   fullName: text;
+   phone: text;
+   "principal": principal;
+   role: opt Role;
+   suspended: bool;
+ };
+type Role__1 = 
+ variant {
+   admin;
+   authorized;
+   owner;
+   staff;
+ };
+type Role = 
+ variant {
+   admin;
+   authorized;
+   owner;
+   staff;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: Staff;
+ };
+type InvAdmin = 
+ service {
+   addStaffMember: (Staff) -> ();
+   assign_role: (principal, opt Role__1) -> ();
+   deleteStaffMember: (principal) -> (bool);
+   getAllAdmins: () -> (vec record {
+                              principal;
+                              Role__1;
+                            });
+   getAllStaffMembers: () -> (vec Staff) query;
+   getApprovedStaff: () -> (vec Staff) query;
+   getStaffMember: (principal) -> (Result) query;
+   getUnapprovedStaff: () -> (vec Staff) query;
+   my_role: () -> (text);
+   updateStaffMember: (Staff) -> ();
+ };
+service : () -> InvAdmin
