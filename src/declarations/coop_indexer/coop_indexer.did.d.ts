@@ -23,6 +23,12 @@ export interface CanisterStatusResult {
   'module_hash' : [] | [Uint8Array | number[]],
   'reserved_cycles' : bigint,
 }
+export interface ChartData {
+  'month' : bigint,
+  'coop_count' : bigint,
+  'projects_count' : bigint,
+  'members_count' : bigint,
+}
 export interface CoOpIndexer {
   'addContoller' : ActorMethod<[AddControllerArgs], Result_3>,
   'addCoopRecord' : ActorMethod<[CoopRecord], undefined>,
@@ -35,6 +41,7 @@ export interface CoOpIndexer {
   'getCreatedCanisters' : ActorMethod<[], Array<CoopRecord>>,
   'getMembership' : ActorMethod<[MembershipRecordId], MembershipRecord>,
   'getMembershipByCaller' : ActorMethod<[], Array<MembershipRecord>>,
+  'get_coops_projects_stats' : ActorMethod<[], CoopsProjectsStats>,
   'updateMembershipRecord' : ActorMethod<
     [MembershipRecordId],
     MembershipRecord
@@ -60,6 +67,12 @@ export interface CoopRequest {
   'unitPrice' : bigint,
   'payoutFrequency' : bigint,
   'maxValue' : bigint,
+}
+export interface CoopsProjectsStats {
+  'chart_data' : Array<ChartData>,
+  'total_members' : bigint,
+  'total_projects' : bigint,
+  'total_coops' : bigint,
 }
 export interface DefiniteCanisterSettings {
   'freezing_threshold' : bigint,

@@ -53,7 +53,7 @@ import {
   host,
 } from "../constants/canisters_config";
 
-const iiCanId = "ajuq4-ruaaa-aaaaa-qaaga-cai";
+const iiCanId = "be2us-64aaa-aaaaa-qaabq-cai";
 
 type ContextType = {
   identity: Identity | null;

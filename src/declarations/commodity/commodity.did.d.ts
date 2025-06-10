@@ -2,6 +2,8 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
+export interface CanisterInitArgs { 'env' : EnvType }
+export interface ChartStatsData { 'month' : bigint, 'count' : bigint }
 export interface Commodity {
   'id' : string,
   'ticker' : string,
@@ -13,6 +15,10 @@ export interface Commodity {
   'isDelete' : boolean,
 }
 export interface CommodityActor {
+  'AgetAllMarketPricesPaginated' : ActorMethod<
+    [GetPagesArgs],
+    Array<[MarketPriceId, MarketPrice]>
+  >,
   'addCommodity' : ActorMethod<[CommodityRequest], undefined>,
   'addMarketLocation' : ActorMethod<[MarketLocationRequest], undefined>,
   'addMarketLocationAgent' : ActorMethod<
@@ -57,9 +63,14 @@ export interface CommodityActor {
   'getAllMarketLocationsLatest' : ActorMethod<[], Array<MarketLocation>>,
   'getCommodityByCategory' : ActorMethod<[string], Array<Commodity>>,
   'getCommodityLatest' : ActorMethod<[string], Result_4>,
+  'getCommodityStats' : ActorMethod<[], Stats>,
   'getLatestMarketLocationAgentbyId' : ActorMethod<[string], Result_3>,
   'getLatestMarketPriceById' : ActorMethod<[string], Result_2>,
   'getLatestMarketPriceByMarketLocationId' : ActorMethod<
+    [string],
+    Array<MarketPrice>
+  >,
+  'getLatestPriceByMarketLocationId' : ActorMethod<
     [string],
     Array<MarketPrice>
   >,
@@ -82,10 +93,9 @@ export interface CommodityActor {
     [string],
     Array<MarketPrice>
   >,
-  'getMarketPriceByMarketLocationId' : ActorMethod<
-    [string],
-    Array<MarketPrice>
-  >,
+  'getMarketStats' : ActorMethod<[], Array<ChartStatsData>>,
+  'get_total_market_locations' : ActorMethod<[], bigint>,
+  'get_total_market_prices' : ActorMethod<[], bigint>,
   'updateCommodity' : ActorMethod<[Commodity], undefined>,
   'updateMarkeLocation' : ActorMethod<[MarketLocation], undefined>,
   'updateMarketLocationAgent' : ActorMethod<[MarketLocationAgent], undefined>,
@@ -101,6 +111,10 @@ export interface CommodityRequest {
   'name' : string,
   'acCategoryId' : string,
 }
+export type EnvType = { 'staging' : null } |
+  { 'production' : null } |
+  { 'local' : null };
+export interface GetPagesArgs { 'page' : bigint, 'size' : bigint }
 export interface MarketLocation {
   'id' : string,
   'timeStamp' : Time,
@@ -153,6 +167,7 @@ export interface MarketPrice {
   'price' : number,
   'marketLocationId' : string,
 }
+export type MarketPriceId = string;
 export interface MarketPriceRequest {
   'status' : {
     'pending' : boolean,
@@ -177,6 +192,13 @@ export type Result_3 = { 'ok' : MarketLocationAgent } |
   { 'err' : string };
 export type Result_4 = { 'ok' : Commodity } |
   { 'err' : string };
+export interface Stats {
+  'total_market_location_commodities' : bigint,
+  'total_market_locations' : bigint,
+  'total_market_location_agents' : bigint,
+  'total_market_prices' : bigint,
+  'total_commodities' : bigint,
+}
 export type Time = bigint;
 export interface _SERVICE extends CommodityActor {}
 export declare const idlFactory: IDL.InterfaceFactory;

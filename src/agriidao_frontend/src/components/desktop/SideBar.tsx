@@ -141,6 +141,44 @@ const SideBar = () => {
             </div>
           </li>
 
+          <li
+            className={`sidebar-dropdown ${
+              activeSubmenu === "admin" ? "active" : ""
+            }`}
+          >
+            <a href="#" onClick={() => toggleSubmenu("admin")}>
+              <i className="mdi mdi-trophy me-2"></i>Admin
+            </a>
+            <div
+              className={`sidebar-submenu ${
+                activeSubmenu === "admin" ? "show" : ""
+              }`}
+            >
+              <ul>
+                <li>
+                  <NavLink to="/d/commodities" className="sub-menu-item">
+                    Commodities
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/d/commodity/markets" className="sub-menu-item">
+                    Commodity Markets
+                  </NavLink>
+                </li>
+                {/* <li>
+                  <NavLink to="/d/leaderboard" className="sub-menu-item">
+                    Leaderboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/d/campaigns" className="sub-menu-item">
+                    Campaigns
+                  </NavLink>
+                </li> */}
+              </ul>
+            </div>
+          </li>
+
         </ul>
       </div>
     </nav>

@@ -30,7 +30,7 @@ const BottomBar = () => {
       </NavLink>
       <NavLink 
         to="/reward-campaigns" 
-        id="cgc-nav-bottom"
+        id="campaigns-nav-bottom"
         className={({ isActive }) =>
           isActive ? "nav-item active-nav" : "nav-item"
         }>

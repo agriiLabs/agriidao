@@ -98,6 +98,8 @@ import DUpdateUsername from "./pages/desktop/profile/DUpdateUsername";
 import DPortofolioUnits from "./pages/desktop/portfolio/DPortofolioUnits";
 import MarketRedirect from "./components/MarketRedirect";
 import DProjectUnits from "./pages/desktop/projects/DProjectUnits";
+import Commodities from "./pages/admin/commodity/Commodities";
+import Markets from "./pages/admin/commodity/Markets";
 
 export interface Response {
   err?: any;
@@ -261,6 +263,7 @@ const App = () => {
               path="/add-commodity-price/:id"
               element={<AddCommodityPrice />}
             />
+            
           </Route>
         </Route>
 
@@ -289,6 +292,8 @@ const App = () => {
           <Route path="/d/projects/proposal-detail/:id" element={<DProjectProposalDetail />} />
           <Route path="/d/projects/treasury/:id" element={<DProjectTreasury />} />
           <Route path="/d/projects/backers/:id" element={<DProjectBackers />}/>
+          <Route path="/d/commodities" element={<Commodities />} />
+          <Route path="/d/commodity/markets" element={<Markets />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/d/portfolio" element={<DPortfolio />} />
@@ -305,7 +310,6 @@ const App = () => {
             <Route path="/d/start-project/preview" element={<DProjectCreatePreview />}/>
             <Route path="/d/projects/manager" element={<DProjectManager />} />
             <Route path="/d/project-units/:id" element={<DProjectUnits />} />
-
             {/* <Route path="/get-started" element={<GetStarted />} /> */}
           </Route>
         </Route>

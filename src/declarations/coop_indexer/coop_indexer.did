@@ -44,6 +44,13 @@ type DefiniteCanisterSettings =
    reserved_cycles_limit: nat;
    wasm_memory_limit: nat;
  };
+type CoopsProjectsStats = 
+ record {
+   chart_data: vec ChartData;
+   total_coops: nat;
+   total_members: nat;
+   total_projects: nat;
+ };
 type CoopRequest = 
  record {
    availableUnit: nat;
@@ -80,7 +87,15 @@ type CoOpIndexer =
    getCreatedCanisters: () -> (vec CoopRecord) query;
    getMembership: (MembershipRecordId) -> (MembershipRecord);
    getMembershipByCaller: () -> (vec MembershipRecord);
+   get_coops_projects_stats: () -> (CoopsProjectsStats);
    updateMembershipRecord: (MembershipRecordId) -> (MembershipRecord);
+ };
+type ChartData = 
+ record {
+   coop_count: nat;
+   members_count: nat;
+   month: nat;
+   projects_count: nat;
  };
 type CanisterStatusResult = 
  record {
