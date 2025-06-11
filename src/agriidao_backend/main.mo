@@ -10,6 +10,15 @@ import Principal "mo:base/Principal";
 import CommodityInterface "./commodity_interface";
 
 shared ({ caller = initializer }) actor class InvAdmin() = this {
+
+        //Access control variables
+    private stable var roles : AssocList.AssocList<Principal, Role> = List.nil();
+    private stable var role_requests : AssocList.AssocList<Principal, Role> = List.nil();
+
+    var staff = HashMap.HashMap<Principal, Staff>(0, Principal.equal, Principal.hash);
+
+    private stable var staffEntries : [(Principal, Staff)] = [];
+    
     let commodityCanActor = CommodityInterface.commodityCanActor;
 
     public shared func getAllLatestCommodities() : async [CommodityInterface.Commodity] {
@@ -97,16 +106,8 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
     type Role = Types.Role;
     type Staff = Types.Staff;
 
-    //Access control variables
-    private stable var roles : AssocList.AssocList<Principal, Role> = List.nil();
-    private stable var role_requests : AssocList.AssocList<Principal, Role> = List.nil();
-
-    var staff = HashMap.HashMap<Principal, Staff>(0, Principal.equal, Principal.hash);
-
-    private stable var staffEntries : [(Principal, Staff)] = [];
 
     system func preupgrade() {
-
         staffEntries := Iter.toArray(staff.entries());
     };
 
