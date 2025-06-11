@@ -14,6 +14,7 @@ import {
 import {
   MarketLocationAgent,
   MarketLocation,
+  CommodityRequest,
 } from "../../../../declarations/commodity/commodity.did";
 import {
   Project,
@@ -53,6 +54,7 @@ export interface GlobalState {
   projectExpenseRequest: ProjectExpenseRequest | null;
   milestoneRequest: MilestoneRequest | null;
   proposalRequest: ProposalRequest | null;
+  commodityRequest: CommodityRequest | null;
   _project: Project | null;
 }
 
@@ -76,6 +78,7 @@ const initialState: GlobalState = {
   projectExpenseRequest: null,
   milestoneRequest: null,
   proposalRequest: null,
+  commodityRequest: null,
   _project: null,
 };
 
@@ -175,7 +178,13 @@ export const appSlice = createSlice({
     },
     _setProject: (state, action: PayloadAction<Project | null>) => {
       state._project = action.payload;
-    }
+    },
+    setCommodityRequest: (
+      state,
+      action: PayloadAction<CommodityRequest | null>
+    ) => {
+      state.commodityRequest = action.payload;
+    }  
   },
 });
 
@@ -200,6 +209,7 @@ export const {
   setMilestoneRequest,
   setProposalRequest,
   _setProject,
+  setCommodityRequest,
 } = appSlice.actions;
 
 export default appSlice.reducer;
