@@ -11,7 +11,7 @@ import { RootState } from "../../../redux/store"; // Adjust the import path as n
 import CommoditySubs from "../components/CommoditySubs";
 
 const CommodityList = () => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const { marketLocationAgent } = useSelector((state: RootState) => state.app);
   const [market, setMarket] = useState<MarketLocationAgent[] | null>(null);
@@ -24,15 +24,15 @@ const CommodityList = () => {
 
   useEffect(() => {
     getAllCommoditySubs();
-  }, [commodityActor]);
+  }, [agriidaoActor]);
 
   // get all commodity subs
   const getAllCommoditySubs = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
-    const res = await commodityActor.getAllLatestMarketCommoditiesByMarketId(
+    const res = await agriidaoActor.getAllLatestMarketCommoditiesByMarketId(
       id
     );
     setCommoditySubs(res);
@@ -44,12 +44,12 @@ const CommodityList = () => {
 
   // get market commodities
   const getMarketCommodities = async () => {
-    if (!id || !commodityActor) {
+    if (!id || !agriidaoActor) {
       console.log("id", id);
-      console.error("ID or commodityActor is null");
+      console.error("ID or agriidaoActor is null");
       return;
     }
-    const res = await commodityActor?.getAllLatestMarketCommoditiesByMarketId(
+    const res = await agriidaoActor?.getAllLatestMarketCommoditiesByMarketId(
       id
     );
     console.log("commodities:", res);

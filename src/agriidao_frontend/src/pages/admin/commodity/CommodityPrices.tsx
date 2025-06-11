@@ -4,7 +4,7 @@ import { useAuth } from "../../../hooks/Context";
 import { Commodity, MarketLocation, MarketLocationCommodity, MarketPrice } from "../../../../../declarations/commodity/commodity.did";
 
 function CommodityPrices() {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const [mLCommodity, setMLCommodity] = useState<MarketLocationCommodity | null>(null);
   const [commoditySubs, setCommoditySubs] = useState<MarketLocationCommodity | null>(null);
@@ -18,12 +18,12 @@ function CommodityPrices() {
   }, [id]);
 
   const getMLCommodity = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
 
-    const res = await commodityActor.getMarketLocationCommodityById(id);
+    const res = await agriidaoActor.getMarketLocationCommodityById(id);
     if ("ok" in res) {
       setMLCommodity(res.ok);
       setCommoditySubs(res.ok);
@@ -37,11 +37,11 @@ function CommodityPrices() {
     }, [mLCommodity]);
 
     const getCommodity = async () => {
-        if (!mLCommodity || !commodityActor) {
-            console.error("mlCommodity or commodityActor not found");
+        if (!mLCommodity || !agriidaoActor) {
+            console.error("mlCommodity or agriidaoActor not found");
             return;
         }
-        const res = await commodityActor.getCommodityLatest(mLCommodity.commodityId);
+        const res = await agriidaoActor.getCommodityLatest(mLCommodity.commodityId);
         console.log("commodity", res);
         if ("ok" in res) {
             setCommodity(res.ok);
@@ -56,11 +56,11 @@ function CommodityPrices() {
     }, [mLCommodity]);
 
     const getMarketLocation = async () => {
-    if (!mLCommodity || !commodityActor) {
-        console.error("mlCommodity or commodityActor not found");
+    if (!mLCommodity || !agriidaoActor) {
+        console.error("mlCommodity or agriidaoActor not found");
         return;
     }
-    const res = await commodityActor.getMarketLocationLatest(mLCommodity.marketLocationId);
+    const res = await agriidaoActor.getMarketLocationLatest(mLCommodity.marketLocationId);
     console.log("market location", res);
     if ("ok" in res) {
         setMarket(res.ok);
@@ -76,11 +76,11 @@ function CommodityPrices() {
   }, [mLCommodity]);
 
   const getPrices = async () => {
-    if (!mLCommodity || !commodityActor) {
-      console.error("mlCommodity or commodityActor not found");
+    if (!mLCommodity || !agriidaoActor) {
+      console.error("mlCommodity or agriidaoActor not found");
       return;
     }
-    const res = await commodityActor.getMarketPriceByMarketCommodityId(
+    const res = await agriidaoActor.getMarketPriceByMarketCommodityId(
       mLCommodity.id
     );
     setPrices(res);

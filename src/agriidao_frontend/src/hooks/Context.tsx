@@ -20,15 +20,17 @@ import {
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
-import type { _SERVICE as _commodityService } from "../../../declarations/commodity/commodity.did";
+import type { _SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
+import { type _SERVICE as BACKEND_SERVICE } from "../../../declarations/agriidao_backend/agriidao_backend.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";
 import type {_SERVICE as _projectsService } from "../../../declarations/projects/projects.did";
 import type { _SERVICE as _proposalsService } from "../../../declarations/proposals/proposals.did";
 import { _SERVICE as _SCALER_SERVICE } from '../../../declarations/scaler/scaler.did';
 import { _SERVICE as STORAGE_SERVICE } from '../../../declarations/storage/storage.did';
-import { idlFactory as scalerIdl } from "../../../declarations/scaler";
+import {  idlFactory as scalerIdl } from "../../../declarations/scaler";
 import { idlFactory as storageIdl } from "../../../declarations/storage";
+import { idlFactory, canisterId} from "../../../declarations/agriidao_backend"
 // import {canisterId as iiCanId} from "../../../declarations/internet_identity/internet_identity.did";
 
 import {
@@ -42,7 +44,6 @@ import {
   bountyCanisterId,
   userCanisterId,
   settingsCanisterId,
-  commodityCanisterId,
   coopIndexerCanisterId,
   coopLedgerCanisterId,
   projectsCanisterId,
@@ -60,7 +61,7 @@ type ContextType = {
   bountyActor: ActorSubclass<_bountyService> | null;
   userActor: ActorSubclass<_userService> | null;
   settingsActor: ActorSubclass<_settingsService> | null;
-  commodityActor: ActorSubclass<_commodityService> | null;
+  agriidaoActor: ActorSubclass<BACKEND_SERVICE> | null;
   coopIndexerActor: ActorSubclass<_coopIndexerService> | null;
   coopLedgerActor: ActorSubclass<_coopLedgerService> | null;
   projectsActor: ActorSubclass<_projectsService> | null;
@@ -78,7 +79,7 @@ const initialContext: ContextType = {
   bountyActor: null,
   userActor: null,
   settingsActor: null,
-  commodityActor: null,
+  agriidaoActor: null,
   coopIndexerActor: null,
   coopLedgerActor: null,
   projectsActor: null,
@@ -126,8 +127,6 @@ export const Context = (options = defaultOptions) => {
     useState<ActorSubclass<_userService> | null>(null);
   const [settingsActor, setSettingsActor] =
     useState<ActorSubclass<_settingsService> | null>(null);
-  const [commodityActor, setCommodityActor] =
-    useState<ActorSubclass<_commodityService> | null>(null);
   const [user, setUser] = useState(null);
   const [coopIndexerActor, setCoopIndexerActor] =
     useState<ActorSubclass<_coopIndexerService> | null>(null);
@@ -138,6 +137,8 @@ export const Context = (options = defaultOptions) => {
   const [scaler, setScaler] = useState<ActorSubclass<_SCALER_SERVICE> | null>(null);
   const [storageActor, setStorage] = useState<ActorSubclass<STORAGE_SERVICE> | null>(null);
   const [proposalsActor, setProposalsActor] = useState<ActorSubclass<_proposalsService> | null>(null);
+  const [agriidaoActor, setAgriidaoActor] =
+    useState<ActorSubclass<BACKEND_SERVICE> | null>(null);
 
 
   useEffect(() => {
@@ -252,15 +253,16 @@ export const Context = (options = defaultOptions) => {
     );
     setSettingsActor(_settingsBackend);
 
-    // set commodity actor
-    const _commodityBackend: ActorSubclass<_commodityService> = Actor.createActor(
-      commodityIdlFactory,
+
+    // set agriidao actor
+    const _agriidaoBackend: ActorSubclass<BACKEND_SERVICE> = Actor.createActor(
+      idlFactory,
       {
         agent,
-        canisterId: commodityCanisterId,
+        canisterId: canisterId,
       }
     );
-    setCommodityActor(_commodityBackend);
+    setAgriidaoActor(_agriidaoBackend);
 
     // set coop indexer actor
     const _coOpIndexerBackend: ActorSubclass<_coopIndexerService> =
@@ -312,7 +314,6 @@ export const Context = (options = defaultOptions) => {
     bountyActor,
     userActor,
     settingsActor,
-    commodityActor,
     coopIndexerActor,
     coopLedgerActor,
     projectsActor,
@@ -322,6 +323,7 @@ export const Context = (options = defaultOptions) => {
     login,
     logout,
     temporaryVal,
+    agriidaoActor,
     setTempVal,
   };
 };

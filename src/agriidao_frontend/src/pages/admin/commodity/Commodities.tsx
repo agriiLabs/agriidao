@@ -5,7 +5,7 @@ import { Commodity } from "../../../../../declarations/commodity/commodity.did";
 import CategoryName from "../../../components/CategoryName";
 
 const Commodities = () => {
-  const { commodityActor } = useAuth(); 
+  const { agriidaoActor } = useAuth(); 
   const { id } = useParams(); 
   const [commodities, setCommodities] = useState<Commodity[]>([]); 
   const [openForm, setOpenForm] = useState(false);
@@ -18,7 +18,7 @@ const Commodities = () => {
   
   // get commodities  
   const getAllLatestCommodities = async () => {
-    let res = await commodityActor?.getAllLatestCommodities(); 
+    let res = await agriidaoActor?.getAllLatestCommodities(); 
     setCommodities(res || []);
   };
 

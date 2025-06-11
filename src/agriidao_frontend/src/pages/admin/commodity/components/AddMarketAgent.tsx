@@ -13,7 +13,7 @@ type FormData = {
 };
 
 const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }) => {
-  const { commodityActor, userActor } = useAuth();
+  const { agriidaoActor, userActor } = useAuth();
   const [saving, setSaving] = useState(false);
   const [users, setUsers] = useState<User[] | null>(null);
 
@@ -59,7 +59,7 @@ const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }) => {
         userId: data.userId,
       };
       console.log("adding agent: ", body);
-      await commodityActor.addMarketLocationAgent(body);
+      await agriidaoActor.addMarketLocationAgent(body);
       console.log("Agent added");
       
         console.log("Agent succesfully added.", {

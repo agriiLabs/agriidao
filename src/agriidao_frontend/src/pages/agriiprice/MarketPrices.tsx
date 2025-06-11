@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 const MarketPrices = () => {
   const dispatch = useDispatch();
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
@@ -29,14 +29,14 @@ const MarketPrices = () => {
 
   useEffect(() => {
     getAllMarkets();
-  }, [commodityActor]);
+  }, [agriidaoActor]);
 
   const getAllMarkets = async () => {
-    if (!commodityActor) {
-      console.error("commodityActor is null");
+    if (!agriidaoActor) {
+      console.error("agriidaoActor is null");
       return;
     }
-    const res = await commodityActor.getAllMarketLocationsLatest();
+    const res = await agriidaoActor.getAllMarketLocationsLatest();
     if (res.length > 0) {
       setMarkets(res);
     }
@@ -49,11 +49,11 @@ const MarketPrices = () => {
   }, [selectedCountryId]);
 
   const getMarket = async (countryId: string) => {
-    if (!commodityActor) {
-      console.error("commodityActor not found");
+    if (!agriidaoActor) {
+      console.error("agriidaoActor not found");
       return;
     }
-    const res = await commodityActor.getMarketLocationByCountryId(countryId);
+    const res = await agriidaoActor.getMarketLocationByCountryId(countryId);
 
 
     if (res.length > 0) {
@@ -64,16 +64,16 @@ const MarketPrices = () => {
   };
 
   useEffect(() => {
-    if (selectedMarketLocation && commodityActor) {
-      fetchMarketData(selectedMarketLocation.id, commodityActor);
+    if (selectedMarketLocation && agriidaoActor) {
+      fetchMarketData(selectedMarketLocation.id, agriidaoActor);
     }
-  }, [selectedMarketLocation, commodityActor]);
+  }, [selectedMarketLocation, agriidaoActor]);
 
-  const fetchMarketData = async (marketId: string, commodityActor: any) => {
+  const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
     try {
       setLoading(true);
       const pricesRes: MarketPrice[] =
-        await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
+        await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
       const latestMap = new Map<string, MarketPrice>();
 
       pricesRes.forEach((price: MarketPrice) => {
@@ -88,11 +88,11 @@ const MarketPrices = () => {
       const enrichedPrices = await Promise.all(
         Array.from(latestMap.values()).map(
           async (price): Promise<EnrichedPrice> => {
-            const locRes = await commodityActor.getMarketLocationCommodityById(
+            const locRes = await agriidaoActor.getMarketLocationCommodityById(
               price.marketLocationCommodityId
             );
             if ("ok" in locRes) {
-              const commRes = await commodityActor.getCommodityLatest(
+              const commRes = await agriidaoActor.getCommodityLatest(
                 locRes.ok.commodityId
               );
               if ("ok" in commRes) {

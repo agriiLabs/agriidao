@@ -6,7 +6,7 @@ import { MarketLocation } from "../../../../../declarations/commodity/commodity.
 import CountryName from "../../../components/agriidao/CountryName";
 
 const Markets = () => {
-  const { commodityActor } = useAuth(); //get agriichainBackend from the global context
+  const { agriidaoActor } = useAuth(); //get agriichainBackend from the global context
   const { id } = useParams(); //how to access the url parameter i.e id
   const [markets, setMarkets] = useState<MarketLocation[]>([]); //state for holding the data of types
   const [openForm, setOpenForm] = useState(false);
@@ -25,7 +25,7 @@ const Markets = () => {
 
   // get markets
   const getAllLatestMarkets = async () => {
-    let res = await commodityActor?.getAllMarketLocationsLatest();
+    let res = await agriidaoActor?.getAllMarketLocationsLatest();
     if (res) {
       setMarkets(res);
     }

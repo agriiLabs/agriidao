@@ -10,7 +10,7 @@ import {
 import imagePath2 from "../../../../assets/images/projects-default.png";
 
 const CommoditySummary = () => {
-  const { commodityActor, settingsActor } = useAuth();
+  const { agriidaoActor, settingsActor } = useAuth();
   const { id } = useParams();
 
   const [commodity, setCommodity] = useState<Commodity | null>(null);
@@ -30,7 +30,7 @@ const CommoditySummary = () => {
       console.error("Commodity ID is undefined");
       return;
     }
-    const res = await commodityActor?.getCommodityLatest(id);
+    const res = await agriidaoActor?.getCommodityLatest(id);
     if (!res) {
       console.error("Failed to fetch commodity data");
       return;
@@ -49,7 +49,7 @@ const CommoditySummary = () => {
       console.error("Commodity ID is undefined");
       return;
     }
-    const res = await commodityActor?.getMarketLocationCommodityByCommodityId(
+    const res = await agriidaoActor?.getMarketLocationCommodityByCommodityId(
       id
     );
     console.log("markets:", res);

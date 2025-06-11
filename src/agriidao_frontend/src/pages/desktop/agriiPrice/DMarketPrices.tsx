@@ -13,7 +13,7 @@ import { formatNanoDate } from "../../../utils/Utils";
 
 const DMarketPrices = () => {
   const dispatch = useDispatch();
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
@@ -30,14 +30,14 @@ const DMarketPrices = () => {
 
   useEffect(() => {
     getAllMarkets();
-  }, [commodityActor]);
+  }, [agriidaoActor]);
 
   const getAllMarkets = async () => {
-    if (!commodityActor) {
-      console.error("commodityActor is null");
+    if (!agriidaoActor) {
+      console.error("agriidaoActor is null");
       return;
     }
-    const res = await commodityActor.getAllMarketLocationsLatest();
+    const res = await agriidaoActor.getAllMarketLocationsLatest();
     if (res.length > 0) {
       setMarkets(res);
     }
@@ -50,11 +50,11 @@ const DMarketPrices = () => {
   }, [selectedCountryId]);
 
   const getMarket = async (countryId: string) => {
-    if (!commodityActor) {
-      console.error("commodityActor not found");
+    if (!agriidaoActor) {
+      console.error("agriidaoActor not found");
       return;
     }
-    const res = await commodityActor.getMarketLocationByCountryId(countryId);
+    const res = await agriidaoActor.getMarketLocationByCountryId(countryId);
 
     if (res.length > 0) {
       dispatch(setSelectedMarketLocation(res[0]));
@@ -64,20 +64,20 @@ const DMarketPrices = () => {
   };
 
   useEffect(() => {
-    if (selectedMarketLocation && commodityActor) {
-      fetchMarketData(selectedMarketLocation.id, commodityActor);
+    if (selectedMarketLocation && agriidaoActor) {
+      fetchMarketData(selectedMarketLocation.id, agriidaoActor);
     }
-  }, [selectedMarketLocation, commodityActor]);
+  }, [selectedMarketLocation, agriidaoActor]);
 
-  // const fetchMarketData = async (marketId: string, commodityActor: any) => {
+  // const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
   //   try {
   //     const commodityRes =
-  //       await commodityActor.getAllLatestMarketCommoditiesByMarketId(marketId);
+  //       await agriidaoActor.getAllLatestMarketCommoditiesByMarketId(marketId);
 
   //     setMLCommodity(commodityRes);
 
   //     const pricesRes =
-  //       await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
+  //       await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
 
   //     const transformedPrices = transformBigIntToString(pricesRes);
   //     setPrices(transformedPrices);
@@ -86,12 +86,12 @@ const DMarketPrices = () => {
   //   }
   // };
 
-  const fetchMarketData = async (marketId: string, commodityActor: any) => {
+  const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
     console.log("Fetching market data for marketId:", marketId);
     try {
       setLoading(true);
       const pricesRes: MarketPrice[] =
-        await commodityActor.getLatestMarketPriceByMarketLocationId(marketId);
+        await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
 
       const latestMap = new Map<string, MarketPrice>();
 
@@ -107,11 +107,11 @@ const DMarketPrices = () => {
       const enrichedPrices = await Promise.all(
         Array.from(latestMap.values()).map(
           async (price): Promise<EnrichedPrice> => {
-            const locRes = await commodityActor.getMarketLocationCommodityById(
+            const locRes = await agriidaoActor.getMarketLocationCommodityById(
               price.marketLocationCommodityId
             );
             if ("ok" in locRes) {
-              const commRes = await commodityActor.getCommodityLatest(
+              const commRes = await agriidaoActor.getCommodityLatest(
                 locRes.ok.commodityId
               );
               if ("ok" in commRes) {

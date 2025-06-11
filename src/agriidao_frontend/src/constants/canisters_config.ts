@@ -21,7 +21,6 @@ export { idlFactory as proposalsIdlFactory } from "../../../declarations/proposa
 
 // // ic staging
 export const bountyCanisterId = "ygpmr-tqaaa-aaaag-aldrq-cai"
-export const commodityCanisterId = "zpxxj-jyaaa-aaaag-alelq-cai"
 export const userCanisterId = "yti54-syaaa-aaaag-aldsa-cai"
 export const settingsCanisterId = "ybokf-6iaaa-aaaag-aldra-cai"
 export const coopIndexerCanisterId = "ovdka-7yaaa-aaaag-atzta-cai"

@@ -11,7 +11,7 @@ type Props = {
 };
 
 const MarketLocationSubs: FC<Props> = ({ marketSub }) => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const [market, setMarket] = useState<MarketLocation | null>(null);
   
@@ -24,12 +24,12 @@ const MarketLocationSubs: FC<Props> = ({ marketSub }) => {
 
   const getMarket = async () => {
     console.log("marketSub: ", marketSub);
-    if (!marketSub || !commodityActor) {
+    if (!marketSub || !agriidaoActor) {
       console.error("market request not found");
       return;
     }
     try {
-      const res = await commodityActor.getMarketLocationLatest(
+      const res = await agriidaoActor.getMarketLocationLatest(
         marketSub.marketLocationId
       );
       console.log("market res: ", res);

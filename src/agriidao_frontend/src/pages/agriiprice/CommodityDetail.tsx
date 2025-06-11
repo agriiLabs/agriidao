@@ -40,7 +40,7 @@ interface FirstPrice {
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
 const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const [chartData, setChartData] = useState<ApexSeries | null>(null);
   const [options, setOptions] = useState<ApexOptions | null>(null);
@@ -58,19 +58,19 @@ const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
 
   useEffect(() => {
     getCommodityPrices();
-  }, [commodityActor]);
+  }, [agriidaoActor]);
 
   useEffect(() => {
     getMLCommodity();
   }, [prices]);
 
   const getMLCommodity = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
 
-    const res = await commodityActor.getMarketLocationCommodityById(id);
+    const res = await agriidaoActor.getMarketLocationCommodityById(id);
 
     if ("ok" in res) {
       setMLCommodity([res.ok]);
@@ -86,11 +86,11 @@ const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
   }, [mLCommodity]);
 
   const getCommodity = async () => {
-    if (!mLCommodity || !commodityActor) {
+    if (!mLCommodity || !agriidaoActor) {
       console.error("MarketLocationCommodity is null or empty");
       return;
     }
-    const res = await commodityActor.getCommodityLatest(
+    const res = await agriidaoActor.getCommodityLatest(
       mLCommodity[0].commodityId
     );
     if ("ok" in res) {
@@ -103,12 +103,12 @@ const CommodityDetail = ({ data }: { data: DataPoint[] }) => {
   };
 
   const getCommodityPrices = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
 
-    const res = await commodityActor.getMarketPriceByMarketCommodityId(id);
+    const res = await agriidaoActor.getMarketPriceByMarketCommodityId(id);
     setPrices(res);
 
     const data: ChartData[] = res.map((item) => ({

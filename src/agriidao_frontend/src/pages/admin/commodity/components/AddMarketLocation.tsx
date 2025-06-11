@@ -12,7 +12,7 @@ type FormData = {
 };
 
 const AddMarketLocation = ({ setOpenForm, setMarketSaved }) => {
-  const { commodityActor, settingsActor } = useAuth();
+  const { agriidaoActor, settingsActor } = useAuth();
   const [saving, setSaving] = useState(false);
   const [selectedCountryId, setSelectedCountryId] = useState<any[] | null>(null);
   const [countries, setCountries] = useState<any[] | null>(null);
@@ -63,7 +63,7 @@ const AddMarketLocation = ({ setOpenForm, setMarketSaved }) => {
         countryId: data.countryId,
       };
 
-      await commodityActor.addMarketLocation(body);
+      await agriidaoActor.addMarketLocation(body);
       console.log("Market succesfully saved.", {
         autoClose: 5000,
         position: "top-center",
