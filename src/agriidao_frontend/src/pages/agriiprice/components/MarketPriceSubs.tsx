@@ -12,7 +12,7 @@ type Props = {
 };
 
 const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const [commodity, setCommodity] = useState<Commodity | null>(null);
   const [prices, setPrices] = useState<MarketPrice[]>([]);
   const [mLCommodity, setMLCommodity] =
@@ -25,11 +25,11 @@ const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
   }, [marketPriceSub]);
 
   const getMLCommodity = async () => {
-    if (!marketPriceSub || !commodityActor) {
+    if (!marketPriceSub || !agriidaoActor) {
       console.error("marketPriceSub not found");
       return;
     }
-    const res = await commodityActor.getMarketLocationCommodityById(
+    const res = await agriidaoActor.getMarketLocationCommodityById(
       marketPriceSub.marketLocationCommodityId
     );
     if ("ok" in res) {
@@ -44,12 +44,12 @@ const MarketPriceSubs: FC<Props> = ({ marketPriceSub }) => {
   }, [mLCommodity]);
 
   const getCommodity = async () => {
-    if (!mLCommodity || !commodityActor) {
+    if (!mLCommodity || !agriidaoActor) {
       console.error("commodity request not found");
       return;
     }
     try {
-      const res = await commodityActor.getCommodityLatest(
+      const res = await agriidaoActor.getCommodityLatest(
         mLCommodity.commodityId
       );
       if ("ok" in res) {

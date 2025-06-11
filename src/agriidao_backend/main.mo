@@ -7,24 +7,107 @@ import Error "mo:base/Error";
 import AssocList "mo:base/AssocList";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
+import CommodityInterface "./commodity_interface";
 
 shared ({ caller = initializer }) actor class InvAdmin() = this {
 
-// import Types from a module
-type Permission = Types.Permission;
-type Role = Types.Role;
-type Staff = Types.Staff;
+        //Access control variables
+    private stable var roles : AssocList.AssocList<Principal, Role> = List.nil();
+    private stable var role_requests : AssocList.AssocList<Principal, Role> = List.nil();
 
-//Access control variables
-private stable var roles : AssocList.AssocList<Principal, Role> = List.nil();
-private stable var role_requests : AssocList.AssocList<Principal, Role> = List.nil();
+    var staff = HashMap.HashMap<Principal, Staff>(0, Principal.equal, Principal.hash);
 
-var staff = HashMap.HashMap<Principal, Staff>(0, Principal.equal, Principal.hash);
+    private stable var staffEntries : [(Principal, Staff)] = [];
+    
+    let commodityCanActor = CommodityInterface.commodityCanActor;
 
-private stable var staffEntries : [(Principal, Staff)] = [];
+    public shared func getAllLatestCommodities() : async [CommodityInterface.Commodity] {
+        return await commodityCanActor.getAllLatestCommodities();
+    };
 
-system func preupgrade() {
-       
+    public shared func getAllLatestMarketCommoditiesByMarketId(marketId : Text) : async [CommodityInterface.MarketLocationCommodity] {
+        return await commodityCanActor.getAllLatestMarketCommoditiesByMarketId(marketId);
+    };
+
+    public shared func getAllLatestMarketLocationAgents() : async [CommodityInterface.MarketLocationAgent] {
+        return await commodityCanActor.getAllLatestMarketLocationAgents();
+    };
+
+    public shared func getAllLatestMarketLocationCommodities() : async [CommodityInterface.MarketLocationCommodity] {
+        return await commodityCanActor.getAllLatestMarketLocationCommodities();
+    };
+
+    public shared func getAllLatestMarketLocationsByCommodityName(commodityName : Text) : async [CommodityInterface.MarketLocationCommodity] {
+        return await commodityCanActor.getAllLatestMarketLocationsByCommodityName(commodityName);
+    };
+
+    public shared func getAllLatestMarketPrices() : async [CommodityInterface.MarketPrice] {
+        return await commodityCanActor.getAllLatestMarketPrices();
+    };
+    public shared func getAllMarketLocationAgentsByMarketId(marketId : Text) : async [CommodityInterface.MarketLocationAgent] {
+        return await commodityCanActor.getAllMarketLocationAgentsByMarketId(marketId);
+    };
+    public shared func getAllMarketLocationsLatest() : async [CommodityInterface.MarketLocation] {
+        return await commodityCanActor.getAllMarketLocationsLatest();
+    };
+    public shared func getCommodityByCategory(category : Text) : async [CommodityInterface.Commodity] {
+        return await commodityCanActor.getCommodityByCategory(category);
+    };
+    public shared func getCommodityLatest(commodityId : Text) : async CommodityInterface.Result_4 {
+        return await commodityCanActor.getCommodityLatest(commodityId);
+    };
+    public shared func getCommodityStats() : async CommodityInterface.Stats {
+        return await commodityCanActor.getCommodityStats();
+    };
+    public shared func getLatestMarketLocationAgentbyId(agentId : Text) : async CommodityInterface.Result_3 {
+        return await commodityCanActor.getLatestMarketLocationAgentbyId(agentId);
+    };
+    public shared func getLatestMarketPriceById(priceId : Text) : async CommodityInterface.Result_2 {
+        return await commodityCanActor.getLatestMarketPriceById(priceId);
+    };
+    public shared func getLatestMarketPriceByMarketLocationId(marketLocationId : Text) : async [CommodityInterface.MarketPrice] {
+        return await commodityCanActor.getLatestMarketPriceByMarketLocationId(marketLocationId);
+    };
+    public shared func getLatestPriceByMarketLocationId(marketLocationId : Text) : async [CommodityInterface.MarketPrice] {
+        return await commodityCanActor.getLatestPriceByMarketLocationId(marketLocationId);
+    };
+    public shared func getMarketLocationAgentByAgentId(agentId : Text) : async [CommodityInterface.MarketLocationAgent] {
+        return await commodityCanActor.getMarketLocationAgentByAgentId(agentId);
+    };
+    public shared func getMarketLocationByAgentId(agentId : Text) : async [CommodityInterface.MarketLocationAgent] {
+        return await commodityCanActor.getMarketLocationByAgentId(agentId);
+    };
+    public shared func getMarketLocationByCountryId(countryId : Text) : async [CommodityInterface.MarketLocation] {
+        return await commodityCanActor.getMarketLocationByCountryId(countryId);
+    };
+    public shared func getMarketLocationCommodityByCommodityId(commodityId : Text) : async [CommodityInterface.MarketLocationCommodity] {
+        return await commodityCanActor.getMarketLocationCommodityByCommodityId(commodityId);
+    };
+    public shared func getMarketLocationCommodityById(commodityId : Text) : async CommodityInterface.Result_1 {
+        return await commodityCanActor.getMarketLocationCommodityById(commodityId);
+    };
+    public shared func getMarketLocationLatest(marketLocationId : Text) : async CommodityInterface.Result {
+        return await commodityCanActor.getMarketLocationLatest(marketLocationId);
+    };
+    public shared func getMarketPriceByMarketCommodityId(marketCommodityId : Text) : async [CommodityInterface.MarketPrice] {
+        return await commodityCanActor.getMarketPriceByMarketCommodityId(marketCommodityId);
+    };
+    public shared func getMarketStats() : async [CommodityInterface.ChartStatsData] {
+        return await commodityCanActor.getMarketStats();
+    };
+    public shared func get_total_market_locations() : async Nat {
+        return await commodityCanActor.get_total_market_locations();
+    };
+    public shared func get_total_market_prices() : async Nat {
+        return await commodityCanActor.get_total_market_prices();
+    };
+    // import Types from a module
+    type Permission = Types.Permission;
+    type Role = Types.Role;
+    type Staff = Types.Staff;
+
+
+    system func preupgrade() {
         staffEntries := Iter.toArray(staff.entries());
     };
 
@@ -32,14 +115,14 @@ system func preupgrade() {
         staff := HashMap.fromIter<Principal, Staff>(staffEntries.vals(), 0, Principal.equal, Principal.hash);
     };
 
-  //-----------------------------------------Access control implimentation---------------------------------------------
+    //-----------------------------------------Access control implimentation---------------------------------------------
 
     // Determine if a principal has a role with permissions
     func has_permission(pal : Principal, perm : Permission) : Bool {
         let role = get_role(pal);
         switch (role, perm) {
-            case (? #owner or ? #admin, _) true;
-            case (? #authorized, #lowest) true;
+            case (?#owner or ?#admin, _) true;
+            case (?#authorized, #lowest) true;
             case (_, _) false;
         };
     };
@@ -50,7 +133,7 @@ system func preupgrade() {
 
     func get_role(pal : Principal) : ?Role {
         if (pal == initializer) {
-            ? #owner;
+            ?#owner;
         } else {
             AssocList.find<Principal, Role>(roles, pal, principal_eq);
         };
@@ -67,19 +150,19 @@ system func preupgrade() {
         let role = get_role(caller);
         switch (role) {
             case (null) {
-                return #err ("no role found");
+                return #err("no role found");
             };
-            case (? value) {
-                return #ok (value);
+            case (?value) {
+                return #ok(value);
             };
-            
+
         };
     };
 
     func isAuthorized(pal : Principal) : Bool {
         let role = get_role(pal);
         switch (role) {
-            case (? #owner or ? #admin or ? #staff) true;
+            case (?#owner or ?#admin or ?#staff) true;
             case (_) false;
         };
     };
@@ -87,7 +170,7 @@ system func preupgrade() {
     func isAdmin(pal : Principal) : Bool {
         let role = get_role(pal);
         switch (role) {
-            case (? #owner or ? #admin) true;
+            case (?#owner or ?#admin) true;
             case (_) false;
         };
     };
@@ -97,7 +180,7 @@ system func preupgrade() {
         await require_permission(caller, #assign_role);
 
         switch new_role {
-            case (? #owner) {
+            case (?#owner) {
                 throw Error.reject("Cannot assign anyone to be the owner");
             };
             case (_) {};

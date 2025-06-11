@@ -9,7 +9,7 @@ import ProfileClick from "../../profile/component/ProfileClick";
 import MarketLocationSubs from "../components/MarketLocationSubs";
 
 const AgentMarketList = () => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const [markets, setMarkets] = useState<MarketLocationAgent[] | null>(null);
   const [commoditySubs, setCommoditySubs] = useState<MarketLocationCommodity[]>(
@@ -25,11 +25,11 @@ const AgentMarketList = () => {
 
   // get market by agent id
   const getMarket = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
-    const res = await commodityActor.getMarketLocationByAgentId(id);
+    const res = await agriidaoActor.getMarketLocationByAgentId(id);
     console.log("market:", res);
     setMarkets(res);
   };

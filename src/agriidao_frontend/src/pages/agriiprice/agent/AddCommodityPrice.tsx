@@ -22,7 +22,7 @@ type FormData = {
 };
 
 const AddCommodityPrice = () => {
-  const { commodityActor, settingsActor } = useAuth();
+  const { agriidaoActor, settingsActor } = useAuth();
   const { user } = useSelector((state: RootState) => state.app);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -52,12 +52,12 @@ const AddCommodityPrice = () => {
   }, [id]);
 
   const getMarketLocationCommodity = async () => {
-    if (!id || !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if (!id || !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
 
-    const res: Response = await commodityActor.getMarketLocationCommodityById(
+    const res: Response = await agriidaoActor.getMarketLocationCommodityById(
       id
     );
     console.log("market location commodity", res);
@@ -73,8 +73,8 @@ const AddCommodityPrice = () => {
   }, [mLCommodity]);
 
   const getMarketLocation = async () => {
-    if ( !commodityActor) {
-      console.error("ID or commodityActor is null");
+    if ( !agriidaoActor) {
+      console.error("ID or agriidaoActor is null");
       return;
     }
 
@@ -82,7 +82,7 @@ const AddCommodityPrice = () => {
       console.error("mLCommodity is null");
       return;
     }
-    const res: Response = await commodityActor.getMarketLocationLatest(
+    const res: Response = await agriidaoActor.getMarketLocationLatest(
       mLCommodity.marketLocationId
     );
     console.log("market location", res);
@@ -148,8 +148,8 @@ const AddCommodityPrice = () => {
   const handleSave = async (data: FormData, event?: React.BaseSyntheticEvent) => {
     setSaving(true);
     try {
-      if (!commodityActor) {
-        console.error("commodityActor is null");
+      if (!agriidaoActor) {
+        console.error("agriidaoActor is null");
         setSaving(false);
         return;
       }
@@ -168,7 +168,7 @@ const AddCommodityPrice = () => {
           rejected: false,
         },
       };
-      await commodityActor.addMarketPrice(body);
+      await agriidaoActor.addMarketPrice(body);
       setSaving(false);
       toastSuccess("Commodity price created successfully");
       navigate(`/commodity-list/${mLCommodity?.marketLocationId}`);

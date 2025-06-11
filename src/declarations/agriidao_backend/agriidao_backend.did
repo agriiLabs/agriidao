@@ -1,0 +1,170 @@
+type Time = int;
+type Stats = 
+ record {
+   total_commodities: nat;
+   total_market_location_agents: nat;
+   total_market_location_commodities: nat;
+   total_market_locations: nat;
+   total_market_prices: nat;
+ };
+type Staff = 
+ record {
+   approved: bool;
+   created: int;
+   email: text;
+   fullName: text;
+   phone: text;
+   "principal": principal;
+   role: opt Role;
+   suspended: bool;
+ };
+type Role__1 = 
+ variant {
+   admin;
+   owner;
+   staff;
+ };
+type Role = 
+ variant {
+   admin;
+   owner;
+   staff;
+ };
+type Result__1 = 
+ variant {
+   err: text;
+   ok: MarketLocation;
+ };
+type Result_4 = 
+ variant {
+   err: text;
+   ok: Commodity;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: MarketLocationAgent;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: MarketPrice;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Staff;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: Role__1;
+ };
+type MarketPrice = 
+ record {
+   createdBy: text;
+   currency: text;
+   id: text;
+   isDelete: bool;
+   isPaid: bool;
+   marketLocationCommodityId: text;
+   marketLocationId: text;
+   price: float64;
+   pricePerKg: float64;
+   status: record {
+             accepted: bool;
+             pending: bool;
+             rejected: bool;
+           };
+   timeStamp: Time;
+   unitKg: int;
+   userId: text;
+ };
+type MarketLocationCommodity = 
+ record {
+   commodityId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   marketLocationId: text;
+   timeStamp: Time;
+ };
+type MarketLocationAgent = 
+ record {
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   marketLocationId: text;
+   timeStamp: Time;
+   userId: text;
+ };
+type MarketLocation = 
+ record {
+   countryId: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   timeStamp: Time;
+ };
+type InvAdmin = 
+ service {
+   addStaffMember: (Staff) -> ();
+   assign_role: (principal, opt Role__1) -> ();
+   deleteStaffMember: (principal) -> (bool);
+   getAllAdmins: () -> (vec record {
+                              principal;
+                              Role__1;
+                            });
+   getAllLatestCommodities: () -> (vec Commodity);
+   getAllLatestMarketCommoditiesByMarketId: (text) ->
+    (vec MarketLocationCommodity);
+   getAllLatestMarketLocationAgents: () -> (vec MarketLocationAgent);
+   getAllLatestMarketLocationCommodities: () -> (vec MarketLocationCommodity);
+   getAllLatestMarketLocationsByCommodityName: (text) ->
+    (vec MarketLocationCommodity);
+   getAllLatestMarketPrices: () -> (vec MarketPrice);
+   getAllMarketLocationAgentsByMarketId: (text) -> (vec MarketLocationAgent);
+   getAllMarketLocationsLatest: () -> (vec MarketLocation);
+   getAllStaffMembers: () -> (vec Staff) query;
+   getApprovedStaff: () -> (vec Staff) query;
+   getCommodityByCategory: (text) -> (vec Commodity);
+   getCommodityLatest: (text) -> (Result_4);
+   getCommodityStats: () -> (Stats);
+   getLatestMarketLocationAgentbyId: (text) -> (Result_3);
+   getLatestMarketPriceById: (text) -> (Result_2);
+   getLatestMarketPriceByMarketLocationId: (text) -> (vec MarketPrice);
+   getLatestPriceByMarketLocationId: (text) -> (vec MarketPrice);
+   getMarketLocationAgentByAgentId: (text) -> (vec MarketLocationAgent);
+   getMarketLocationByAgentId: (text) -> (vec MarketLocationAgent);
+   getMarketLocationByCountryId: (text) -> (vec MarketLocation);
+   getMarketLocationCommodityByCommodityId: (text) ->
+    (vec MarketLocationCommodity);
+   getMarketLocationCommodityById: (text) -> (Result_1);
+   getMarketLocationLatest: (text) -> (Result__1);
+   getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice);
+   getMarketStats: () -> (vec ChartStatsData);
+   getStaffMember: (principal) -> (Result_1) query;
+   getUnapprovedStaff: () -> (vec Staff) query;
+   get_total_market_locations: () -> (nat);
+   get_total_market_prices: () -> (nat);
+   my_role: () -> (Result) query;
+   updateStaffMember: (Staff) -> ();
+ };
+type Commodity = 
+ record {
+   acCategoryId: text;
+   commodityPic: text;
+   createdBy: text;
+   id: text;
+   isDelete: bool;
+   name: text;
+   ticker: text;
+   timeStamp: Time;
+ };
+type ChartStatsData = 
+ record {
+   count: nat;
+   month: nat;
+ };
+service : () -> InvAdmin

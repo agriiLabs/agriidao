@@ -12,7 +12,7 @@ import UserSubs from "./components/UserSubs";
 import AddMarketAgent from "./components/AddMarketAgent";
 
 const MarketAgents = () => {
-  const { commodityActor, userActor } = useAuth();
+  const { agriidaoActor, userActor } = useAuth();
   const { id } = useParams();
   const [market, setMarket] = useState<MarketLocation | null>(null);
   const [userSubs, setUserSubs] = useState<MarketLocationAgent[]>([]);
@@ -26,12 +26,12 @@ const MarketAgents = () => {
   }, [userActor]);
 
   const getAllUserSubs = async () => {
-    if (!commodityActor || !id) {
-      console.error("commodityActor or id is null");
+    if (!agriidaoActor || !id) {
+      console.error("agriidaoActor or id is null");
       return;
     }
 
-    const res = await commodityActor.getAllMarketLocationAgentsByMarketId(id);
+    const res = await agriidaoActor.getAllMarketLocationAgentsByMarketId(id);
     setUserSubs(res);
   };
 
@@ -46,7 +46,7 @@ const MarketAgents = () => {
       console.error("Market ID is undefined");
       return;
     }
-    const res = await commodityActor?.getMarketLocationLatest(id);
+    const res = await agriidaoActor?.getMarketLocationLatest(id);
     if (res && "ok" in res) {
       setMarket(res.ok);
     } else if (res) {
@@ -60,7 +60,7 @@ const MarketAgents = () => {
       console.error("Market ID is undefined");
       return;
     }
-    const res = await commodityActor?.getAllMarketLocationAgentsByMarketId(id);
+    const res = await agriidaoActor?.getAllMarketLocationAgentsByMarketId(id);
     setAgents(res || null);
   };
 

@@ -8,7 +8,7 @@ type Props = {
 };
 
 const CommoditySubs: FC<Props> = ({ commoditySub }) => {
-    const { commodityActor } = useAuth();
+    const { agriidaoActor } = useAuth();
     const { id } = useParams();
     const [commodity, setCommodity] = useState<Commodity | null>(null);
 
@@ -20,12 +20,12 @@ const CommoditySubs: FC<Props> = ({ commoditySub }) => {
 
     const getCommodity = async () => {
         console.log("commoditySub: ", commoditySub)
-        if(!commoditySub || !commodityActor){
+        if(!commoditySub || !agriidaoActor){
             console.error("commodity request not found")
             return;
         }
         try {
-            const res = await commodityActor.getCommodityLatest(commoditySub.commodityId);
+            const res = await agriidaoActor.getCommodityLatest(commoditySub.commodityId);
             console.log("commodity res: ", res)
             if("ok" in res){
                 setCommodity(res.ok)

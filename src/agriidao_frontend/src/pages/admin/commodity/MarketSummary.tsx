@@ -12,7 +12,7 @@ import {
 } from "../../../../../declarations/commodity/commodity.did";
 
 const MarketSummary = () => {
-  const { commodityActor } = useAuth();
+  const { agriidaoActor } = useAuth();
   const { id } = useParams();
   const [market, setMarket] = useState<MarketLocation | null>(null);
   const [commoditySubs, setCommoditySubs] = useState<MarketLocationCommodity[]>(
@@ -28,14 +28,14 @@ const MarketSummary = () => {
 
   useEffect(() => {
     getAllCommoditySubs();
-  }, [commodityActor]);
+  }, [agriidaoActor]);
 
   const getAllCommoditySubs = async () => {
-    if (!commodityActor) {
-      console.error("commodityActor is null");
+    if (!agriidaoActor) {
+      console.error("agriidaoActor is null");
       return;
     }
-    const res = await commodityActor.getAllLatestMarketCommoditiesByMarketId(
+    const res = await agriidaoActor.getAllLatestMarketCommoditiesByMarketId(
       id || ""
     );
     setCommoditySubs(res);
@@ -52,7 +52,7 @@ const MarketSummary = () => {
       console.error("Market ID is undefined");
       return;
     }
-    const res = await commodityActor?.getMarketLocationLatest(id);
+    const res = await agriidaoActor?.getMarketLocationLatest(id);
     console.log("market:", res);
     if (res && "ok" in res) {
       setMarket(res.ok);
@@ -71,7 +71,7 @@ const MarketSummary = () => {
       console.error("Market ID is undefined");
       return;
     }
-    const res = await commodityActor?.getAllLatestMarketCommoditiesByMarketId(
+    const res = await agriidaoActor?.getAllLatestMarketCommoditiesByMarketId(
       id
     );
     setMCommodities(res || null);
