@@ -83,7 +83,7 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
     public shared func getMarketLocationCommodityByCommodityId(commodityId : Text) : async [CommodityInterface.MarketLocationCommodity] {
         return await commodityCanActor.getMarketLocationCommodityByCommodityId(commodityId);
     };
-    public shared func getMarketLocationCommodityById(commodityId : Text) : async CommodityInterface.Result_1 {
+    public shared func getMarketLocationCommodityById(commodityId : Text) : async Result.Result<CommodityInterface.MarketLocationCommodity, Text> {
         return await commodityCanActor.getMarketLocationCommodityById(commodityId);
     };
     public shared func getMarketLocationLatest(marketLocationId : Text) : async CommodityInterface.Result {
@@ -118,13 +118,13 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
         await commodityCanActor.updateMarketPrice(marketPrice, caller);
     };
 
-    public shared ({ caller }) func addCommodity(commodity : CommodityInterface.Commodity) : async () {
+    public shared ({ caller }) func addCommodity(commodity : CommodityInterface.CommodityRequest) : async () {
         await commodityCanActor.addCommodity(commodity, caller);
     };
     public shared ({ caller }) func addMarketLocation(marketLocation : CommodityInterface.MarketLocationRequest) : async () {
         await commodityCanActor.addMarketLocation(marketLocation, caller);
     };
-    public shared ({ caller }) func addMarketLocationAgent(marketLocationAgent : CommodityInterface.MarketLocationAgent) : async () {
+    public shared ({ caller }) func addMarketLocationAgent(marketLocationAgent : CommodityInterface.MarketLocationAgentRequest) : async () {
         await commodityCanActor.addMarketLocationAgent(marketLocationAgent, caller);
     };
     public shared ({ caller }) func addMarketLocationCommodity(marketLocationCommodity : CommodityInterface.MarketLocationCommodity) : async () {

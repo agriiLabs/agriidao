@@ -1,27 +1,19 @@
 export const idlFactory = ({ IDL }) => {
-  const Time = IDL.Int;
-  const Commodity = IDL.Record({
-    'id' : IDL.Text,
+  const CommodityRequest = IDL.Record({
     'ticker' : IDL.Text,
     'commodityPic' : IDL.Text,
-    'timeStamp' : Time,
     'name' : IDL.Text,
-    'createdBy' : IDL.Text,
     'acCategoryId' : IDL.Text,
-    'isDelete' : IDL.Bool,
   });
   const MarketLocationRequest = IDL.Record({
     'name' : IDL.Text,
     'countryId' : IDL.Text,
   });
-  const MarketLocationAgent = IDL.Record({
-    'id' : IDL.Text,
-    'timeStamp' : Time,
+  const MarketLocationAgentRequest = IDL.Record({
     'userId' : IDL.Text,
-    'createdBy' : IDL.Text,
-    'isDelete' : IDL.Bool,
     'marketLocationId' : IDL.Text,
   });
+  const Time = IDL.Int;
   const MarketLocationCommodity = IDL.Record({
     'id' : IDL.Text,
     'commodityId' : IDL.Text,
@@ -69,6 +61,16 @@ export const idlFactory = ({ IDL }) => {
     'owner' : IDL.Null,
     'staff' : IDL.Null,
   });
+  const Commodity = IDL.Record({
+    'id' : IDL.Text,
+    'ticker' : IDL.Text,
+    'commodityPic' : IDL.Text,
+    'timeStamp' : Time,
+    'name' : IDL.Text,
+    'createdBy' : IDL.Text,
+    'acCategoryId' : IDL.Text,
+    'isDelete' : IDL.Bool,
+  });
   const MarketLocation = IDL.Record({
     'id' : IDL.Text,
     'timeStamp' : Time,
@@ -76,6 +78,14 @@ export const idlFactory = ({ IDL }) => {
     'createdBy' : IDL.Text,
     'countryId' : IDL.Text,
     'isDelete' : IDL.Bool,
+  });
+  const MarketLocationAgent = IDL.Record({
+    'id' : IDL.Text,
+    'timeStamp' : Time,
+    'userId' : IDL.Text,
+    'createdBy' : IDL.Text,
+    'isDelete' : IDL.Bool,
+    'marketLocationId' : IDL.Text,
   });
   const Result_4 = IDL.Variant({ 'ok' : Commodity, 'err' : IDL.Text });
   const Stats = IDL.Record({
@@ -89,15 +99,18 @@ export const idlFactory = ({ IDL }) => {
     'ok' : MarketLocationAgent,
     'err' : IDL.Text,
   });
-  const Result_2 = IDL.Variant({ 'ok' : MarketPrice, 'err' : IDL.Text });
-  const Result_1 = IDL.Variant({ 'ok' : Staff, 'err' : IDL.Text });
+  const Result_2 = IDL.Variant({
+    'ok' : MarketLocationCommodity,
+    'err' : IDL.Text,
+  });
   const Result__1 = IDL.Variant({ 'ok' : MarketLocation, 'err' : IDL.Text });
   const ChartStatsData = IDL.Record({ 'month' : IDL.Nat, 'count' : IDL.Nat });
+  const Result_1 = IDL.Variant({ 'ok' : Staff, 'err' : IDL.Text });
   const Result = IDL.Variant({ 'ok' : Role__1, 'err' : IDL.Text });
   const InvAdmin = IDL.Service({
-    'addCommodity' : IDL.Func([Commodity], [], []),
+    'addCommodity' : IDL.Func([CommodityRequest], [], []),
     'addMarketLocation' : IDL.Func([MarketLocationRequest], [], []),
-    'addMarketLocationAgent' : IDL.Func([MarketLocationAgent], [], []),
+    'addMarketLocationAgent' : IDL.Func([MarketLocationAgentRequest], [], []),
     'addMarketLocationCommodity' : IDL.Func([MarketLocationCommodity], [], []),
     'addMarketPrice' : IDL.Func([MarketPrice], [], []),
     'addStaffMember' : IDL.Func([Staff], [], []),
@@ -182,7 +195,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(MarketLocationCommodity)],
         [],
       ),
-    'getMarketLocationCommodityById' : IDL.Func([IDL.Text], [Result_1], []),
+    'getMarketLocationCommodityById' : IDL.Func([IDL.Text], [Result_2], []),
     'getMarketLocationLatest' : IDL.Func([IDL.Text], [Result__1], []),
     'getMarketPriceByMarketCommodityId' : IDL.Func(
         [IDL.Text],

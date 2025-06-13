@@ -48,7 +48,7 @@ type Result_3 =
 type Result_2 = 
  variant {
    err: text;
-   ok: MarketPrice;
+   ok: MarketLocationCommodity;
  };
 type Result_1 = 
  variant {
@@ -94,6 +94,11 @@ type MarketLocationCommodity =
    marketLocationId: text;
    timeStamp: Time;
  };
+type MarketLocationAgentRequest = 
+ record {
+   marketLocationId: text;
+   userId: text;
+ };
 type MarketLocationAgent = 
  record {
    createdBy: text;
@@ -114,9 +119,9 @@ type MarketLocation =
  };
 type InvAdmin = 
  service {
-   addCommodity: (Commodity) -> ();
+   addCommodity: (CommodityRequest) -> ();
    addMarketLocation: (MarketLocationRequest) -> ();
-   addMarketLocationAgent: (MarketLocationAgent) -> ();
+   addMarketLocationAgent: (MarketLocationAgentRequest) -> ();
    addMarketLocationCommodity: (MarketLocationCommodity) -> ();
    addMarketPrice: (MarketPrice) -> ();
    addStaffMember: (Staff) -> ();
@@ -155,7 +160,7 @@ type InvAdmin =
    getMarketLocationByCountryId: (text) -> (vec MarketLocation);
    getMarketLocationCommodityByCommodityId: (text) ->
     (vec MarketLocationCommodity);
-   getMarketLocationCommodityById: (text) -> (Result_1);
+   getMarketLocationCommodityById: (text) -> (Result_2);
    getMarketLocationLatest: (text) -> (Result__1);
    getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice);
    getMarketStats: () -> (vec ChartStatsData);
@@ -170,6 +175,13 @@ type InvAdmin =
    updateMarketLocationCommodity: (MarketLocationCommodity) -> ();
    updateMarketPrice: (MarketPrice) -> ();
    updateStaffMember: (Staff) -> ();
+ };
+type CommodityRequest = 
+ record {
+   acCategoryId: text;
+   commodityPic: text;
+   name: text;
+   ticker: text;
  };
 type Commodity = 
  record {

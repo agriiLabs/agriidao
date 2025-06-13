@@ -28,6 +28,7 @@ import {
   CoopRequest,
 } from "../../../../declarations/coop_indexer/coop_indexer.did";
 import { Country } from "../../../../declarations/settings/settings.did";
+import { CommodityRequest } from '../../../../declarations/agriidao_backend/agriidao_backend.did';
 import {
   Proposal,
   ProposalRequest,

@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/Context";
-import { MarketLocationAgentRequest } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
+import { useAuth } from "../../../../hooks/Context";
+import { MarketLocationAgentRequest } from "../../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import { z } from "zod";
 import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
-import { User } from "../../../../../declarations/user/user.did";
+import { User } from "../../../../../../declarations/user/user.did";
 
 type FormData = {
   marketLocationId: string;
   userId: string;
 };
 
-const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }) => {
+type AddMarketAgentProps = {
+  setOpenForm: (open: boolean) => void;
+  market: { id: string };
+  setAgentSaved: (saved: boolean) => void;
+};
+
+const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }: AddMarketAgentProps) => {
   const { agriidaoActor, userActor } = useAuth();
   const [saving, setSaving] = useState(false);
   const [users, setUsers] = useState<User[] | null>(null);
@@ -32,6 +38,7 @@ const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }) => {
   }, []);
 
   const getUsers = async () => {
+    if (!userActor) return;
     try {
       const res = await userActor.getUsers();
       console.log("users: ", res);
@@ -42,6 +49,10 @@ const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }) => {
   };
 
   const handleSave = async (data: FormData) => {
+    if (!agriidaoActor || !userActor || !users) {
+      console.error("agriidaoActor or userActor is null");
+      return;
+    }
     const user = users.find((user) => user.id.toString() === data.userId);
     console.log("user: ", user);
     if (!user) {
