@@ -1,4 +1,10 @@
 type Time = int;
+type SettingsData = 
+ record {
+   apType: text;
+   category: text;
+   id: text;
+ };
 type Settings = 
  service {
    addAcCategory: (AcCategoryRequest) -> ();
@@ -6,19 +12,27 @@ type Settings =
    assign_role: (principal, opt Role) -> ();
    deleteAcCategory: (AcCategory) -> ();
    deleteAcType: (AcType) -> ();
-   getAcCategoryLatest: (text) -> (Result_3) query;
+   getAcCategoryLatest: (text) -> (Result_4) query;
    getAcCategoryVersions: (text) -> (vec AcCategory) query;
-   getAcTypeLatest: (text) -> (Result_2) query;
+   getAcTypeLatest: (text) -> (Result_3) query;
    getAcTypeVersions: (text) -> (vec AcType) query;
+   getAllCategories: () -> (vec SettingsData) query;
+   getAllCategoriesByType: (text) -> (vec SettingsData) query;
    getAllCountries: () -> (vec Country) query;
    getAllLatestAcCategories: () -> (vec AcCategory) query;
    getAllLatestAcTypeCategories: (text) -> (vec AcCategory) query;
    getAllLatestAcTypeCategoriesByName: (text) -> (vec AcCategory) query;
    getAllLatestAcTypes: () -> (vec AcType) query;
+   getAllTypes: () -> (vec SettingsData) query;
+   getCategoryByCName: (text) -> (Result_1) query;
+   getCategoryById: (text) -> (Result_1) query;
    getCategoryByName: (text) -> (text) query;
-   getCountryByCode: (text) -> (Result_1) query;
-   getCountryByName: (text) -> (Result_1) query;
+   getCategoryByType: (text) -> (vec SettingsData) query;
+   getCountryByCode: (text) -> (Result_2) query;
+   getCountryByName: (text) -> (Result_2) query;
    getCountryByRegion: (text) -> (vec Country) query;
+   getTypeById: (text) -> (Result_1) query;
+   getTypeByName: (text) -> (Result_1) query;
    isAdmin: (principal) -> (bool);
    isAuthorized: (principal) -> (bool);
    my_role: () -> (Result) query;
@@ -31,20 +45,25 @@ type Role =
    owner;
    staff;
  };
-type Result_3 = 
+type Result_4 = 
  variant {
    err: text;
    ok: AcCategory;
  };
-type Result_2 = 
+type Result_3 = 
  variant {
    err: text;
    ok: AcType;
  };
-type Result_1 = 
+type Result_2 = 
  variant {
    err: text;
    ok: Country;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: SettingsData;
  };
 type Result = 
  variant {

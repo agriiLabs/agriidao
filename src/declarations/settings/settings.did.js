@@ -25,8 +25,13 @@ export const idlFactory = ({ IDL }) => {
     'createdBy' : IDL.Text,
     'isDelete' : IDL.Bool,
   });
-  const Result_3 = IDL.Variant({ 'ok' : AcCategory, 'err' : IDL.Text });
-  const Result_2 = IDL.Variant({ 'ok' : AcType, 'err' : IDL.Text });
+  const Result_4 = IDL.Variant({ 'ok' : AcCategory, 'err' : IDL.Text });
+  const Result_3 = IDL.Variant({ 'ok' : AcType, 'err' : IDL.Text });
+  const SettingsData = IDL.Record({
+    'id' : IDL.Text,
+    'apType' : IDL.Text,
+    'category' : IDL.Text,
+  });
   const Country = IDL.Record({
     'region' : IDL.Text,
     'code' : IDL.Text,
@@ -34,7 +39,8 @@ export const idlFactory = ({ IDL }) => {
     'callingCode' : IDL.Text,
     'currency' : IDL.Text,
   });
-  const Result_1 = IDL.Variant({ 'ok' : Country, 'err' : IDL.Text });
+  const Result_1 = IDL.Variant({ 'ok' : SettingsData, 'err' : IDL.Text });
+  const Result_2 = IDL.Variant({ 'ok' : Country, 'err' : IDL.Text });
   const Result = IDL.Variant({ 'ok' : Role, 'err' : IDL.Text });
   const Settings = IDL.Service({
     'addAcCategory' : IDL.Func([AcCategoryRequest], [], []),
@@ -42,14 +48,20 @@ export const idlFactory = ({ IDL }) => {
     'assign_role' : IDL.Func([IDL.Principal, IDL.Opt(Role)], [], []),
     'deleteAcCategory' : IDL.Func([AcCategory], [], []),
     'deleteAcType' : IDL.Func([AcType], [], []),
-    'getAcCategoryLatest' : IDL.Func([IDL.Text], [Result_3], ['query']),
+    'getAcCategoryLatest' : IDL.Func([IDL.Text], [Result_4], ['query']),
     'getAcCategoryVersions' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(AcCategory)],
         ['query'],
       ),
-    'getAcTypeLatest' : IDL.Func([IDL.Text], [Result_2], ['query']),
+    'getAcTypeLatest' : IDL.Func([IDL.Text], [Result_3], ['query']),
     'getAcTypeVersions' : IDL.Func([IDL.Text], [IDL.Vec(AcType)], ['query']),
+    'getAllCategories' : IDL.Func([], [IDL.Vec(SettingsData)], ['query']),
+    'getAllCategoriesByType' : IDL.Func(
+        [IDL.Text],
+        [IDL.Vec(SettingsData)],
+        ['query'],
+      ),
     'getAllCountries' : IDL.Func([], [IDL.Vec(Country)], ['query']),
     'getAllLatestAcCategories' : IDL.Func([], [IDL.Vec(AcCategory)], ['query']),
     'getAllLatestAcTypeCategories' : IDL.Func(
@@ -63,10 +75,20 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getAllLatestAcTypes' : IDL.Func([], [IDL.Vec(AcType)], ['query']),
+    'getAllTypes' : IDL.Func([], [IDL.Vec(SettingsData)], ['query']),
+    'getCategoryByCName' : IDL.Func([IDL.Text], [Result_1], ['query']),
+    'getCategoryById' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getCategoryByName' : IDL.Func([IDL.Text], [IDL.Text], ['query']),
-    'getCountryByCode' : IDL.Func([IDL.Text], [Result_1], ['query']),
-    'getCountryByName' : IDL.Func([IDL.Text], [Result_1], ['query']),
+    'getCategoryByType' : IDL.Func(
+        [IDL.Text],
+        [IDL.Vec(SettingsData)],
+        ['query'],
+      ),
+    'getCountryByCode' : IDL.Func([IDL.Text], [Result_2], ['query']),
+    'getCountryByName' : IDL.Func([IDL.Text], [Result_2], ['query']),
     'getCountryByRegion' : IDL.Func([IDL.Text], [IDL.Vec(Country)], ['query']),
+    'getTypeById' : IDL.Func([IDL.Text], [Result_1], ['query']),
+    'getTypeByName' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'isAdmin' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'isAuthorized' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'my_role' : IDL.Func([], [Result], ['query']),
