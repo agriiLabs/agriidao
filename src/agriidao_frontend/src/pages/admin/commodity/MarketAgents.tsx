@@ -6,7 +6,7 @@ import CountryName from "../../../components/agriidao/CountryName";
 import {
   MarketLocationAgent,
   MarketLocation,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import { setCountry } from "../../../redux/slices/app";
 import UserSubs from "./components/UserSubs";
 import AddMarketAgent from "./components/AddMarketAgent";

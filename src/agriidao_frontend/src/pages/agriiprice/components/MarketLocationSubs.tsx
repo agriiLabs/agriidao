@@ -4,7 +4,7 @@ import { useAuth } from "../../../hooks/Context";
 import {
   MarketLocation,
   MarketLocationAgent,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 
 type Props = {
   marketSub: MarketLocationAgent;

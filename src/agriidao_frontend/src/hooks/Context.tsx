@@ -20,7 +20,7 @@ import {
 import { _SERVICE as _userService } from "../../../declarations/user/user.did";
 import type { _SERVICE as _bountyService } from "../../../declarations/bounty/bounty.did";
 import type { _SERVICE as _settingsService } from "../../../declarations/settings/settings.did";
-import type { _SERVICE as _commodityService} from "../../../declarations/commodity/commodity.did";
+import type { _SERVICE as _commodityService} from "../../../declarations/agriidao_backend/agriidao_backend.did";
 import { type _SERVICE as BACKEND_SERVICE } from "../../../declarations/agriidao_backend/agriidao_backend.did";
 import type { _SERVICE as _coopIndexerService } from "../../../declarations/coop_indexer/coop_indexer.did";
 import type { _SERVICE as _coopLedgerService } from "../../../declarations/coop_ledger/coop_ledger.did";

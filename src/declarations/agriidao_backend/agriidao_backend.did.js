@@ -1,24 +1,4 @@
 export const idlFactory = ({ IDL }) => {
-  const Role = IDL.Variant({
-    'admin' : IDL.Null,
-    'owner' : IDL.Null,
-    'staff' : IDL.Null,
-  });
-  const Staff = IDL.Record({
-    'created' : IDL.Int,
-    'principal' : IDL.Principal,
-    'role' : IDL.Opt(Role),
-    'fullName' : IDL.Text,
-    'email' : IDL.Text,
-    'approved' : IDL.Bool,
-    'phone' : IDL.Text,
-    'suspended' : IDL.Bool,
-  });
-  const Role__1 = IDL.Variant({
-    'admin' : IDL.Null,
-    'owner' : IDL.Null,
-    'staff' : IDL.Null,
-  });
   const Time = IDL.Int;
   const Commodity = IDL.Record({
     'id' : IDL.Text,
@@ -30,18 +10,22 @@ export const idlFactory = ({ IDL }) => {
     'acCategoryId' : IDL.Text,
     'isDelete' : IDL.Bool,
   });
-  const MarketLocationCommodity = IDL.Record({
-    'id' : IDL.Text,
-    'commodityId' : IDL.Text,
-    'timeStamp' : Time,
-    'createdBy' : IDL.Text,
-    'isDelete' : IDL.Bool,
-    'marketLocationId' : IDL.Text,
+  const MarketLocationRequest = IDL.Record({
+    'name' : IDL.Text,
+    'countryId' : IDL.Text,
   });
   const MarketLocationAgent = IDL.Record({
     'id' : IDL.Text,
     'timeStamp' : Time,
     'userId' : IDL.Text,
+    'createdBy' : IDL.Text,
+    'isDelete' : IDL.Bool,
+    'marketLocationId' : IDL.Text,
+  });
+  const MarketLocationCommodity = IDL.Record({
+    'id' : IDL.Text,
+    'commodityId' : IDL.Text,
+    'timeStamp' : Time,
     'createdBy' : IDL.Text,
     'isDelete' : IDL.Bool,
     'marketLocationId' : IDL.Text,
@@ -64,6 +48,26 @@ export const idlFactory = ({ IDL }) => {
     'isDelete' : IDL.Bool,
     'price' : IDL.Float64,
     'marketLocationId' : IDL.Text,
+  });
+  const Role = IDL.Variant({
+    'admin' : IDL.Null,
+    'owner' : IDL.Null,
+    'staff' : IDL.Null,
+  });
+  const Staff = IDL.Record({
+    'created' : IDL.Int,
+    'principal' : IDL.Principal,
+    'role' : IDL.Opt(Role),
+    'fullName' : IDL.Text,
+    'email' : IDL.Text,
+    'approved' : IDL.Bool,
+    'phone' : IDL.Text,
+    'suspended' : IDL.Bool,
+  });
+  const Role__1 = IDL.Variant({
+    'admin' : IDL.Null,
+    'owner' : IDL.Null,
+    'staff' : IDL.Null,
   });
   const MarketLocation = IDL.Record({
     'id' : IDL.Text,
@@ -91,8 +95,22 @@ export const idlFactory = ({ IDL }) => {
   const ChartStatsData = IDL.Record({ 'month' : IDL.Nat, 'count' : IDL.Nat });
   const Result = IDL.Variant({ 'ok' : Role__1, 'err' : IDL.Text });
   const InvAdmin = IDL.Service({
+    'addCommodity' : IDL.Func([Commodity], [], []),
+    'addMarketLocation' : IDL.Func([MarketLocationRequest], [], []),
+    'addMarketLocationAgent' : IDL.Func([MarketLocationAgent], [], []),
+    'addMarketLocationCommodity' : IDL.Func([MarketLocationCommodity], [], []),
+    'addMarketPrice' : IDL.Func([MarketPrice], [], []),
     'addStaffMember' : IDL.Func([Staff], [], []),
     'assign_role' : IDL.Func([IDL.Principal, IDL.Opt(Role__1)], [], []),
+    'deleteCommodity' : IDL.Func([Commodity], [], []),
+    'deleteMarketLocation' : IDL.Func([MarketLocation], [], []),
+    'deleteMarketLocationAgent' : IDL.Func([MarketLocationAgent], [], []),
+    'deleteMarketLocationCommodity' : IDL.Func(
+        [MarketLocationCommodity],
+        [],
+        [],
+      ),
+    'deleteMarketPrice' : IDL.Func([MarketPrice], [], []),
     'deleteStaffMember' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'getAllAdmins' : IDL.Func(
         [],
@@ -177,6 +195,15 @@ export const idlFactory = ({ IDL }) => {
     'get_total_market_locations' : IDL.Func([], [IDL.Nat], []),
     'get_total_market_prices' : IDL.Func([], [IDL.Nat], []),
     'my_role' : IDL.Func([], [Result], ['query']),
+    'updateCommodity' : IDL.Func([Commodity], [], []),
+    'updateMarkeLocation' : IDL.Func([MarketLocation], [], []),
+    'updateMarketLocationAgent' : IDL.Func([MarketLocationAgent], [], []),
+    'updateMarketLocationCommodity' : IDL.Func(
+        [MarketLocationCommodity],
+        [],
+        [],
+      ),
+    'updateMarketPrice' : IDL.Func([MarketPrice], [], []),
     'updateStaffMember' : IDL.Func([Staff], [], []),
   });
   return InvAdmin;

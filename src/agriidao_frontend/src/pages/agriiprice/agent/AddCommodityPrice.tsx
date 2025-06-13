@@ -10,7 +10,7 @@ import {
   MarketLocationCommodity,
   MarketPriceRequest,
   MarketLocation,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { Country } from "../../../../../declarations/settings/settings.did";

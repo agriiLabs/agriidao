@@ -80,6 +80,11 @@ type MarketPrice =
    unitKg: int;
    userId: text;
  };
+type MarketLocationRequest = 
+ record {
+   countryId: text;
+   name: text;
+ };
 type MarketLocationCommodity = 
  record {
    commodityId: text;
@@ -109,8 +114,18 @@ type MarketLocation =
  };
 type InvAdmin = 
  service {
+   addCommodity: (Commodity) -> ();
+   addMarketLocation: (MarketLocationRequest) -> ();
+   addMarketLocationAgent: (MarketLocationAgent) -> ();
+   addMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   addMarketPrice: (MarketPrice) -> ();
    addStaffMember: (Staff) -> ();
    assign_role: (principal, opt Role__1) -> ();
+   deleteCommodity: (Commodity) -> ();
+   deleteMarketLocation: (MarketLocation) -> ();
+   deleteMarketLocationAgent: (MarketLocationAgent) -> ();
+   deleteMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   deleteMarketPrice: (MarketPrice) -> ();
    deleteStaffMember: (principal) -> (bool);
    getAllAdmins: () -> (vec record {
                               principal;
@@ -149,6 +164,11 @@ type InvAdmin =
    get_total_market_locations: () -> (nat);
    get_total_market_prices: () -> (nat);
    my_role: () -> (Result) query;
+   updateCommodity: (Commodity) -> ();
+   updateMarkeLocation: (MarketLocation) -> ();
+   updateMarketLocationAgent: (MarketLocationAgent) -> ();
+   updateMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   updateMarketPrice: (MarketPrice) -> ();
    updateStaffMember: (Staff) -> ();
  };
 type Commodity = 

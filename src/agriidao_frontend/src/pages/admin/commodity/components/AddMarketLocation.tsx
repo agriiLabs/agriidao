@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/Context";
-import { MarketLocationRequest } from "../../../../../declarations/commodity/commodity.did";
+import { useAuth } from "../../../../hooks/Context";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { MarketLocationRequest } from '../../../../../../declarations/agriidao_backend/agriidao_backend.did';
 
 type FormData = {
   name: string;
   countryId: string;
 };
 
-const AddMarketLocation = ({ setOpenForm, setMarketSaved }) => {
+interface AddMarketLocationProps {
+  setOpenForm: (open: boolean) => void;
+  setMarketSaved: (saved: boolean) => void;
+}
+
+const AddMarketLocation = ({ setOpenForm, setMarketSaved }: AddMarketLocationProps) => {
   const { agriidaoActor, settingsActor } = useAuth();
   const [saving, setSaving] = useState(false);
   const [selectedCountryId, setSelectedCountryId] = useState<any[] | null>(null);
@@ -37,6 +42,10 @@ const AddMarketLocation = ({ setOpenForm, setMarketSaved }) => {
   }, []);
 
   const getCountries = async () => {
+    if (!settingsActor) {
+      console.error("settingsActor is null");
+      return;
+    }
     try {
       const res = await settingsActor.getAllCountries();
       setCountries(res);
@@ -46,6 +55,10 @@ const AddMarketLocation = ({ setOpenForm, setMarketSaved }) => {
   };
 
   const handleSave = async (data: FormData) => {
+    if (!agriidaoActor || !settingsActor || !countries) {
+      console.error("agriidaoActor is null");
+      return;
+    }
     const country = countries.find((country) => country.code === data.countryId);
     if (!country) {
       toast.error("No country found", {

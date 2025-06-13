@@ -14,7 +14,7 @@ import {
 import {
   MarketLocationAgent,
   MarketLocation,
-} from "../../../../declarations/commodity/commodity.did";
+} from "../../../../declarations/agriidao_backend/agriidao_backend.did";
 import {
   Project,
   ProjectRequest,

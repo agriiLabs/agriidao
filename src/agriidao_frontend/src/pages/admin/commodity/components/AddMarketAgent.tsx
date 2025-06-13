@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/Context";
-import { MarketLocationAgentRequest } from "../../../../../declarations/commodity/commodity.did";
+import { MarketLocationAgentRequest } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import { z } from "zod";
 import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

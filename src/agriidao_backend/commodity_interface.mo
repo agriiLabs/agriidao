@@ -2,6 +2,7 @@
 // Please use `import service "ic:canister_id"` instead to call canisters on the IC if possible.
 
 module {
+  public let commodityCanActor : Self = actor ("zpxxj-jyaaa-aaaag-alelq-cai");
   public type CanisterInitArgs = { env : EnvType };
   public type ChartStatsData = { month : Nat; count : Nat };
   public type Commodity = {
@@ -94,20 +95,30 @@ module {
     total_commodities : Nat;
   };
   public type Time = Int;
-  public let commodityCanActor : Self = actor ("zpxxj-jyaaa-aaaag-alelq-cai");
-  
   public type Self = actor {
     AgetAllMarketPricesPaginated : shared query GetPagesArgs -> async [(MarketPriceId, MarketPrice)];
-    addCommodity : shared CommodityRequest -> async ();
-    addMarketLocation : shared MarketLocationRequest -> async ();
-    addMarketLocationAgent : shared MarketLocationAgentRequest -> async ();
-    addMarketLocationCommodity : shared MarketLocationCommodityRequest -> async ();
-    addMarketPrice : shared MarketPriceRequest -> async ();
-    deleteCommodity : shared Commodity -> async ();
-    deleteMarketLocation : shared MarketLocation -> async ();
-    deleteMarketLocationAgent : shared MarketLocationAgent -> async ();
-    deleteMarketLocationCommodity : shared MarketLocationCommodity -> async ();
-    deleteMarketPrice : shared MarketPrice -> async ();
+    addCommodity : shared (CommodityRequest, Principal) -> async ();
+    addMarketLocation : shared (MarketLocationRequest, Principal) -> async ();
+    addMarketLocationAgent : shared (
+      MarketLocationAgentRequest,
+      Principal,
+    ) -> async ();
+    addMarketLocationCommodity : shared (
+      MarketLocationCommodityRequest,
+      Principal,
+    ) -> async ();
+    addMarketPrice : shared (MarketPriceRequest, Principal) -> async ();
+    deleteCommodity : shared (Commodity, Principal) -> async ();
+    deleteMarketLocation : shared (MarketLocation, Principal) -> async ();
+    deleteMarketLocationAgent : shared (
+      MarketLocationAgent,
+      Principal,
+    ) -> async ();
+    deleteMarketLocationCommodity : shared (
+      MarketLocationCommodity,
+      Principal,
+    ) -> async ();
+    deleteMarketPrice : shared (MarketPrice, Principal) -> async ();
     getAllLatestCommodities : shared query () -> async [Commodity];
     getAllLatestMarketCommoditiesByMarketId : shared query Text -> async [
       MarketLocationCommodity
@@ -151,10 +162,16 @@ module {
     getMarketStats : shared query () -> async [ChartStatsData];
     get_total_market_locations : shared query () -> async Nat;
     get_total_market_prices : shared query () -> async Nat;
-    updateCommodity : shared Commodity -> async ();
-    updateMarkeLocation : shared MarketLocation -> async ();
-    updateMarketLocationAgent : shared MarketLocationAgent -> async ();
-    updateMarketLocationCommodity : shared MarketLocationCommodity -> async ();
-    updateMarketPrice : shared MarketPrice -> async ();
+    updateCommodity : shared (Commodity, Principal) -> async ();
+    updateMarkeLocation : shared (MarketLocation, Principal) -> async ();
+    updateMarketLocationAgent : shared (
+        MarketLocationAgent,
+        Principal,
+      ) -> async ();
+    updateMarketLocationCommodity : shared (
+        MarketLocationCommodity,
+        Principal,
+      ) -> async ();
+    updateMarketPrice : shared (MarketPrice, Principal) -> async ();
   };
 };

@@ -9,7 +9,7 @@ import {
   Commodity,
   MarketLocation,
   MarketLocationCommodity,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 
 const MarketSummary = () => {
   const { agriidaoActor } = useAuth();

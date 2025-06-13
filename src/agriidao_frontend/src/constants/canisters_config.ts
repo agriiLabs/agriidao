@@ -1,7 +1,7 @@
 export { idlFactory as userIdlFactory } from "../../../declarations/user/user.did.js";
 export { idlFactory as bountyIdlFactory } from "../../../declarations/bounty/bounty.did.js";
 export { idlFactory as settingsIdlFactory } from "../../../declarations/settings/settings.did.js";
-export { idlFactory as commodityIdlFactory } from "../../../declarations/commodity/commodity.did.js";
+export { idlFactory as commodityIdlFactory } from "../../../declarations/agriidao_backend/agriidao_backend.did.js";
 export { idlFactory as coopIndexerIdlFactory } from "../../../declarations/coop_indexer/coop_indexer.did.js";
 export { idlFactory as coopLedgerIdlFactory } from "../../../declarations/coop_ledger/coop_ledger.did.js";
 export { idlFactory as projectsIdlFactory } from "../../../declarations/projects/projects.did.js";

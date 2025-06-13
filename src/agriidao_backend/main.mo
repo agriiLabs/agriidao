@@ -101,6 +101,54 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
     public shared func get_total_market_prices() : async Nat {
         return await commodityCanActor.get_total_market_prices();
     };
+
+    public shared ({ caller }) func updateCommodity(commodity : CommodityInterface.Commodity) : async () {
+        await commodityCanActor.updateCommodity(commodity, caller);
+    };
+    public shared ({ caller }) func updateMarkeLocation(marketLocation : CommodityInterface.MarketLocation) : async () {
+        await commodityCanActor.updateMarkeLocation(marketLocation, caller);
+    };
+    public shared ({ caller }) func updateMarketLocationAgent(marketLocationAgent : CommodityInterface.MarketLocationAgent) : async () {
+        await commodityCanActor.updateMarketLocationAgent(marketLocationAgent, caller);
+    };
+    public shared ({ caller }) func updateMarketLocationCommodity(marketLocationCommodity : CommodityInterface.MarketLocationCommodity) : async () {
+        await commodityCanActor.updateMarketLocationCommodity(marketLocationCommodity, caller);
+    };
+    public shared ({ caller }) func updateMarketPrice(marketPrice : CommodityInterface.MarketPrice) : async () {
+        await commodityCanActor.updateMarketPrice(marketPrice, caller);
+    };
+
+    public shared ({ caller }) func addCommodity(commodity : CommodityInterface.Commodity) : async () {
+        await commodityCanActor.addCommodity(commodity, caller);
+    };
+    public shared ({ caller }) func addMarketLocation(marketLocation : CommodityInterface.MarketLocationRequest) : async () {
+        await commodityCanActor.addMarketLocation(marketLocation, caller);
+    };
+    public shared ({ caller }) func addMarketLocationAgent(marketLocationAgent : CommodityInterface.MarketLocationAgent) : async () {
+        await commodityCanActor.addMarketLocationAgent(marketLocationAgent, caller);
+    };
+    public shared ({ caller }) func addMarketLocationCommodity(marketLocationCommodity : CommodityInterface.MarketLocationCommodity) : async () {
+        await commodityCanActor.addMarketLocationCommodity(marketLocationCommodity, caller);
+    };
+    public shared ({ caller }) func addMarketPrice(marketPrice : CommodityInterface.MarketPrice) : async () {
+        await commodityCanActor.addMarketPrice(marketPrice, caller);
+    };
+    public shared ({ caller }) func deleteCommodity(commodity : CommodityInterface.Commodity) : async () {
+        await commodityCanActor.deleteCommodity(commodity, caller);
+    };
+    public shared ({ caller }) func deleteMarketLocation(marketLocation : CommodityInterface.MarketLocation) : async () {
+        await commodityCanActor.deleteMarketLocation(marketLocation, caller);
+    };
+    public shared ({ caller }) func deleteMarketLocationAgent(marketLocationAgent : CommodityInterface.MarketLocationAgent) : async () {
+        await commodityCanActor.deleteMarketLocationAgent(marketLocationAgent, caller);
+    };
+    public shared ({ caller }) func deleteMarketLocationCommodity(marketLocationCommodity : CommodityInterface.MarketLocationCommodity) : async () {
+        await commodityCanActor.deleteMarketLocationCommodity(marketLocationCommodity, caller);
+    };
+    public shared ({ caller }) func deleteMarketPrice(marketPrice : CommodityInterface.MarketPrice) : async () {
+        await commodityCanActor.deleteMarketPrice(marketPrice, caller);
+    };
+
     // import Types from a module
     type Permission = Types.Permission;
     type Role = Types.Role;
