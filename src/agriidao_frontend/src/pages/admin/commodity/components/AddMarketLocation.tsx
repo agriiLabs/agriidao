@@ -43,6 +43,10 @@ const AddMarketLocation: FC<Props> = ({
   }, []);
 
   const getCountries = async () => {
+    if (!settingsActor) {
+      console.error("settingsActor is null");
+      return;
+    }
     try {
       const res = await settingsActor?.getAllCountries();
       setCountries(res || null);
@@ -59,7 +63,11 @@ const AddMarketLocation: FC<Props> = ({
 
 
   const handleSave = async (data: FormData) => {
-    const country = countries?.find((country) => country.code === data.countryId);
+    if (!agriidaoActor || !settingsActor || !countries) {
+      console.error("agriidaoActor is null");
+      return;
+    }
+    const country = countries.find((country) => country.code === data.countryId);
     if (!country) {
       toast.error("No country found", {
         autoClose: 5000,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddMarketLocation from "./components/AddMarketLocation";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
-import { MarketLocation } from "../../../../../declarations/commodity/commodity.did";
+import { MarketLocation } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import CountryName from "../../../components/agriidao/CountryName";
 
 const Markets = () => {

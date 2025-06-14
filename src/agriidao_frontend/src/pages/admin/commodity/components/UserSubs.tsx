@@ -1,8 +1,8 @@
 import {FC, useState, useEffect} from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAuth } from '../../../hooks/Context';
-import { MarketLocationAgent } from '../../../../../declarations/commodity/commodity.did';
-import { User } from '../../../../../declarations/user/user.did';
+import { useAuth } from '../../../../hooks/Context';
+import { MarketLocationAgent } from '../../../../../../declarations/agriidao_backend/agriidao_backend.did';
+import { User } from '../../../../../../declarations/user/user.did';
 import { Principal } from '@dfinity/principal';
 
 type Props = {

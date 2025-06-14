@@ -7,7 +7,7 @@ import {
   MarketLocationCommodity,
   MarketPrice,
   Commodity,
-} from "../../../../declarations/commodity/commodity.did";
+} from "../../../../declarations/agriidao_backend/agriidao_backend.did";
 import ProfileClick from "../profile/component/ProfileClick";
 import {
   Chart as ChartJS,

@@ -48,7 +48,7 @@ type Result_3 =
 type Result_2 = 
  variant {
    err: text;
-   ok: MarketPrice;
+   ok: MarketLocationCommodity;
  };
 type Result_1 = 
  variant {
@@ -80,6 +80,11 @@ type MarketPrice =
    unitKg: int;
    userId: text;
  };
+type MarketLocationRequest = 
+ record {
+   countryId: text;
+   name: text;
+ };
 type MarketLocationCommodity = 
  record {
    commodityId: text;
@@ -88,6 +93,11 @@ type MarketLocationCommodity =
    isDelete: bool;
    marketLocationId: text;
    timeStamp: Time;
+ };
+type MarketLocationAgentRequest = 
+ record {
+   marketLocationId: text;
+   userId: text;
  };
 type MarketLocationAgent = 
  record {
@@ -109,8 +119,18 @@ type MarketLocation =
  };
 type InvAdmin = 
  service {
+   addCommodity: (CommodityRequest) -> ();
+   addMarketLocation: (MarketLocationRequest) -> ();
+   addMarketLocationAgent: (MarketLocationAgentRequest) -> ();
+   addMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   addMarketPrice: (MarketPrice) -> ();
    addStaffMember: (Staff) -> ();
    assign_role: (principal, opt Role__1) -> ();
+   deleteCommodity: (Commodity) -> ();
+   deleteMarketLocation: (MarketLocation) -> ();
+   deleteMarketLocationAgent: (MarketLocationAgent) -> ();
+   deleteMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   deleteMarketPrice: (MarketPrice) -> ();
    deleteStaffMember: (principal) -> (bool);
    getAllAdmins: () -> (vec record {
                               principal;
@@ -140,7 +160,7 @@ type InvAdmin =
    getMarketLocationByCountryId: (text) -> (vec MarketLocation);
    getMarketLocationCommodityByCommodityId: (text) ->
     (vec MarketLocationCommodity);
-   getMarketLocationCommodityById: (text) -> (Result_1);
+   getMarketLocationCommodityById: (text) -> (Result_2);
    getMarketLocationLatest: (text) -> (Result__1);
    getMarketPriceByMarketCommodityId: (text) -> (vec MarketPrice);
    getMarketStats: () -> (vec ChartStatsData);
@@ -149,7 +169,19 @@ type InvAdmin =
    get_total_market_locations: () -> (nat);
    get_total_market_prices: () -> (nat);
    my_role: () -> (Result) query;
+   updateCommodity: (Commodity) -> ();
+   updateMarkeLocation: (MarketLocation) -> ();
+   updateMarketLocationAgent: (MarketLocationAgent) -> ();
+   updateMarketLocationCommodity: (MarketLocationCommodity) -> ();
+   updateMarketPrice: (MarketPrice) -> ();
    updateStaffMember: (Staff) -> ();
+ };
+type CommodityRequest = 
+ record {
+   acCategoryId: text;
+   commodityPic: text;
+   name: text;
+   ticker: text;
  };
 type Commodity = 
  record {

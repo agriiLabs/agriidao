@@ -5,7 +5,7 @@ import {
   Commodity,
   MarketLocationCommodity,
   MarketPrice,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 
 type Props = {
   marketPriceSub: MarketPrice;

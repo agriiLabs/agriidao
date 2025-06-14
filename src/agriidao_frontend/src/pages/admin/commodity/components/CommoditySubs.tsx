@@ -1,7 +1,7 @@
 import {FC, useState, useEffect} from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAuth } from '../../../hooks/Context';
-import { Commodity, MarketLocationCommodity } from '../../../../../declarations/commodity/commodity.did';
+import { useAuth } from '../../../../hooks/Context';
+import { Commodity, MarketLocationCommodity } from '../../../../../../declarations/agriidao_backend/agriidao_backend.did';
 
 type Props = {
     commoditySub: MarketLocationCommodity;

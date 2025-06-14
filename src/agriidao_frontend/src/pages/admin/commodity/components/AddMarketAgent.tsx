@@ -56,6 +56,7 @@ const AddMarketAgent: FC<Props> = ({
   }, []);
 
   const getUsers = async () => {
+    if (!userActor) return;
     try {
       const res = await userActor?.getUsers();
       console.log("users: ", res);
@@ -72,6 +73,10 @@ const AddMarketAgent: FC<Props> = ({
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const handleSave = async (data: FormData) => {
+    if (!agriidaoActor || !userActor || !users) {
+      console.error("agriidaoActor or userActor is null");
+      return;
+    }
     if (!agriidaoActor || !market) {
       console.error("agriidaoActor or market is null");
       return;

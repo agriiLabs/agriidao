@@ -13,9 +13,34 @@ export interface Commodity {
   'acCategoryId' : string,
   'isDelete' : boolean,
 }
+export interface CommodityRequest {
+  'ticker' : string,
+  'commodityPic' : string,
+  'name' : string,
+  'acCategoryId' : string,
+}
 export interface InvAdmin {
+  'addCommodity' : ActorMethod<[CommodityRequest], undefined>,
+  'addMarketLocation' : ActorMethod<[MarketLocationRequest], undefined>,
+  'addMarketLocationAgent' : ActorMethod<
+    [MarketLocationAgentRequest],
+    undefined
+  >,
+  'addMarketLocationCommodity' : ActorMethod<
+    [MarketLocationCommodity],
+    undefined
+  >,
+  'addMarketPrice' : ActorMethod<[MarketPrice], undefined>,
   'addStaffMember' : ActorMethod<[Staff], undefined>,
   'assign_role' : ActorMethod<[Principal, [] | [Role__1]], undefined>,
+  'deleteCommodity' : ActorMethod<[Commodity], undefined>,
+  'deleteMarketLocation' : ActorMethod<[MarketLocation], undefined>,
+  'deleteMarketLocationAgent' : ActorMethod<[MarketLocationAgent], undefined>,
+  'deleteMarketLocationCommodity' : ActorMethod<
+    [MarketLocationCommodity],
+    undefined
+  >,
+  'deleteMarketPrice' : ActorMethod<[MarketPrice], undefined>,
   'deleteStaffMember' : ActorMethod<[Principal], boolean>,
   'getAllAdmins' : ActorMethod<[], Array<[Principal, Role__1]>>,
   'getAllLatestCommodities' : ActorMethod<[], Array<Commodity>>,
@@ -69,7 +94,7 @@ export interface InvAdmin {
     [string],
     Array<MarketLocationCommodity>
   >,
-  'getMarketLocationCommodityById' : ActorMethod<[string], Result_1>,
+  'getMarketLocationCommodityById' : ActorMethod<[string], Result_2>,
   'getMarketLocationLatest' : ActorMethod<[string], Result__1>,
   'getMarketPriceByMarketCommodityId' : ActorMethod<
     [string],
@@ -81,6 +106,14 @@ export interface InvAdmin {
   'get_total_market_locations' : ActorMethod<[], bigint>,
   'get_total_market_prices' : ActorMethod<[], bigint>,
   'my_role' : ActorMethod<[], Result>,
+  'updateCommodity' : ActorMethod<[Commodity], undefined>,
+  'updateMarkeLocation' : ActorMethod<[MarketLocation], undefined>,
+  'updateMarketLocationAgent' : ActorMethod<[MarketLocationAgent], undefined>,
+  'updateMarketLocationCommodity' : ActorMethod<
+    [MarketLocationCommodity],
+    undefined
+  >,
+  'updateMarketPrice' : ActorMethod<[MarketPrice], undefined>,
   'updateStaffMember' : ActorMethod<[Staff], undefined>,
 }
 export interface MarketLocation {
@@ -99,6 +132,10 @@ export interface MarketLocationAgent {
   'isDelete' : boolean,
   'marketLocationId' : string,
 }
+export interface MarketLocationAgentRequest {
+  'userId' : string,
+  'marketLocationId' : string,
+}
 export interface MarketLocationCommodity {
   'id' : string,
   'commodityId' : string,
@@ -107,6 +144,7 @@ export interface MarketLocationCommodity {
   'isDelete' : boolean,
   'marketLocationId' : string,
 }
+export interface MarketLocationRequest { 'name' : string, 'countryId' : string }
 export interface MarketPrice {
   'id' : string,
   'status' : {
@@ -130,7 +168,7 @@ export type Result = { 'ok' : Role__1 } |
   { 'err' : string };
 export type Result_1 = { 'ok' : Staff } |
   { 'err' : string };
-export type Result_2 = { 'ok' : MarketPrice } |
+export type Result_2 = { 'ok' : MarketLocationCommodity } |
   { 'err' : string };
 export type Result_3 = { 'ok' : MarketLocationAgent } |
   { 'err' : string };

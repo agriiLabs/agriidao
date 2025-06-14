@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
-import { Commodity } from "../../../../../declarations/commodity/commodity.did";
+import { Commodity } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import CategoryName from "../../../components/CategoryName";
 
 const Commodities = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
-import { Commodity, MarketLocation, MarketLocationCommodity, MarketPrice } from "../../../../../declarations/commodity/commodity.did";
+import { Commodity, MarketLocation, MarketLocationCommodity, MarketPrice } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 
 function CommodityPrices() {
   const { agriidaoActor } = useAuth();

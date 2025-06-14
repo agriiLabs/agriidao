@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/Context";
 import {
   MarketLocationCommodity,
-} from "../../../../../declarations/commodity/commodity.did";
+} from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 
 type Props = {
   commoditySub: MarketLocationCommodity;
