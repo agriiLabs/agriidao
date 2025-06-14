@@ -66,9 +66,7 @@ const MarketAgents = () => {
 
   return (
     <>
-      {/* {openForm && (
-        <AddMarketAgent {...{ setOpenForm, setAgentSaved, market }} />
-      )} */}
+
       <div className="d-flex align-items-center justify-content-between">
         <div>
           <h5 className="mb-0">Market Agents</h5>

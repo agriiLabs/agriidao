@@ -59,3 +59,5 @@ const AddMarketLocationPreview = ({ setCurrentStep }: { setCurrentStep: (step: n
     </div>
   );
 };
+
+export default AddMarketLocationPreview;

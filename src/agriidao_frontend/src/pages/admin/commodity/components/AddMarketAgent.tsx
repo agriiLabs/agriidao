@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { Modal } from "react-bootstrap";
 import { User } from "../../../../../../declarations/user/user.did";
 import { setMarketLocationAgentRequest } from "../../../../redux/slices/app";
+import AddMarketAgentPreview from "./AddMarketAgentPreview";
 
 type Props = {
   showAddMarketAgentModal: boolean;
@@ -44,7 +45,7 @@ const AddMarketAgent: FC<Props> = ({
 
   const getMarketLocation = async (marketId: string) => {
     try {
-      const res = await agriidaoActor.getMarketLocationLatest(marketId);
+      const res = await agriidaoActor?.getMarketLocationLatest(marketId);
       setMarket(res);
     } catch (error) {
       console.error("Error fetching market location:", error);

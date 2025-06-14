@@ -8,7 +8,6 @@ import {
   BountyRequest,
   AllocationRequest,
   CampaignRequest,
-  CampaignTaskRequest,
 
 } from "../../../../declarations/bounty/bounty.did";
 import {
@@ -19,7 +18,6 @@ import {
 import {
   MarketLocationAgent,
   MarketLocation,
-  CommodityRequest,
   MarketLocationAgentRequest,
   MarketLocationRequest
 } from "../../../../declarations/commodity/commodity.did";
@@ -69,7 +67,6 @@ export interface GlobalState {
   bountyRequest: BountyRequest | null; 
   allocationRequest: AllocationRequest | null;
   campaignRequest: CampaignRequest | null;
-  CampaignTaskRequest: CampaignTaskRequest | null;
 }
 
 const initialState: GlobalState = {
@@ -99,7 +96,6 @@ const initialState: GlobalState = {
   bountyRequest: null,
   allocationRequest: null,
   campaignRequest: null,
-  CampaignTaskRequest: null,
 };
 
 export const appSlice = createSlice({
@@ -234,13 +230,7 @@ export const appSlice = createSlice({
       action: PayloadAction<CampaignRequest | null>
     ) => {
       state.campaignRequest = action.payload;
-    },
-    CampaignTaskRequest: (
-      state,
-      action: PayloadAction<CampaignTaskRequest | null>
-    ) => {
-      state.CampaignTaskRequest = action.payload;
-    },
+    }
   },
 });
 
@@ -271,7 +261,6 @@ export const {
   setBountyRequest,
   setAllocationRequest,
   setCampaignRequest,
-  CampaignTaskRequest,
 } = appSlice.actions;
 
 export default appSlice.reducer;

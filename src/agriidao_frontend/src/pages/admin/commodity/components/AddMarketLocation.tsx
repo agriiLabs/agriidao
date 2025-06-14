@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Modal } from "react-bootstrap";
 import { setMarketLocationRequest } from "../../../../redux/slices/app";
+import AddMarketLocationPreview from "./AddMarketLocationPreview";
 
 type Props = {
   showAddMarketLocationModal: boolean;

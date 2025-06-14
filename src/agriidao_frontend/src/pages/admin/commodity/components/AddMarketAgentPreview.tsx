@@ -26,7 +26,7 @@ const AddMarketAgentPreview = ({ setCurrentStep }: { setCurrentStep: (step: numb
         setSaving(false);
         return;
       }
-      const res = await agriidaoActor.addMarketLocationAgent(marketLocationAgent) {);
+      const res = await agriidaoActor.addMarketLocationAgent(marketLocationAgent);
       console.log("Market agent creation response:", res);
       if (res && "ok" in res) {
         setSaving(false);
@@ -60,3 +60,5 @@ const AddMarketAgentPreview = ({ setCurrentStep }: { setCurrentStep: (step: numb
     </div>
   );
 };
+
+export default AddMarketAgentPreview;
