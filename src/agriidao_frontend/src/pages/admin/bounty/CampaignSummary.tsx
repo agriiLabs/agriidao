@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/Context";
-import { CampaignTask, CampaignUser } from "../../../../declarations/bounty/bounty.did";
+import { useAuth } from "../../../hooks/Context";
+import { CampaignTask, CampaignUser, Campaign } from "../../../../../declarations/bounty/bounty.did";
 import { useDispatch } from "react-redux";
 import CampaignSub from "./CampaignSubs";
 
@@ -10,10 +10,10 @@ import CampaignSub from "./CampaignSubs";
 const CampaignSummary = () => {
   const { bountyActor } = useAuth(); 
   const { id } = useParams(); 
-  const [campaign, setCampaign] = useState(null);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [campaignSubs, setCampaignSubs] = useState<CampaignUser[]>([]);
 
-  const [participants, setParticipants] = useState(null);
+  const [participants, setParticipants] = useState<CampaignUser[] | null>(null);
   const [campaignTasks, setCampaignTasks] = useState<CampaignTask[] | null>(null);
   const [task, setTask] = useState<CampaignTask | null>(null);
   // const [campaign_, setCampaign_] = useState(null);
@@ -37,7 +37,7 @@ const CampaignSummary = () => {
   }, [bountyActor]);
 
   const getAllCampaignSubs = async () => {
-    if (!bountyActor) {
+    if (!bountyActor || !id) {
       console.error("caller or bountyActor is null");
       return;
     }
@@ -66,6 +66,10 @@ const CampaignSummary = () => {
 
 
   const getCampaignLatest = async () => {
+    if (!bountyActor || !id) {
+      console.error("bountyActor or ID is null");
+      return;
+    }
     const res = await bountyActor.getCampaignLatest(id);
     
     if ("ok" in res) {
@@ -77,37 +81,26 @@ const CampaignSummary = () => {
 
   // get campaign by bounty id
   const getCampaignUsers = async () => {
+    if (!bountyActor || !id) {
+      console.error("bountyActor or ID is null");
+      return;
+    }
     const res = await bountyActor.getCampaignUsersByCampaignId(id);
     setParticipants(res); 
   };
 
   return (
     <>
-      
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <ol className="breadcrumb m-0">
-                  <li className="breadcrumb-item">
-                    <a href="javascript: void(0);">InventoryClub</a>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <a href="javascript: void(0);">Bounties</a>
-                  </li>
-                  <li className="breadcrumb-item active">Bounty Summary</li>
-                </ol>
-              </div>
-              <h4 className="page-title">Campaign Summary</h4>
-            </div>
-          </div>
+    <div className="d-flex align-items-center justify-content-between">
+        <div>
+          <h5 className="mb-0">Campaign Summary</h5>
         </div>
+      </div>
 
         <div className="row">
-          <div className="col-lg-4 col-xl-4">
-            <div className="card-box text-center">
-              <div className="text-left mt-3">
+        <div className="col-xl-12 mt-4">
+          <div className="card rounded shadow border-0 p-4">
+            <div className="mt-4">
                 <h4 className="text-uppercase">{campaign?.name}</h4>
                 <br />
                 <dl className="row">
@@ -124,18 +117,18 @@ const CampaignSummary = () => {
               </div>
 
               <div className="row">
-                <div className="col-md-12">
+                <div className="mt-3">
                   <Link
                     to={`/rewards/bounty/campaigns/campaign-detail/${campaign?.id}`}
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Campaign Details
                   </Link>
                   <Link
                     to={`/rewards/bounty/campaigns/campaign-detail/task-allocation/${campaign?.id}`}
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Task Allocations
                   </Link>
@@ -145,33 +138,28 @@ const CampaignSummary = () => {
           </div>
 
           <div className="col-lg-8 col-xl-8">
-            <div className="card-box">
-              <h5 className="mb-3 bg-light p-2 row">
-                <div className="col-lg-8 text-uppercase">
-                  <i className="mdi mdi-earth mr-1"></i> Campaign Participants
-                </div>
-              </h5>
+          <div className="col-xl-12 mt-4">
+          <div className="card rounded shadow border-0 p-4">
+            <div className="d-flex justify-content-between mb-4">
+              <h5 className="mb-0">Campaign Details</h5>
+              </div>
 
-              <div className="table-container table-responsive">
-                <table className="table">
+                <table className="table table-center bg-white mb-0">
                   <thead>
                     <tr>
-                      <th scope="col" className="orderable">
+                      <th className="border-bottom p-3">
                         User ID
                       </th>
-                      <th scope="col" className="orderable">
+                      <th className="border-bottom p-3">
                         Task
                       </th>
-                      <th scope="col" className="orderable">
+                      <th className="border-bottom p-3">
                         Status
                       </th>
-                      {/* <th scope="col" className="orderable">
-                        Paid
-                      </th> */}
-                      <th scope="col" className="orderable">
+                      <th className="border-bottom p-3">
                         Created At
                       </th>
-                      <th scope="col">View</th>
+                      <th className="border-bottom p-3">View</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -191,7 +179,6 @@ const CampaignSummary = () => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

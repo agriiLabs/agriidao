@@ -44,8 +44,12 @@ const AddMarketAgent: FC<Props> = ({
   }, [id]);
 
   const getMarketLocation = async (marketId: string) => {
+    if (!agriidaoActor) {
+      console.error("agriidaoActor is null");
+      return;
+    }
     try {
-      const res = await agriidaoActor?.getMarketLocationLatest(marketId);
+      const res = await agriidaoActor.getMarketLocationLatest(marketId);
       setMarket(res);
     } catch (error) {
       console.error("Error fetching market location:", error);

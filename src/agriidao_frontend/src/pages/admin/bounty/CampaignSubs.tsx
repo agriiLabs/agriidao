@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/Context";
-import { Response } from "../../utils/Types";
-import { AcCategory } from "../../../../declarations/settings/settings.did";
-import { Campaign, CampaignTask, CampaignUser } from "../../../../declarations/bounty/bounty.did";
-import { setCampaign_ } from "../../redux/slices/app";
+import { useAuth } from "../../../hooks/Context";
+import { Response } from "../../../utils/Types";
+import { AcCategory } from "../../../../../declarations/settings/settings.did";
+import { Campaign, CampaignTask, CampaignUser } from "../../../../../declarations/bounty/bounty.did";
+// import { setCampaign_ } from "../../../redux/slices/app";
 import { useDispatch } from "react-redux";
-import { formatNanoDate } from "../../utils/Utils";
+import { formatNanoDate } from "../../../utils/Utils";
 
 type Props ={
     campaignSub: CampaignUser;
@@ -27,13 +27,9 @@ type Status = { pending: null } | { rejected: null } | { accepted: null };
   };
 
 const CampaignSub: FC<Props> = ({ campaignSub }) => {
-    const { bountyActor } = useAuth(); //get agriichainBackend from the global context
-  const { id } = useParams(); //how to access the url parameter i.e id
-  // const dispatch = useDispatch();  
-  // const [campaign, setCampaign] = useState(null);
-  // const [participant, setParticipant] = useState(null);
-  // const [campaignTasks, setCampaignTasks] = useState<CampaignTask[] | null>(null);
-  const [task, setTask] = useState<CampaignTask | null>(null);
+    const { bountyActor } = useAuth(); 
+  const { id } = useParams(); 
+const [task, setTask] = useState<CampaignTask | null>(null);
 
   useEffect(() => {
     if(campaignSub){

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'; 
 import Modal from 'react-bootstrap/Modal'; 
-import { Campaign, CampaignTask } from '../../../../../../declarations/bounty/bounty.did';
-import { useAuth } from '../../../../hooks/Context';
+import { Campaign, CampaignTask } from '../../../../../declarations/bounty/bounty.did';
+import { useAuth } from '../../../hooks/Context';
 
 type Props = {
   showRewardsModal : boolean, 

@@ -1,4 +1,10 @@
 export const idlFactory = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
   const Time = IDL.Int;
   const CampaignUser = IDL.Record({
     'id' : IDL.Text,
@@ -70,7 +76,7 @@ export const idlFactory = ({ IDL }) => {
     'userId' : IDL.Principal,
     'socialMediaId' : IDL.Text,
   });
-  const Bounty__1 = IDL.Record({
+  const Bounty = IDL.Record({
     'id' : IDL.Text,
     'endDate' : IDL.Text,
     'availableBal' : IDL.Float64,
@@ -138,13 +144,13 @@ export const idlFactory = ({ IDL }) => {
   });
   const Result_1 = IDL.Variant({ 'ok' : UserSocialMedia, 'err' : IDL.Text });
   const Result_8 = IDL.Variant({ 'ok' : Allocation, 'err' : IDL.Text });
-  const Result_7 = IDL.Variant({ 'ok' : Bounty__1, 'err' : IDL.Text });
+  const Result_7 = IDL.Variant({ 'ok' : Bounty, 'err' : IDL.Text });
   const Result_4 = IDL.Variant({ 'ok' : BountyPoint, 'err' : IDL.Text });
   const Result_6 = IDL.Variant({ 'ok' : Campaign, 'err' : IDL.Text });
   const Result_5 = IDL.Variant({ 'ok' : CampaignUser, 'err' : IDL.Text });
   const Result_3 = IDL.Variant({ 'ok' : CampaignTask, 'err' : IDL.Text });
   const Result_2 = IDL.Variant({ 'ok' : Tier, 'err' : IDL.Text });
-  const Bounty = IDL.Service({
+  const BountyActor = IDL.Service({
     'acceptCampaignUserSubmission' : IDL.Func([CampaignUser], [Result], []),
     'addAllocation' : IDL.Func([AllocationRequest, IDL.Text], [], []),
     'addBounty' : IDL.Func([BountyRequest], [], []),
@@ -160,13 +166,14 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'deleteAllocation' : IDL.Func([IDL.Text], [IDL.Bool], []),
-    'deleteBounty' : IDL.Func([Bounty__1], [], []),
+    'deleteBounty' : IDL.Func([Bounty], [], []),
     'deleteCampaign' : IDL.Func([Campaign], [], []),
     'deleteCampaignTask' : IDL.Func([CampaignTask], [], []),
     'deleteCampaignUser' : IDL.Func([IDL.Text], [IDL.Bool], []),
     'deleteTier' : IDL.Func([Tier], [], []),
     'deleteUserSocialMedia' : IDL.Func([UserSocialMedia], [], []),
     'getAllAllocations' : IDL.Func([], [IDL.Vec(Allocation)], ['query']),
+    'getAllBounties' : IDL.Func([], [IDL.Vec(Bounty)], ['query']),
     'getAllCampaignsLatest' : IDL.Func([], [IDL.Vec(Campaign)], ['query']),
     'getAllLatestBountyCampaignsByName' : IDL.Func(
         [IDL.Text],
@@ -283,12 +290,20 @@ export const idlFactory = ({ IDL }) => {
     'rejectCampaignUserSubmission' : IDL.Func([CampaignUser], [], []),
     'socialMediaCheck' : IDL.Func([IDL.Text], [IDL.Bool], ['query']),
     'updateAllocation' : IDL.Func([Allocation], [], []),
-    'updateBounty' : IDL.Func([Bounty__1], [], []),
+    'updateBounty' : IDL.Func([Bounty], [], []),
     'updateCampaign' : IDL.Func([Campaign], [], []),
     'updateCampaignTask' : IDL.Func([CampaignTask], [], []),
     'updateTier' : IDL.Func([Tier], [], []),
     'updateUserSocialMedia' : IDL.Func([UserSocialMedia], [Result], []),
   });
-  return Bounty;
+  return BountyActor;
 };
-export const init = ({ IDL }) => { return []; };
+export const init = ({ IDL }) => {
+  const EnvType = IDL.Variant({
+    'staging' : IDL.Null,
+    'production' : IDL.Null,
+    'local' : IDL.Null,
+  });
+  const CanisterInitArgs = IDL.Record({ 'env' : EnvType });
+  return [CanisterInitArgs];
+};

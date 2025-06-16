@@ -19,6 +19,19 @@ export interface AllocationRequest {
   'amount' : number,
 }
 export interface Bounty {
+  'id' : string,
+  'endDate' : string,
+  'availableBal' : number,
+  'timeStamp' : Time,
+  'name' : string,
+  'createdBy' : string,
+  'bountyPool' : number,
+  'isLive' : boolean,
+  'acCategoryId' : string,
+  'isDelete' : boolean,
+  'startDate' : string,
+}
+export interface BountyActor {
   'acceptCampaignUserSubmission' : ActorMethod<[CampaignUser], Result>,
   'addAllocation' : ActorMethod<[AllocationRequest, string], undefined>,
   'addBounty' : ActorMethod<[BountyRequest], undefined>,
@@ -33,13 +46,14 @@ export interface Bounty {
     Array<CampaignUser>
   >,
   'deleteAllocation' : ActorMethod<[string], boolean>,
-  'deleteBounty' : ActorMethod<[Bounty__1], undefined>,
+  'deleteBounty' : ActorMethod<[Bounty], undefined>,
   'deleteCampaign' : ActorMethod<[Campaign], undefined>,
   'deleteCampaignTask' : ActorMethod<[CampaignTask], undefined>,
   'deleteCampaignUser' : ActorMethod<[string], boolean>,
   'deleteTier' : ActorMethod<[Tier], undefined>,
   'deleteUserSocialMedia' : ActorMethod<[UserSocialMedia], undefined>,
   'getAllAllocations' : ActorMethod<[], Array<Allocation>>,
+  'getAllBounties' : ActorMethod<[], Array<Bounty>>,
   'getAllCampaignsLatest' : ActorMethod<[], Array<Campaign>>,
   'getAllLatestBountyCampaignsByName' : ActorMethod<[string], Array<Campaign>>,
   'getAllLatestBountyPointUsers' : ActorMethod<[], Array<BountyPoint>>,
@@ -76,7 +90,7 @@ export interface Bounty {
   'rejectCampaignUserSubmission' : ActorMethod<[CampaignUser], undefined>,
   'socialMediaCheck' : ActorMethod<[string], boolean>,
   'updateAllocation' : ActorMethod<[Allocation], undefined>,
-  'updateBounty' : ActorMethod<[Bounty__1], undefined>,
+  'updateBounty' : ActorMethod<[Bounty], undefined>,
   'updateCampaign' : ActorMethod<[Campaign], undefined>,
   'updateCampaignTask' : ActorMethod<[CampaignTask], undefined>,
   'updateTier' : ActorMethod<[Tier], undefined>,
@@ -97,19 +111,6 @@ export interface BountyRequest {
   'name' : string,
   'bountyPool' : number,
   'acCategoryId' : string,
-  'startDate' : string,
-}
-export interface Bounty__1 {
-  'id' : string,
-  'endDate' : string,
-  'availableBal' : number,
-  'timeStamp' : Time,
-  'name' : string,
-  'createdBy' : string,
-  'bountyPool' : number,
-  'isLive' : boolean,
-  'acCategoryId' : string,
-  'isDelete' : boolean,
   'startDate' : string,
 }
 export interface Campaign {
@@ -173,6 +174,10 @@ export interface CampaignUserRequest {
   'campaignTaskId' : string,
   'campaignId' : string,
 }
+export interface CanisterInitArgs { 'env' : EnvType }
+export type EnvType = { 'staging' : null } |
+  { 'production' : null } |
+  { 'local' : null };
 export type Result = { 'ok' : null } |
   { 'err' : string };
 export type Result_1 = { 'ok' : UserSocialMedia } |
@@ -187,7 +192,7 @@ export type Result_5 = { 'ok' : CampaignUser } |
   { 'err' : string };
 export type Result_6 = { 'ok' : Campaign } |
   { 'err' : string };
-export type Result_7 = { 'ok' : Bounty__1 } |
+export type Result_7 = { 'ok' : Bounty } |
   { 'err' : string };
 export type Result_8 = { 'ok' : Allocation } |
   { 'err' : string };
@@ -218,6 +223,6 @@ export interface UserSocialMediaRequest {
   'userId' : Principal,
   'socialMediaId' : string,
 }
-export interface _SERVICE extends Bounty {}
+export interface _SERVICE extends BountyActor {}
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

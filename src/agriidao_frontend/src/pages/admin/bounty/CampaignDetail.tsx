@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/Context";
-import { Response } from "../../utils/Types";
-import { AcCategory } from "../../../../declarations/settings/settings.did";
+import { useAuth } from "../../../hooks/Context";
+import { Response } from "../../../utils/Types";
+import { AcCategory } from "../../../../../declarations/settings/settings.did";
 import { toast } from "react-toastify";
 
 const CampaignDetail = () => {
@@ -12,7 +12,7 @@ const CampaignDetail = () => {
   const { campaign: initialCampaign } = location.state || { campaign: { rules: '' }};
   const [campaign, setCampaign] = useState(initialCampaign);
   const [categories, setCategories] = useState<AcCategory[]|null>(null);
-  const [saving, setSaving] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   // get campaign by id
   useEffect(() => {
@@ -22,12 +22,16 @@ const CampaignDetail = () => {
   // get catetories
 
   const getCampaignLatest = async () => {
-    const res: Response = await bountyActor.getCampaignLatest(id);
+    if (!bountyActor || !id) {
+      console.error("bountyActor or ID is null");
+      return;
+    }
+    let res =  await bountyActor.getCampaignLatest(id);
     
-    if (res.ok) {
+    if ("ok" in res) {
       // formatting some fields of campaign, in this case the start & end dates
       setCampaign(res.ok);
-    } else {
+    } else if ("err" in res) {
       console.log(res.err);
     }
   };
@@ -56,30 +60,16 @@ const CampaignDetail = () => {
 
   return (
     <>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <ol className="breadcrumb m-0">
-                  <li className="breadcrumb-item">
-                    <a href="javascript: void(0);">InventoryClub</a>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <a href="javascript: void(0);">Bounties</a>
-                  </li>
-                  <li className="breadcrumb-item active">Bounty Summary</li>
-                </ol>
-              </div>
-              <h4 className="page-title">Campaign</h4>
-            </div>
-          </div>
+        <div className="d-flex align-items-center justify-content-between">
+        <div>
+          <h5 className="mb-0">Bounty Summary</h5>
         </div>
+      </div>
 
         <div className="row">
-          <div className="col-lg-4 col-xl-4">
-            <div className="card-box text-center">
-              <div className="text-left mt-3">
+        <div className="col-xl-12 mt-4">
+          <div className="card rounded shadow border-0 p-4">
+            <div className="mt-4">
                 <h4 className="text-uppercase">{campaign?.name}</h4>
                 <br />
                 <dl className="row">
@@ -110,32 +100,32 @@ const CampaignDetail = () => {
               <br />
 
               <div className="row">
-                <div className="col-md-12">
+                <div className="mt-3">
                   <Link
                     to=""
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Image
                   </Link>
                   <Link
                     to={`/rewards/bounty/${campaign?.id}`}
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Campaign Details
                   </Link>
                   <Link
                     to={`/campaign-update/${campaign?.id}`}
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Update
                   </Link>
                   <Link
                     to={`/campaign-detail/task-allocation/${campaign?.id}`}
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                   >
                     Task Allocations
                   </Link>
@@ -143,7 +133,7 @@ const CampaignDetail = () => {
                     onClick={() => handleDelete()}
                     
                     type="button"
-                    className="btn btn-md btn-block btn-blue"
+                    className="btn btn-outline-dark col-sm-12"
                     disabled={saving}
                     
                   >
@@ -155,12 +145,11 @@ const CampaignDetail = () => {
           </div>
 
           <div className="col-lg-8 col-xl-8">
-            <div className="card-box">
-              <h5 className="mb-3 bg-light p-2 row">
-                <div className="col-lg-8 text-uppercase">
-                  <i className="mdi mdi-earth mr-1"></i> Campaign Details
-                </div>
-              </h5>
+          <div className="col-xl-12 mt-4">
+            <div className="card rounded shadow border-0 p-4">
+              <div className="d-flex justify-content-between mb-4">
+                <h5 className="mb-0">Campaign Details</h5>
+              </div>
 
               <dl className="row">
                 <dt className="col-sm-5">URL</dt>

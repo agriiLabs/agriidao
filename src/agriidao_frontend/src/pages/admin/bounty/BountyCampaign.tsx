@@ -1,53 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/Context";
-import { Response } from "../../utils/Types";
+import { useAuth } from "../../../hooks/Context";
+import { Response } from "../../../utils/Types";
 import AddCampaign from "./components/AddCampaign";
+import { Bounty, Campaign } from "../../../../../declarations/bounty/bounty.did";
 
 const BountyCampaign = () => {
   const { bountyActor } = useAuth(); //get agriichainBackend from the global context
   const { id } = useParams(); //how to access the url parameter i.e id
-  const [bounty, setBounty] = useState(null);
-  const [campaigns, setCampaigns] = useState([]);
+  const [bounty, setBounty] = useState<Bounty | null>(null);
+  const [campaigns, setCampaigns] = useState<Campaign[] | undefined>([]);
   const [openForm, setOpenForm] = useState(false);
   const [campaignSaved, setCampaignSaved] = useState(false);
 
-  // get bounty by id
   useEffect(() => {
     getBounty();
     getCampaigns();
   }, [id]);
 
-  // get campaign by bounty id
   useEffect(() => {
     if (campaignSaved) {
-      //listens for any changes in campaignSaved, if campaignSaved is true, it calls getCampaigns function
       getCampaigns();
     }
   }, [campaignSaved]);
 
   const getBounty = async () => {
-    const res: Response = await bountyActor.getBountyLatest(id);
+    if (!id) {
+      console.error("Bounty ID is not defined");
+      return;
+    }
+    const res = await bountyActor?.getBountyLatest(id);
+    if (!res) {
+      console.error("Failed to fetch bounty: undefined response");
+      return;
+    }
+    const response: Response = res;
     
-    if (res.ok) {
-      // formatting some fields of the bounty, in this case the start & end dates
+    if ("ok" in res) {
       setBounty(res.ok);
-    } else {
+    } else if ("err" in res) {
       console.log(res.err);
+    } else {
+      console.error("Unexpected response structure:", res);
     }
   };
 
-  // get campaigns by bounty id
   const getCampaigns = async () => {
-    const res = await bountyActor.getBountyCampaigns(id);
-    setCampaigns(res); //setCampaign is already an array
+    if (!id) {
+      console.error("Bounty ID is not defined");
+      return;
+    }
+    const res = await bountyActor?.getBountyCampaigns(id);
+    setCampaigns(res); 
   };
 
   return (
     <>
-      {openForm && (
-        <AddCampaign {...{ setOpenForm, bounty, setCampaignSaved }} />
-      )}
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
@@ -69,16 +77,16 @@ const BountyCampaign = () => {
         </div>
 
         <div className="row">
-          <div className="col-lg-4 col-xl-4">
-            <div className="card-box text-center">
-              <div className="text-left mt-3">
+        <div className="col-xl-12 mt-4">
+          <div className="card rounded shadow border-0 p-4">
+            <div className="mt-4">
                 <h4 className="text-uppercase">{bounty?.name}</h4>
                 <br />
                 <dl className="row">
                   <dt className="col-sm-5">Total Value</dt>
                   <dd className="col-sm-7">{bounty?.bountyPool}</dd>
                   <dt className="col-sm-5">Available Pool</dt>
-                  <dd className="col-sm-7">{bounty?.availBal}</dd>
+                  <dd className="col-sm-7">{bounty?.availableBal}</dd>
                   <dt className="col-sm-5">Live</dt>
                   <dd className="col-sm-7">
                     {bounty?.isLive ? "true" : "false"}

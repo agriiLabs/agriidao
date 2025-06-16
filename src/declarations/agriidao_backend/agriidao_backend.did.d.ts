@@ -30,7 +30,7 @@ export interface InvAdmin {
     [MarketLocationCommodity],
     undefined
   >,
-  'addMarketPrice' : ActorMethod<[MarketPrice], undefined>,
+  'addMarketPrice' : ActorMethod<[MarketPriceRequest], undefined>,
   'addStaffMember' : ActorMethod<[Staff], undefined>,
   'assign_role' : ActorMethod<[Principal, [] | [Role__1]], undefined>,
   'deleteCommodity' : ActorMethod<[Commodity], undefined>,
@@ -145,6 +145,20 @@ export interface MarketLocationCommodity {
   'marketLocationId' : string,
 }
 export interface MarketLocationRequest { 'name' : string, 'countryId' : string }
+export interface MarketPriceRequest {
+  'status' : {
+    'pending' : boolean,
+    'rejected' : boolean,
+    'accepted' : boolean,
+  },
+  'marketLocationCommodityId' : string,
+  'userId' : string,
+  'pricePerKg' : number,
+  'unitKg' : bigint,
+  'currency' : string,
+  'price' : number,
+  'marketLocationId' : string,
+}
 export interface MarketPrice {
   'id' : string,
   'status' : {

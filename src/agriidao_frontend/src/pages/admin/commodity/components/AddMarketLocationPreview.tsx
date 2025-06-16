@@ -27,7 +27,6 @@ const AddMarketLocationPreview = ({ setCurrentStep }: { setCurrentStep: (step: n
         return;
       }
       const res = await agriidaoActor.addMarketLocation(marketLocationRequest);
-      console.log("Market location creation response:", res);
       if (res && "ok" in res) {
         setSaving(false);
         dispatch(setMarketLocationRequest(null));

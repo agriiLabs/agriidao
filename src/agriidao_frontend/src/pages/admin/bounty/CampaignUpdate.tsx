@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { Campaign } from "../../../../declarations/bounty/bounty.did";
-import { useAuth } from "../../hooks/Context";
+import { Campaign } from "../../../../../declarations/bounty/bounty.did";
+import { useAuth } from "../../../hooks/Context";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { uploadFile } from "../../hooks/storage/functions";
+// import { uploadFile } from "../../hooks/storage/functions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { AcCategory } from "../../../../declarations/settings/settings.did";
+import { AcCategory, SettingsData } from "../../../../../declarations/settings/settings.did";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 
 function CampaignUpdate() {
   const { bountyActor, settingsActor } = useAuth();
   const { campaign } = useSelector((state: RootState) => state.app);
   const [saving, setSaving] = useState(false);
-  const [categories, setCategories] = useState<AcCategory[] | null>(null); //setting a variable for categories to an empty array of any/null
+  const [categories, setCategories] = useState<SettingsData[] | null>(null); //setting a variable for categories to an empty array of any/null
   const [campaignPic, setCampaignPic] = useState<File | null>(null);
 
   const [name, setName] = useState<string>(
@@ -46,7 +46,11 @@ function CampaignUpdate() {
 
   const getAcTypeCategories = async () => {
     try {
-      const res = await settingsActor.getAllLatestAcTypeCategoriesByName(
+      if (!settingsActor) {
+        console.error("settingsActor is null");
+        return;
+      }
+      const res = await settingsActor.getAllCategoriesByType(
         acTypeName
       );
       setCategories(res);
@@ -91,11 +95,11 @@ function CampaignUpdate() {
     }
   };
 
-  const handleQuillChange = (value) => {
+  const handleQuillChange = (value: string): void => {
     setRules(value);
   };
 
-  const handleQuillChange2 = (value) => {
+  const handleQuillChange2 = (value: string): void => {
     setNotes(value);
   };
 
@@ -195,7 +199,7 @@ function CampaignUpdate() {
                       className="select form-control"
                     >
                       {categories?.map((category, index) => (
-                        <option key={index}>{category.name}</option>
+                        <option key={index}>{category.category}</option>
                       ))}
                     </select>
                   </div>
@@ -218,7 +222,11 @@ function CampaignUpdate() {
                     <input
                       type="file"
                       id="campaignPic"
-                      onChange={(e) => setCampaignPic(e.target.files[0])}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          setCampaignPic(e.target.files[0]);
+                        }
+                      }}
                       accept="image/*"
                       className="textinput textInput form-control"
                     />
