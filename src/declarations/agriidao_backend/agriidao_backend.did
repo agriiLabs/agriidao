@@ -60,6 +60,21 @@ type Result =
    err: text;
    ok: Role__1;
  };
+type MarketPriceRequest = 
+ record {
+   currency: text;
+   marketLocationCommodityId: text;
+   marketLocationId: text;
+   price: float64;
+   pricePerKg: float64;
+   status: record {
+             accepted: bool;
+             pending: bool;
+             rejected: bool;
+           };
+   unitKg: int;
+   userId: text;
+ };
 type MarketPrice = 
  record {
    createdBy: text;
@@ -123,7 +138,7 @@ type InvAdmin =
    addMarketLocation: (MarketLocationRequest) -> ();
    addMarketLocationAgent: (MarketLocationAgentRequest) -> ();
    addMarketLocationCommodity: (MarketLocationCommodity) -> ();
-   addMarketPrice: (MarketPrice) -> ();
+   addMarketPrice: (MarketPriceRequest) -> ();
    addStaffMember: (Staff) -> ();
    assign_role: (principal, opt Role__1) -> ();
    deleteCommodity: (Commodity) -> ();

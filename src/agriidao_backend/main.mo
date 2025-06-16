@@ -130,7 +130,7 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
     public shared ({ caller }) func addMarketLocationCommodity(marketLocationCommodity : CommodityInterface.MarketLocationCommodity) : async () {
         await commodityCanActor.addMarketLocationCommodity(marketLocationCommodity, caller);
     };
-    public shared ({ caller }) func addMarketPrice(marketPrice : CommodityInterface.MarketPrice) : async () {
+    public shared ({ caller }) func addMarketPrice(marketPrice : CommodityInterface.MarketPriceRequest) : async () {
         await commodityCanActor.addMarketPrice(marketPrice, caller);
     };
     public shared ({ caller }) func deleteCommodity(commodity : CommodityInterface.Commodity) : async () {

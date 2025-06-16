@@ -22,22 +22,17 @@ export const idlFactory = ({ IDL }) => {
     'isDelete' : IDL.Bool,
     'marketLocationId' : IDL.Text,
   });
-  const MarketPrice = IDL.Record({
-    'id' : IDL.Text,
+  const MarketPriceRequest = IDL.Record({
     'status' : IDL.Record({
       'pending' : IDL.Bool,
       'rejected' : IDL.Bool,
       'accepted' : IDL.Bool,
     }),
     'marketLocationCommodityId' : IDL.Text,
-    'timeStamp' : Time,
     'userId' : IDL.Text,
-    'createdBy' : IDL.Text,
     'pricePerKg' : IDL.Float64,
     'unitKg' : IDL.Int,
-    'isPaid' : IDL.Bool,
     'currency' : IDL.Text,
-    'isDelete' : IDL.Bool,
     'price' : IDL.Float64,
     'marketLocationId' : IDL.Text,
   });
@@ -87,6 +82,25 @@ export const idlFactory = ({ IDL }) => {
     'isDelete' : IDL.Bool,
     'marketLocationId' : IDL.Text,
   });
+  const MarketPrice = IDL.Record({
+    'id' : IDL.Text,
+    'status' : IDL.Record({
+      'pending' : IDL.Bool,
+      'rejected' : IDL.Bool,
+      'accepted' : IDL.Bool,
+    }),
+    'marketLocationCommodityId' : IDL.Text,
+    'timeStamp' : Time,
+    'userId' : IDL.Text,
+    'createdBy' : IDL.Text,
+    'pricePerKg' : IDL.Float64,
+    'unitKg' : IDL.Int,
+    'isPaid' : IDL.Bool,
+    'currency' : IDL.Text,
+    'isDelete' : IDL.Bool,
+    'price' : IDL.Float64,
+    'marketLocationId' : IDL.Text,
+  });
   const Result_4 = IDL.Variant({ 'ok' : Commodity, 'err' : IDL.Text });
   const Stats = IDL.Record({
     'total_market_location_commodities' : IDL.Nat,
@@ -112,7 +126,7 @@ export const idlFactory = ({ IDL }) => {
     'addMarketLocation' : IDL.Func([MarketLocationRequest], [], []),
     'addMarketLocationAgent' : IDL.Func([MarketLocationAgentRequest], [], []),
     'addMarketLocationCommodity' : IDL.Func([MarketLocationCommodity], [], []),
-    'addMarketPrice' : IDL.Func([MarketPrice], [], []),
+    'addMarketPrice' : IDL.Func([MarketPriceRequest], [], []),
     'addStaffMember' : IDL.Func([Staff], [], []),
     'assign_role' : IDL.Func([IDL.Principal, IDL.Opt(Role__1)], [], []),
     'deleteCommodity' : IDL.Func([Commodity], [], []),
