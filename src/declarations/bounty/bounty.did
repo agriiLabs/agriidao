@@ -36,7 +36,7 @@ type Result_8 =
 type Result_7 = 
  variant {
    err: text;
-   ok: Bounty__1;
+   ok: Bounty;
  };
 type Result_6 = 
  variant {
@@ -73,6 +73,13 @@ type Result =
    err: text;
    ok;
  };
+type EnvType = 
+ variant {
+   local;
+   production;
+   staging;
+ };
+type CanisterInitArgs = record {env: EnvType;};
 type CampaignUserRequest = 
  record {
    campaignId: text;
@@ -142,20 +149,6 @@ type Campaign =
    totalValue: float64;
    url: text;
  };
-type Bounty__1 = 
- record {
-   acCategoryId: text;
-   availableBal: float64;
-   bountyPool: float64;
-   createdBy: text;
-   endDate: text;
-   id: text;
-   isDelete: bool;
-   isLive: bool;
-   name: text;
-   startDate: text;
-   timeStamp: Time;
- };
 type BountyRequest = 
  record {
    acCategoryId: text;
@@ -175,7 +168,7 @@ type BountyPoint =
    totalOut: float64;
    userId: opt principal;
  };
-type Bounty = 
+type BountyActor = 
  service {
    acceptCampaignUserSubmission: (CampaignUser) -> (Result);
    addAllocation: (AllocationRequest, text) -> ();
@@ -197,13 +190,14 @@ type Bounty =
    checkCampaignSubmission: (text, principal, text) ->
     (vec CampaignUser) query;
    deleteAllocation: (text) -> (bool);
-   deleteBounty: (Bounty__1) -> ();
+   deleteBounty: (Bounty) -> ();
    deleteCampaign: (Campaign) -> ();
    deleteCampaignTask: (CampaignTask) -> ();
    deleteCampaignUser: (text) -> (bool);
    deleteTier: (Tier) -> ();
    deleteUserSocialMedia: (UserSocialMedia) -> ();
    getAllAllocations: () -> (vec Allocation) query;
+   getAllBounties: () -> (vec Bounty) query;
    getAllCampaignsLatest: () -> (vec Campaign) query;
    getAllLatestBountyCampaignsByName: (text) -> (vec Campaign) query;
    getAllLatestBountyPointUsers: () -> (vec BountyPoint) query;
@@ -240,11 +234,25 @@ type Bounty =
    rejectCampaignUserSubmission: (CampaignUser) -> ();
    socialMediaCheck: (text) -> (bool) query;
    updateAllocation: (Allocation) -> ();
-   updateBounty: (Bounty__1) -> ();
+   updateBounty: (Bounty) -> ();
    updateCampaign: (Campaign) -> ();
    updateCampaignTask: (CampaignTask) -> ();
    updateTier: (Tier) -> ();
    updateUserSocialMedia: (UserSocialMedia) -> (Result);
+ };
+type Bounty = 
+ record {
+   acCategoryId: text;
+   availableBal: float64;
+   bountyPool: float64;
+   createdBy: text;
+   endDate: text;
+   id: text;
+   isDelete: bool;
+   isLive: bool;
+   name: text;
+   startDate: text;
+   timeStamp: Time;
  };
 type AllocationRequest = 
  record {
@@ -264,4 +272,4 @@ type Allocation =
    name: text;
    timeStamp: Time;
  };
-service : () -> Bounty
+service : (CanisterInitArgs) -> BountyActor

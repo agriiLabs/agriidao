@@ -7,7 +7,7 @@ import type {
 import type { Principal } from "@dfinity/principal";
 import type { IDL } from "@dfinity/candid";
 
-import { _SERVICE } from './agriiclub_frontend.did';
+import { _SERVICE } from './agriidao_frontend.did';
 
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const canisterId: string;
@@ -47,4 +47,4 @@ export declare const createActor: (
  * Intialized Actor using default settings, ready to talk to a canister using its candid interface
  * @constructs {@link ActorSubClass}
  */
-export declare const agriiclub_frontend: ActorSubclass<_SERVICE>;
+export declare const agriidao_frontend: ActorSubclass<_SERVICE>;

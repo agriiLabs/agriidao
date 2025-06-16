@@ -5,6 +5,11 @@ import {
   BountyPoint,
   UserSocialMedia,
   Campaign,
+  BountyRequest,
+  AllocationRequest,
+  CampaignRequest,
+  CampaignTaskRequest
+
 } from "../../../../declarations/bounty/bounty.did";
 import {
   Profile,
@@ -14,7 +19,9 @@ import {
 import {
   MarketLocationAgent,
   MarketLocation,
-} from "../../../../declarations/agriidao_backend/agriidao_backend.did";
+  MarketLocationAgentRequest,
+  MarketLocationRequest
+} from "../../../../declarations/commodity/commodity.did";
 import {
   Project,
   ProjectRequest,
@@ -56,6 +63,13 @@ export interface GlobalState {
   proposalRequest: ProposalRequest | null;
   commodityRequest: CommodityRequest | null;
   _project: Project | null;
+  marketLocationAgentRequest: MarketLocationAgentRequest | null;
+  marketLocationRequest: MarketLocationRequest | null;
+  bountyRequest: BountyRequest | null; 
+  allocationRequest: AllocationRequest | null;
+  campaignRequest: CampaignRequest | null;
+  campaign: Campaign | null;
+  campaignTaskRequest: CampaignTaskRequest | null;
 }
 
 const initialState: GlobalState = {
@@ -80,6 +94,13 @@ const initialState: GlobalState = {
   proposalRequest: null,
   commodityRequest: null,
   _project: null,
+  marketLocationAgentRequest: null,
+  marketLocationRequest: null,
+  bountyRequest: null,
+  allocationRequest: null,
+  campaignRequest: null,
+  campaign: null,
+  campaignTaskRequest: null,
 };
 
 export const appSlice = createSlice({
@@ -184,7 +205,46 @@ export const appSlice = createSlice({
       action: PayloadAction<CommodityRequest | null>
     ) => {
       state.commodityRequest = action.payload;
-    }  
+    },
+    setMarketLocationAgentRequest: (
+      state,
+      action: PayloadAction<MarketLocationAgentRequest | null>
+    ) => {
+      state.marketLocationAgentRequest = action.payload;
+    },  
+    setMarketLocationRequest: (
+      state,
+      action: PayloadAction<MarketLocationRequest | null>
+    ) => {
+      state.marketLocationRequest = action.payload;
+    },
+    setBountyRequest: (
+      state, 
+      action: PayloadAction<BountyRequest | null>
+    ) => {
+      state.bountyRequest = action.payload;
+    },
+    setAllocationRequest: (
+      state,
+      action: PayloadAction<AllocationRequest | null>
+    ) => {
+      state.allocationRequest = action.payload;
+    },
+    setCampaignRequest: (
+      state,
+      action: PayloadAction<CampaignRequest | null>
+    ) => {
+      state.campaignRequest = action.payload;
+    },
+    setCampaign: (state, action: PayloadAction<Campaign | null>) => {
+      state.campaign = action.payload;
+    },
+    setCampaignTaskRequest: (
+      state,
+      action: PayloadAction<CampaignTaskRequest | null>
+    ) => {
+      state.campaignTaskRequest = action.payload;
+    },
   },
 });
 
@@ -210,6 +270,13 @@ export const {
   setProposalRequest,
   _setProject,
   setCommodityRequest,
+  setMarketLocationAgentRequest,
+  setMarketLocationRequest,
+  setBountyRequest,
+  setAllocationRequest,
+  setCampaignRequest,
+  setCampaign,
+  setCampaignTaskRequest,
 } = appSlice.actions;
 
 export default appSlice.reducer;

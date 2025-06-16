@@ -1,37 +1,60 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useAuth } from "../../../../hooks/Context";
-import { MarketLocationAgentRequest } from "../../../../../../declarations/agriidao_backend/agriidao_backend.did";
+import { MarketLocationAgentRequest } from "../../../../../../declarations/commodity/commodity.did";
 import { z } from "zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Modal } from "react-bootstrap";
 import { User } from "../../../../../../declarations/user/user.did";
+import { setMarketLocationAgentRequest } from "../../../../redux/slices/app";
+import AddMarketAgentPreview from "./AddMarketAgentPreview";
+
+type Props = {
+  showAddMarketAgentModal: boolean;
+  setShowAddMarketAgentModal: (showAddMarketAgentModal: boolean) => void;
+};
 
 type FormData = {
   marketLocationId: string;
   userId: string;
 };
 
-type AddMarketAgentProps = {
-  setOpenForm: (open: boolean) => void;
-  market: { id: string };
-  setAgentSaved: (saved: boolean) => void;
-};
-
-const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }: AddMarketAgentProps) => {
+const AddMarketAgent: FC<Props> = ({
+  showAddMarketAgentModal,
+  setShowAddMarketAgentModal,
+}) => {
   const { agriidaoActor, userActor } = useAuth();
-  const [saving, setSaving] = useState(false);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const [market, setMarket] = useState<any | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
   const [users, setUsers] = useState<User[] | null>(null);
 
   const schema = z.object({
     userId: z.string().min(1, { message: "User required" }),
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  useEffect(() => {
+    if (id) {
+      getMarketLocation(id);
+    }
+  }, [id]);
+
+  const getMarketLocation = async (marketId: string) => {
+    if (!agriidaoActor) {
+      console.error("agriidaoActor is null");
+      return;
+    }
+    try {
+      const res = await agriidaoActor.getMarketLocationLatest(marketId);
+      setMarket(res);
+    } catch (error) {
+      console.error("Error fetching market location:", error);
+    }
+  };
 
   useEffect(() => {
     getUsers();
@@ -40,148 +63,86 @@ const AddMarketAgent = ({ setOpenForm, market, setAgentSaved }: AddMarketAgentPr
   const getUsers = async () => {
     if (!userActor) return;
     try {
-      const res = await userActor.getUsers();
+      const res = await userActor?.getUsers();
       console.log("users: ", res);
-      setUsers(res);
+      setUsers(res ?? null);
     } catch (error) {
       console.log("Error when fetching users", error);
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const handleSave = async (data: FormData) => {
     if (!agriidaoActor || !userActor || !users) {
       console.error("agriidaoActor or userActor is null");
       return;
     }
-    const user = users.find((user) => user.id.toString() === data.userId);
-    console.log("user: ", user);
-    if (!user) {
-      toast.error("No user found", {
-        autoClose: 5000,
-        position: "top-center",
-        hideProgressBar: true,
-      });
+    if (!agriidaoActor || !market) {
+      console.error("agriidaoActor or market is null");
       return;
     }
-    setSaving(true);
+
     try {
-      let body: MarketLocationAgentRequest = {
-        marketLocationId: market.id,
+      let marketAgent: MarketLocationAgentRequest = {
+        marketLocationId: data.marketLocationId,
         userId: data.userId,
       };
-      console.log("adding agent: ", body);
-      await agriidaoActor.addMarketLocationAgent(body);
-      console.log("Agent added");
-      
-        console.log("Agent succesfully added.", {
-          autoClose: 5000,
-          position: "top-center",
-          hideProgressBar: true,
-        });
-      setAgentSaved(true);
-      setOpenForm(false);
-      setSaving(false);
+      dispatch(setMarketLocationAgentRequest(marketAgent));
+      setCurrentStep(2);
     } catch (error) {
-      console.log("there was an error creating market agent", error);
-      toast.error("There was an error saving market agent.", {
-        autoClose: 5000,
-        position: "top-center",
-        hideProgressBar: true,
-      });
-      setSaving(false);
+      console.error("Error setting market location agent request:", error);
+      toast.error("Error setting market location agent request");
     }
   };
-
+      
   return (
-    <div className="form-modal">
-      <div className="container-fluid modal-child">
-        <div className="row">
-          <div className="col-12">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <ol className="breadcrumb m-0">
-                  <li className="breadcrumb-item">
-                    <a href="javascript: void(0);">agriiDAO</a>
-                  </li>
-                  <li className="breadcrumb-item">
-                    <a href="#">
-                      Market Locations
-                    </a>
-                  </li>
-                  <li className="breadcrumb-item active">Add Agent</li>
-                </ol>
-              </div>
-              <h4 className="page-title">Add Agent</h4>
+    <Modal
+      show={showAddMarketAgentModal}
+      onHide={() => setShowAddMarketAgentModal(false)}
+      size="lg"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Add Market Agent</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {currentStep === 1 ? (
+          <form onSubmit={handleSubmit(handleSave)}>
+            <div className="input-style no-borders input-required">
+              <select
+                className={`form-select ${
+                  errors.userId ? "is-invalid" : ""
+                }`}
+                {...register("userId")}
+              >
+                <option value="" disabled>
+                  Select a User
+                </option>
+                {users?.map((user) => (
+                  <option key={user.id.toString()} value={user.id.toString()}>
+                    {user.username}
+                  </option>
+                ))}
+              </select>
+              {errors.userId && (
+                <div className="invalid-feedback">{errors.userId.message}</div>
+              )}
             </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="card-box">
-              <h5 className="text-uppercase bg-light p-2 mt-0 mb-3">General</h5>
-              <form onSubmit={handleSubmit(handleSave)}>
-                <div className="form-group mb-3">
-                  <div className="form-group">
-                    <label
-                      htmlFor="commodityId"
-                      className="col-form-label requiredField"
-                    >
-                      Agent
-                      <span className="asteriskField">*</span>
-                    </label>
-
-                    <select
-                      id="userId"
-                      {...register("userId")}
-                      className="select form-control"
-                    >
-                      <option value="" disabled>
-                        Select a User
-                      </option>
-                      {users?.map((user) => (
-                        <option
-                          key={user.id.toString()}
-                          value={user.id.toString()}
-                        >
-                          {user.username}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  {errors.userId && (
-                    <span className="text-red-600">
-                      {errors.userId.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="col-12">
-                  <div className="text-center mb-3">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setOpenForm(false);
-                      }}
-                      className="btn w-sm btn-light waves-effect"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn w-sm btn-success waves-effect waves-light"
-                    >
-                      {saving ? "Saving Market Agent..." : "Save"}
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            <button type="submit" className="col-12 btn btn-sm rounded-sm text-uppercase font-900 border-dark color-dark bg-theme mt-2">
+                Next
+                </button>
+            </form>
+        ) : (
+          <AddMarketAgentPreview setCurrentStep={setCurrentStep} />
+        )}
+      </Modal.Body>
+    </Modal>
   );
-};
+}
 
 export default AddMarketAgent;

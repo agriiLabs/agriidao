@@ -1,8 +1,8 @@
 import { Actor, HttpAgent } from "@dfinity/agent";
 
 // Imports and re-exports candid interface
-import { idlFactory } from "./agriiclub_frontend.did.js";
-export { idlFactory } from "./agriiclub_frontend.did.js";
+import { idlFactory } from "./agriidao_frontend.did.js";
+export { idlFactory } from "./agriidao_frontend.did.js";
 
 /* CANISTER_ID is replaced by webpack based on node environment
  * Note: canister environment variable will be standardized as
@@ -10,8 +10,7 @@ export { idlFactory } from "./agriiclub_frontend.did.js";
  * beginning in dfx 0.15.0
  */
 export const canisterId =
-  process.env.CANISTER_ID_AGRIICLUB_FRONTEND ||
-  process.env.AGRIICLUB_FRONTEND_CANISTER_ID;
+  process.env.CANISTER_ID_AGRIIDAO_FRONTEND;
 
 export const createActor = (canisterId, options = {}) => {
   const agent = options.agent || new HttpAgent({ ...options.agentOptions });
@@ -40,4 +39,4 @@ export const createActor = (canisterId, options = {}) => {
   });
 };
 
-export const agriiclub_frontend = canisterId ? createActor(canisterId) : undefined;
+export const agriidao_frontend = canisterId ? createActor(canisterId) : undefined;

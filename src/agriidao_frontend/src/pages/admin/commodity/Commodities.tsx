@@ -8,15 +8,11 @@ const Commodities = () => {
   const { agriidaoActor } = useAuth(); 
   const { id } = useParams(); 
   const [commodities, setCommodities] = useState<Commodity[]>([]); 
-  const [openForm, setOpenForm] = useState(false);
-  const [commoditySaved, setCommoditySaved] = useState(false);
 
-  // get latest category and commodities
   useEffect(() => {
     getAllLatestCommodities();
   }, [id]);
   
-  // get commodities  
   const getAllLatestCommodities = async () => {
     let res = await agriidaoActor?.getAllLatestCommodities(); 
     setCommodities(res || []);
