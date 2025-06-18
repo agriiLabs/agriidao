@@ -145,20 +145,6 @@ export interface MarketLocationCommodity {
   'marketLocationId' : string,
 }
 export interface MarketLocationRequest { 'name' : string, 'countryId' : string }
-export interface MarketPriceRequest {
-  'status' : {
-    'pending' : boolean,
-    'rejected' : boolean,
-    'accepted' : boolean,
-  },
-  'marketLocationCommodityId' : string,
-  'userId' : string,
-  'pricePerKg' : number,
-  'unitKg' : bigint,
-  'currency' : string,
-  'price' : number,
-  'marketLocationId' : string,
-}
 export interface MarketPrice {
   'id' : string,
   'status' : {
