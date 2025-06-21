@@ -1,6 +1,6 @@
 import { FC } from 'react'; 
 import Modal from 'react-bootstrap/Modal'; 
-import { Campaign } from '../../../../../../declarations/bounty/bounty.did';
+import { Campaign } from '../../../../../declarations/bounty/bounty.did';
 
 type Props = {
   showRulesModal : boolean, 
