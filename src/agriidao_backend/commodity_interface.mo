@@ -22,6 +22,7 @@ module {
     acCategoryId : Text;
   };
   public type EnvType = { #staging; #production; #local };
+  public type GetAllRecordsArgs = { page : Nat64; size : Nat64 };
   public type GetPagesArgs = { page : Nat; size : Nat };
   public type MarketLocation = {
     id : Text;
@@ -72,6 +73,18 @@ module {
     marketLocationId : Text;
   };
   public type MarketPriceId = Text;
+  public type MarketPriceCommodity = {
+    market_price : MarketPrice;
+    commodity : ?Commodity;
+  };
+  public type MarketPriceRecordsPaginated = {
+    total : Nat64;
+    records : [MarketPriceCommodity];
+    page : Nat64;
+    total_pages : Nat64;
+    offset : Nat64;
+    limit : Nat64;
+  };
   public type MarketPriceRequest = {
     status : { pending : Bool; rejected : Bool; accepted : Bool };
     marketLocationCommodityId : Text;
@@ -145,6 +158,10 @@ module {
     getLatestMarketPriceByMarketLocationId : shared query Text -> async [
       MarketPrice
     ];
+    getLatestMarketPriceByMarketLocationIdPaginated : shared query (
+      Text,
+      GetAllRecordsArgs,
+    ) -> async MarketPriceRecordsPaginated;
     getLatestPriceByMarketLocationId : shared query Text -> async [MarketPrice];
     getMarketLocationAgentByAgentId : shared query Text -> async [
       MarketLocationAgent
@@ -165,13 +182,13 @@ module {
     updateCommodity : shared (Commodity, Principal) -> async ();
     updateMarkeLocation : shared (MarketLocation, Principal) -> async ();
     updateMarketLocationAgent : shared (
-        MarketLocationAgent,
-        Principal,
-      ) -> async ();
+      MarketLocationAgent,
+      Principal,
+    ) -> async ();
     updateMarketLocationCommodity : shared (
-        MarketLocationCommodity,
-        Principal,
-      ) -> async ();
+      MarketLocationCommodity,
+      Principal,
+    ) -> async ();
     updateMarketPrice : shared (MarketPrice, Principal) -> async ();
   };
 };

@@ -117,6 +117,22 @@ export const idlFactory = ({ IDL }) => {
     'ok' : MarketLocationCommodity,
     'err' : IDL.Text,
   });
+  const GetAllRecordsArgs = IDL.Record({
+    'page' : IDL.Nat64,
+    'size' : IDL.Nat64,
+  });
+  const MarketPriceCommodity = IDL.Record({
+    'market_price' : MarketPrice,
+    'commodity' : IDL.Opt(Commodity),
+  });
+  const MarketPriceRecordsPaginated = IDL.Record({
+    'total' : IDL.Nat64,
+    'records' : IDL.Vec(MarketPriceCommodity),
+    'page' : IDL.Nat64,
+    'total_pages' : IDL.Nat64,
+    'offset' : IDL.Nat64,
+    'limit' : IDL.Nat64,
+  });
   const Result__1 = IDL.Variant({ 'ok' : MarketLocation, 'err' : IDL.Text });
   const ChartStatsData = IDL.Record({ 'month' : IDL.Nat, 'count' : IDL.Nat });
   const Result_1 = IDL.Variant({ 'ok' : Staff, 'err' : IDL.Text });
@@ -182,6 +198,11 @@ export const idlFactory = ({ IDL }) => {
     'getLatestMarketPriceByMarketLocationId' : IDL.Func(
         [IDL.Text],
         [IDL.Vec(MarketPrice)],
+        [],
+      ),
+    'getLatestMarketPriceByMarketLocationIdPaginated' : IDL.Func(
+        [IDL.Text, GetAllRecordsArgs],
+        [MarketPriceRecordsPaginated],
         [],
       ),
     'getLatestPriceByMarketLocationId' : IDL.Func(

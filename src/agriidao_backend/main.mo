@@ -11,14 +11,14 @@ import CommodityInterface "./commodity_interface";
 
 shared ({ caller = initializer }) actor class InvAdmin() = this {
 
-        //Access control variables
+    //Access control variables
     private stable var roles : AssocList.AssocList<Principal, Role> = List.nil();
     private stable var role_requests : AssocList.AssocList<Principal, Role> = List.nil();
 
     var staff = HashMap.HashMap<Principal, Staff>(0, Principal.equal, Principal.hash);
 
     private stable var staffEntries : [(Principal, Staff)] = [];
-    
+
     let commodityCanActor = CommodityInterface.commodityCanActor;
 
     public shared func getAllLatestCommodities() : async [CommodityInterface.Commodity] {
@@ -102,6 +102,13 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
         return await commodityCanActor.get_total_market_prices();
     };
 
+    public shared func getLatestMarketPriceByMarketLocationIdPaginated(
+        marketLocationId : Text,
+        args : CommodityInterface.GetAllRecordsArgs,
+    ) : async CommodityInterface.MarketPriceRecordsPaginated {
+        return await commodityCanActor.getLatestMarketPriceByMarketLocationIdPaginated(marketLocationId, args);
+    };
+
     public shared ({ caller }) func updateCommodity(commodity : CommodityInterface.Commodity) : async () {
         await commodityCanActor.updateCommodity(commodity, caller);
     };
@@ -153,7 +160,6 @@ shared ({ caller = initializer }) actor class InvAdmin() = this {
     type Permission = Types.Permission;
     type Role = Types.Role;
     type Staff = Types.Staff;
-
 
     system func preupgrade() {
         staffEntries := Iter.toArray(staff.entries());

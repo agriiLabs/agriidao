@@ -19,6 +19,7 @@ export interface CommodityRequest {
   'name' : string,
   'acCategoryId' : string,
 }
+export interface GetAllRecordsArgs { 'page' : bigint, 'size' : bigint }
 export interface InvAdmin {
   'addCommodity' : ActorMethod<[CommodityRequest], undefined>,
   'addMarketLocation' : ActorMethod<[MarketLocationRequest], undefined>,
@@ -76,6 +77,10 @@ export interface InvAdmin {
   'getLatestMarketPriceByMarketLocationId' : ActorMethod<
     [string],
     Array<MarketPrice>
+  >,
+  'getLatestMarketPriceByMarketLocationIdPaginated' : ActorMethod<
+    [string, GetAllRecordsArgs],
+    MarketPriceRecordsPaginated
   >,
   'getLatestPriceByMarketLocationId' : ActorMethod<
     [string],
@@ -145,20 +150,6 @@ export interface MarketLocationCommodity {
   'marketLocationId' : string,
 }
 export interface MarketLocationRequest { 'name' : string, 'countryId' : string }
-export interface MarketPriceRequest {
-  'status' : {
-    'pending' : boolean,
-    'rejected' : boolean,
-    'accepted' : boolean,
-  },
-  'marketLocationCommodityId' : string,
-  'userId' : string,
-  'pricePerKg' : number,
-  'unitKg' : bigint,
-  'currency' : string,
-  'price' : number,
-  'marketLocationId' : string,
-}
 export interface MarketPrice {
   'id' : string,
   'status' : {
@@ -177,6 +168,18 @@ export interface MarketPrice {
   'isDelete' : boolean,
   'price' : number,
   'marketLocationId' : string,
+}
+export interface MarketPriceCommodity {
+  'market_price' : MarketPrice,
+  'commodity' : [] | [Commodity],
+}
+export interface MarketPriceRecordsPaginated {
+  'total' : bigint,
+  'records' : Array<MarketPriceCommodity>,
+  'page' : bigint,
+  'total_pages' : bigint,
+  'offset' : bigint,
+  'limit' : bigint,
 }
 export interface MarketPriceRequest {
   'status' : {

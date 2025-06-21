@@ -4,6 +4,7 @@ import {
   MarketLocation,
   MarketPrice,
   Commodity,
+  MarketPriceRecordsPaginated,
 } from "../../../../../declarations/agriidao_backend/agriidao_backend.did";
 import CountryName from "../../../components/agriidao/CountryName";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +18,15 @@ const DMarketPrices = () => {
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
-  const [prices, setPrices] = useState<EnrichedPrice[]>([]);
+
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+      const [paginatedRecords, setPaginatedRecords] = useState<MarketPriceRecordsPaginated | null>(null);
+    const [page, setPage] = useState<number>(0);
+    const [size, setSize] = useState<number>(50);
+    const [pageInput, setPageInput] = useState<string>('');
 
 
   interface EnrichedPrice extends MarketPrice {
@@ -65,71 +70,21 @@ const DMarketPrices = () => {
 
   useEffect(() => {
     if (selectedMarketLocation && agriidaoActor) {
-      fetchMarketData(selectedMarketLocation.id, agriidaoActor);
+      fetchMarketData(selectedMarketLocation.id);
     }
   }, [selectedMarketLocation, agriidaoActor]);
 
-  // const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
-  //   try {
-  //     const commodityRes =
-  //       await agriidaoActor.getAllLatestMarketCommoditiesByMarketId(marketId);
-
-  //     setMLCommodity(commodityRes);
-
-  //     const pricesRes =
-  //       await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
-
-  //     const transformedPrices = transformBigIntToString(pricesRes);
-  //     setPrices(transformedPrices);
-  //   } catch (error) {
-  //     console.error("Error fetching market data:", error);
-  //   }
-  // };
-
-  const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
-    console.log("Fetching market data for marketId:", marketId);
+  const fetchMarketData = async (marketId: string) => {
+  if (!agriidaoActor) {
+    console.error("agriidaoActor not found");
+    return;
+  }
     try {
       setLoading(true);
-      const pricesRes: MarketPrice[] =
-        await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
 
-      const latestMap = new Map<string, MarketPrice>();
-
-      pricesRes.forEach((price: MarketPrice) => {
-        const key = price.marketLocationCommodityId;
-        const existing = latestMap.get(key);
-
-        if (!existing || Number(price.timeStamp) > Number(existing.timeStamp)) {
-          latestMap.set(key, price);
-        }
-      });
-
-      const enrichedPrices = await Promise.all(
-        Array.from(latestMap.values()).map(
-          async (price): Promise<EnrichedPrice> => {
-            const locRes = await agriidaoActor.getMarketLocationCommodityById(
-              price.marketLocationCommodityId
-            );
-            if ("ok" in locRes) {
-              const commRes = await agriidaoActor.getCommodityLatest(
-                locRes.ok.commodityId
-              );
-              if ("ok" in commRes) {
-                return { ...price, commodity: commRes.ok };
-              }
-            }
-            return price;
-          }
-        )
-      );
-
-      enrichedPrices.sort((a, b) => {
-        const nameA = a.commodity?.name?.toLowerCase() || "";
-        const nameB = b.commodity?.name?.toLowerCase() || "";
-        return nameA.localeCompare(nameB);
-      });
-
-      setPrices(enrichedPrices);
+      const pricesRes =
+        await agriidaoActor.getLatestMarketPriceByMarketLocationIdPaginated(marketId,({ page: BigInt(page), size: BigInt(size) }));
+      setPaginatedRecords(pricesRes);
     } catch (error) {
       console.error("Error fetching market data:", error);
     } finally {
@@ -155,10 +110,10 @@ const DMarketPrices = () => {
   }; 
 
    useEffect(() => {
-      if (prices.length > 0) {
-        setLastUpdated(formatNanoDate(Number(prices[0].timeStamp)));
+      if (paginatedRecords?.records.length > 0) {
+        setLastUpdated(formatNanoDate(Number(paginatedRecords?.records[0].timeStamp)));
       }
-    }, [prices]);
+    }, [paginatedRecords?.records]);
 
   return (
     <>
@@ -228,18 +183,18 @@ const DMarketPrices = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : prices && prices.length > 0 ? (
-                prices.map((price, index) => (
+              ) : paginatedRecords?.records && paginatedRecords?.records.length > 0 ? (
+                paginatedRecords?.records.map((price, index) => (
                   <tr>
                   <td className="p-3">
-                    <span className="ms-2">{price?.commodity?.name}</span>
+                    <span className="ms-2">{price.commodity[0]?.name}</span>
                   </td>
                   <td className="text-center p-3">1</td>
                   <td className="text-center p-3">
-                    {price.pricePerKg ? price.pricePerKg.toFixed(2) : "-"}
+                    {price.market_price.pricePerKg}
                   </td>
-                  <td className="text-center p-3">{price?.currency}</td>
-                  <td className="text-center p-3">{formatNanoDate(Number(price.timeStamp))}</td>
+                  <td className="text-center p-3">{price.market_price.currency}</td>
+                  <td className="text-center p-3">{formatNanoDate(Number(price.market_price.timeStamp))}</td>
                 </tr>
                 ))
               ) : (

@@ -4,6 +4,7 @@ import {
   MarketLocation,
   MarketPrice,
   Commodity,
+  MarketPriceRecordsPaginated,
 } from "../../../../declarations/agriidao_backend/agriidao_backend.did";
 import ProfileClick from "../profile/component/ProfileClick";
 import CountryName from "../../components/agriidao/CountryName";
@@ -18,10 +19,13 @@ const MarketPrices = () => {
   const { selectedMarketLocation } = useSelector(
     (state: RootState) => state.app
   );
-  const [prices, setPrices] = useState<EnrichedPrice[]>([]);
   const [markets, setMarkets] = useState<MarketLocation[]>([]);
   const [selectedCountryId, setSelectedCountryId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [paginatedRecords, setPaginatedRecords] = useState<MarketPriceRecordsPaginated | null>(null);
+  const [page, setPage] = useState<number>(0);
+  const [size, setSize] = useState<number>(50);
+  const [pageInput, setPageInput] = useState<string>('');
 
   interface EnrichedPrice extends MarketPrice {
     commodity?: Commodity;
@@ -65,52 +69,21 @@ const MarketPrices = () => {
 
   useEffect(() => {
     if (selectedMarketLocation && agriidaoActor) {
-      fetchMarketData(selectedMarketLocation.id, agriidaoActor);
+      fetchMarketData(selectedMarketLocation.id);
     }
   }, [selectedMarketLocation, agriidaoActor]);
 
-  const fetchMarketData = async (marketId: string, agriidaoActor: any) => {
+  const fetchMarketData = async (marketId: string) => {
+    if (!agriidaoActor) {
+      console.error("agriidaoActor not found");
+      return;
+    }
     try {
       setLoading(true);
-      const pricesRes: MarketPrice[] =
-        await agriidaoActor.getLatestMarketPriceByMarketLocationId(marketId);
-      const latestMap = new Map<string, MarketPrice>();
 
-      pricesRes.forEach((price: MarketPrice) => {
-        const key = price.marketLocationCommodityId;
-        const existing = latestMap.get(key);
-
-        if (!existing || Number(price.timeStamp) > Number(existing.timeStamp)) {
-          latestMap.set(key, price);
-        }
-      });
-
-      const enrichedPrices = await Promise.all(
-        Array.from(latestMap.values()).map(
-          async (price): Promise<EnrichedPrice> => {
-            const locRes = await agriidaoActor.getMarketLocationCommodityById(
-              price.marketLocationCommodityId
-            );
-            if ("ok" in locRes) {
-              const commRes = await agriidaoActor.getCommodityLatest(
-                locRes.ok.commodityId
-              );
-              if ("ok" in commRes) {
-                return { ...price, commodity: commRes.ok };
-              }
-            }
-            return price;
-          }
-        )
-      );
-
-      enrichedPrices.sort((a, b) => {
-        const nameA = a.commodity?.name?.toLowerCase() || "";
-        const nameB = b.commodity?.name?.toLowerCase() || "";
-        return nameA.localeCompare(nameB);
-      });
-
-      setPrices(enrichedPrices);
+      const pricesRes =
+        await agriidaoActor.getLatestMarketPriceByMarketLocationIdPaginated(marketId, ({ page: BigInt(page), size: BigInt(size) }));
+      setPaginatedRecords(pricesRes);
     } catch (error) {
       console.error("Error fetching market data:", error);
     } finally {
@@ -182,7 +155,7 @@ const MarketPrices = () => {
                   KG
                 </th>
                 <th scope="col" className="opacity-70">
-                  Price ({prices?.[0]?.currency})
+                  Price ({paginatedRecords?.records?.[0]?.market_price.currency})
                 </th>
                 {/* <th scope="col" className="opacity-70">
                   24hr +/-
@@ -196,19 +169,19 @@ const MarketPrices = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : prices && prices.length > 0 ? (
-                prices.map((price, index) => (
+              ) : paginatedRecords?.records && paginatedRecords?.records.length > 0 ? (
+                paginatedRecords?.records.map((price, index) => (
                   <tr key={index}>
                     <Link
-                      to={`/market-price/${price?.marketLocationCommodityId}`}
+                      to={`/market-price/${price?.market_price.marketLocationCommodityId}`}
                     >
-                      <td className="text-left">{price.commodity?.name}</td>
+                      <td className="text-left">{price.commodity[0]?.name}</td>
                     </Link>
                     <td className="mb-1" style={{ paddingTop: 0 }}>
                       1
                     </td>
                     <td className="mb-1" style={{ paddingTop: 0 }}>
-                      {price.pricePerKg}
+                      {price.market_price.pricePerKg}
                     </td>
                   </tr>
                 ))

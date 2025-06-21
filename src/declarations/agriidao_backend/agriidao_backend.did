@@ -75,6 +75,20 @@ type MarketPriceRequest =
    unitKg: int;
    userId: text;
  };
+type MarketPriceRecordsPaginated = 
+ record {
+   limit: nat64;
+   offset: nat64;
+   page: nat64;
+   records: vec MarketPriceCommodity;
+   total: nat64;
+   total_pages: nat64;
+ };
+type MarketPriceCommodity = 
+ record {
+   commodity: opt Commodity;
+   market_price: MarketPrice;
+ };
 type MarketPrice = 
  record {
    createdBy: text;
@@ -169,6 +183,8 @@ type InvAdmin =
    getLatestMarketLocationAgentbyId: (text) -> (Result_3);
    getLatestMarketPriceById: (text) -> (Result_2);
    getLatestMarketPriceByMarketLocationId: (text) -> (vec MarketPrice);
+   getLatestMarketPriceByMarketLocationIdPaginated: (text,
+    GetAllRecordsArgs) -> (MarketPriceRecordsPaginated);
    getLatestPriceByMarketLocationId: (text) -> (vec MarketPrice);
    getMarketLocationAgentByAgentId: (text) -> (vec MarketLocationAgent);
    getMarketLocationByAgentId: (text) -> (vec MarketLocationAgent);
@@ -190,6 +206,11 @@ type InvAdmin =
    updateMarketLocationCommodity: (MarketLocationCommodity) -> ();
    updateMarketPrice: (MarketPrice) -> ();
    updateStaffMember: (Staff) -> ();
+ };
+type GetAllRecordsArgs = 
+ record {
+   page: nat64;
+   size: nat64;
  };
 type CommodityRequest = 
  record {
