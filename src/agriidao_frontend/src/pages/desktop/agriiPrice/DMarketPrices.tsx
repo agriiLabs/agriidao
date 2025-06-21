@@ -110,8 +110,8 @@ const DMarketPrices = () => {
   }; 
 
    useEffect(() => {
-      if (paginatedRecords?.records.length > 0) {
-        setLastUpdated(formatNanoDate(Number(paginatedRecords?.records[0].timeStamp)));
+      if (paginatedRecords?.records && paginatedRecords.records.length > 0) {
+        setLastUpdated(formatNanoDate(Number(paginatedRecords.records[0].market_price.timeStamp)));
       }
     }, [paginatedRecords?.records]);
 
